@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1080">
+    <title>Ingredients List - {{ ingredientName|default('성분') }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            /* Color Palette */
+            --primary: {{ primaryColor|default('#2D5A3D') }};
+            --primary-light: {{ primaryLight|default('#4A7C5C') }};
+            --secondary: {{ secondaryColor|default('#F5E6D3') }};
+            --accent: {{ accentColor|default('#8FBC8F') }};
+            --text-dark: #1A1A1A;
+            --text-light: #FFFFFF;
+            --text-muted: #6B6B6B;
+
+            /* Gradients */
+            --gradient-nature: linear-gradient(145deg, #E8F5E9 0%, #C8E6C9 50%, #A5D6A7 100%);
+            --gradient-clean: linear-gradient(180deg, #FAFAFA 0%, #F0F4F0 100%);
+            --gradient-glow: radial-gradient(circle at 50% 30%, rgba(143,188,143,0.3) 0%, transparent 60%);
+
+            /* Shadows */
+            --shadow-soft: 0 4px 20px rgba(45,90,61,0.1);
+            --shadow-medium: 0 8px 32px rgba(45,90,61,0.15);
+            --shadow-icon: 0 6px 24px rgba(45,90,61,0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            width: 1080px;
+            height: 1080px;
+            overflow: hidden;
+        }
+
+        .card {
+            width: 1080px;
+            height: 1080px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== INTRO CARD ===== */
+        .card-intro {
+            background: var(--gradient-nature);
+        }
+
+        .card-intro::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-glow);
+            pointer-events: none;
+        }
+
+        .intro-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 80px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .intro-badge {
+            background: var(--primary);
+            color: var(--text-light);
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 50px;
+        }
+
+        .intro-title {
+            font-size: 72px;
+            font-weight: 800;
+            color: var(--primary);
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+
+        .intro-subtitle {
+            font-size: 32px;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+
+        .intro-icons {
+            display: flex;
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .intro-icon-item {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-icon);
+        }
+
+        .intro-icon-item img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+        }
+
+        /* ===== INGREDIENT CARD ===== */
+        .card-ingredient {
+            background: var(--gradient-clean);
+        }
+
+        .ingredient-header {
+            height: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ingredient-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ingredient-image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to top, white 0%, transparent 100%);
+        }
+
+        .ingredient-icon-wrapper {
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 140px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-medium);
+            z-index: 2;
+        }
+
+        .ingredient-icon {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+        }
+
+        .ingredient-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 90px 80px 60px;
+            text-align: center;
+        }
+
+        .ingredient-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .ingredient-name {
+            font-size: 56px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 30px;
+        }
+
+        .ingredient-benefit {
+            font-size: 30px;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 800px;
+        }
+
+        .ingredient-tag {
+            margin-top: auto;
+            background: var(--secondary);
+            color: var(--primary);
+            padding: 16px 36px;
+            border-radius: 30px;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        /* ===== SUMMARY CARD ===== */
+        .card-summary {
+            background: var(--primary);
+            color: var(--text-light);
+        }
+
+        .summary-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 80px;
+        }
+
+        .summary-title {
+            font-size: 52px;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            flex: 1;
+        }
+
+        .summary-item {
+            background: rgba(255,255,255,0.1);
+            border-radius: 24px;
+            padding: 36px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .summary-item-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .summary-item-icon img {
+            width: 36px;
+            height: 36px;
+            filter: brightness(0) invert(1);
+        }
+
+        .summary-item-text h4 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .summary-item-text p {
+            font-size: 20px;
+            opacity: 0.8;
+        }
+
+        .summary-cta {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .summary-cta-btn {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 24px 64px;
+            border-radius: 50px;
+            font-size: 28px;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* Brand Footer */
+        .brand-footer {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .brand-footer img {
+            height: 40px;
+            opacity: 0.8;
+        }
+
+        /* Swipe Indicator */
+        .swipe-indicator {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .swipe-arrow {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    {% if cardType == 'intro' %}
+    <!-- INTRO CARD -->
+    <div class="card card-intro">
+        <div class="intro-content">
+            <div class="intro-badge">{{ badge|default('INGREDIENTS') }}</div>
+            <h1 class="intro-title">{{ title|default('핵심 성분 소개') }}</h1>
+            <p class="intro-subtitle">{{ subtitle|default('피부에 좋은 자연 유래 성분만을 엄선했습니다') }}</p>
+
+            {% if icons %}
+            <div class="intro-icons">
+                {% for icon in icons %}
+                <div class="intro-icon-item">
+                    <img src="{{ icon }}" alt="ingredient icon">
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="swipe-indicator">
+            <span>밀어서 확인하기</span>
+            <svg class="swipe-arrow" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+            </svg>
+        </div>
+    </div>
+
+    {% elif cardType == 'ingredient' %}
+    <!-- INGREDIENT CARD -->
+    <div class="card card-ingredient">
+        <div class="ingredient-header">
+            {% if image %}
+            <img src="{{ image }}" alt="{{ ingredientName }}" class="ingredient-image">
+            {% else %}
+            <div style="width:100%;height:100%;background:var(--gradient-nature);"></div>
+            {% endif %}
+            <div class="ingredient-image-overlay"></div>
+
+            {% if icon %}
+            <div class="ingredient-icon-wrapper">
+                <img src="{{ icon }}" alt="icon" class="ingredient-icon">
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="ingredient-body">
+            <div class="ingredient-number">INGREDIENT {{ ingredientNum|default('01') }}</div>
+            <h2 class="ingredient-name">{{ ingredientName|default('히알루론산') }}</h2>
+            <p class="ingredient-benefit">{{ benefit|default('피부 깊숙이 수분을 공급하여 촉촉하고 탄력 있는 피부로 가꿔줍니다') }}</p>
+
+            {% if tag %}
+            <span class="ingredient-tag">{{ tag }}</span>
+            {% endif %}
+        </div>
+    </div>
+
+    {% elif cardType == 'summary' %}
+    <!-- SUMMARY CARD -->
+    <div class="card card-summary">
+        <div class="summary-content">
+            <h2 class="summary-title">{{ title|default('모든 성분 한눈에') }}</h2>
+
+            <div class="summary-grid">
+                {% for item in ingredients|default([]) %}
+                <div class="summary-item">
+                    <div class="summary-item-icon">
+                        {% if item.icon %}
+                        <img src="{{ item.icon }}" alt="">
+                        {% endif %}
+                    </div>
+                    <div class="summary-item-text">
+                        <h4>{{ item.name }}</h4>
+                        <p>{{ item.shortBenefit }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="summary-cta">
+                <a href="#" class="summary-cta-btn">{{ ctaText|default('자세히 알아보기') }}</a>
+            </div>
+        </div>
+
+        {% if brandLogo %}
+        <div class="brand-footer">
+            <img src="{{ brandLogo }}" alt="brand logo">
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>

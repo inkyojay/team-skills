@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1080">
+  <title>Urgency CTA - Meta Ad</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --urgency-color: {{ urgencyColor | default('#FF4444') }};
+      --brand-primary: {{ brandColor | default('#FF6B6B') }};
+      --text-dark: {{ textDark | default('#2D3436') }};
+      --text-light: {{ textLight | default('#FFFFFF') }};
+      --bg-color: {{ bgColor | default('#FFFFFF') }};
+      --sale-color: {{ saleColor | default('#FF4444') }};
+    }
+
+    body {
+      width: 1080px;
+      height: 1080px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-color);
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .urgency-banner {
+      background: var(--urgency-color);
+      padding: 36px 60px;
+      text-align: center;
+    }
+
+    .urgency-text {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .fire-emoji {
+      font-size: 52px;
+    }
+
+    .image-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      background: linear-gradient(180deg, #fafafa 0%, #f0f0f0 100%);
+    }
+
+    .product-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 16px 32px rgba(0,0,0,0.12));
+    }
+
+    .price-section {
+      padding: 40px 60px;
+      text-align: center;
+      background: var(--bg-color);
+    }
+
+    .price-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .original-price {
+      font-size: 36px;
+      font-weight: 500;
+      color: #999;
+      text-decoration: line-through;
+    }
+
+    .arrow {
+      font-size: 32px;
+      color: #999;
+    }
+
+    .sale-price {
+      font-size: 56px;
+      font-weight: 800;
+      color: var(--sale-color);
+    }
+
+    .discount-badge {
+      position: absolute;
+      top: 140px;
+      right: 60px;
+      background: var(--urgency-color);
+      color: white;
+      font-size: 32px;
+      font-weight: 800;
+      padding: 16px 24px;
+      border-radius: 12px;
+      transform: rotate(5deg);
+      box-shadow: 0 4px 16px rgba(255, 68, 68, 0.4);
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 26px 80px;
+      background: var(--urgency-color);
+      color: var(--text-light);
+      font-size: 32px;
+      font-weight: 800;
+      border-radius: 16px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(255, 68, 68, 0.4);
+    }
+
+    .timer {
+      margin-top: 20px;
+      font-size: 24px;
+      color: #666;
+    }
+
+    .timer-icon {
+      margin-right: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="urgency-banner">
+      <p class="urgency-text">
+        <span class="fire-emoji">🔥</span>
+        {{ promoText | default('오늘만 특가!') }}
+        <span class="fire-emoji">🔥</span>
+      </p>
+    </div>
+
+    <div class="image-section">
+      <img src="{{ productImage }}" alt="Product" class="product-image">
+      {% if discountRate %}
+      <div class="discount-badge">{{ discountRate }} OFF</div>
+      {% endif %}
+    </div>
+
+    <div class="price-section">
+      <div class="price-container">
+        <span class="original-price">{{ originalPrice }}</span>
+        <span class="arrow">→</span>
+        <span class="sale-price">{{ salePrice }}</span>
+      </div>
+      <a href="#" class="cta-button">{{ cta | default('지금 구매하기') }}</a>
+      {% if deadline %}
+      <p class="timer">
+        <span class="timer-icon">⏰</span>
+        {{ deadline }}
+      </p>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

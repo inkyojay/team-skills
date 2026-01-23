@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1080">
+    <title>Checklist Carousel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            /* Brand Colors */
+            --primary: {{ primaryColor | default('#6366F1') }};
+            --primary-light: {{ primaryLightColor | default('#818CF8') }};
+            --secondary: {{ secondaryColor | default('#10B981') }};
+            --accent: {{ accentColor | default('#F59E0B') }};
+
+            /* Neutral Colors */
+            --white: #FFFFFF;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+
+            /* Status Colors */
+            --success: #22C55E;
+            --success-light: #DCFCE7;
+            --warning: #F59E0B;
+            --error: #EF4444;
+
+            /* Typography */
+            --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            width: 1080px;
+            height: 1080px;
+            overflow: hidden;
+        }
+
+        .card {
+            width: 1080px;
+            height: 1080px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ===================== INTRO CARD ===================== */
+        .card-intro {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            justify-content: center;
+            align-items: center;
+            padding: 80px;
+        }
+
+        .intro-icon {
+            width: 180px;
+            height: 180px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .intro-icon svg {
+            width: 100px;
+            height: 100px;
+            fill: var(--white);
+        }
+
+        .intro-title {
+            font-size: 72px;
+            font-weight: 800;
+            color: var(--white);
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .intro-subtitle {
+            font-size: 32px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .intro-count {
+            position: absolute;
+            bottom: 80px;
+            background: var(--white);
+            padding: 20px 50px;
+            border-radius: 60px;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* ===================== ITEM CARD ===================== */
+        .card-item {
+            background: var(--white);
+            padding: 70px;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 50px;
+            padding-bottom: 30px;
+            border-bottom: 3px solid var(--gray-100);
+        }
+
+        .item-progress {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 12px;
+            background: var(--gray-200);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success) 0%, var(--secondary) 100%);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-600);
+        }
+
+        .item-page {
+            background: var(--primary);
+            color: var(--white);
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .checklist-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 35px 40px;
+            background: var(--gray-50);
+            border-radius: 24px;
+            border: 3px solid var(--gray-100);
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.checked {
+            background: var(--success-light);
+            border-color: var(--success);
+        }
+
+        .checklist-item.current {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(129, 140, 248, 0.08) 100%);
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.15);
+            transform: scale(1.02);
+        }
+
+        .checkbox {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            border: 4px solid var(--gray-300);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.checked .checkbox {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .checklist-item.current .checkbox {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 6px rgba(99, 102, 241, 0.2);
+        }
+
+        .checkbox svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--white);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.3s ease;
+        }
+
+        .checklist-item.checked .checkbox svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .checklist-text {
+            font-size: 34px;
+            font-weight: 600;
+            color: var(--gray-800);
+            flex: 1;
+        }
+
+        .checklist-item.checked .checklist-text {
+            color: var(--success);
+            text-decoration: line-through;
+            text-decoration-thickness: 3px;
+        }
+
+        .checklist-item.current .checklist-text {
+            color: var(--primary);
+        }
+
+        .item-number {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--gray-400);
+            width: 50px;
+        }
+
+        .checklist-item.checked .item-number {
+            color: var(--success);
+        }
+
+        .checklist-item.current .item-number {
+            color: var(--primary);
+        }
+
+        /* ===================== DONE CARD ===================== */
+        .card-done {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            justify-content: center;
+            align-items: center;
+            padding: 80px;
+            text-align: center;
+        }
+
+        .done-celebration {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            opacity: 0.8;
+        }
+
+        .confetti:nth-child(1) { background: #FFD700; top: 10%; left: 15%; transform: rotate(45deg); }
+        .confetti:nth-child(2) { background: #FF6B6B; top: 20%; left: 80%; transform: rotate(-30deg); width: 15px; height: 15px; }
+        .confetti:nth-child(3) { background: #4ECDC4; top: 15%; left: 50%; transform: rotate(60deg); }
+        .confetti:nth-child(4) { background: #FFE66D; top: 25%; left: 25%; transform: rotate(-45deg); width: 12px; height: 12px; }
+        .confetti:nth-child(5) { background: #95E1D3; top: 8%; left: 70%; transform: rotate(30deg); }
+        .confetti:nth-child(6) { background: #F38181; bottom: 15%; left: 10%; transform: rotate(15deg); }
+        .confetti:nth-child(7) { background: #AA96DA; bottom: 20%; right: 15%; transform: rotate(-60deg); width: 18px; height: 18px; }
+        .confetti:nth-child(8) { background: #FCBAD3; bottom: 10%; left: 40%; transform: rotate(75deg); }
+
+        .done-badge {
+            width: 200px;
+            height: 200px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 50px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .done-badge svg {
+            width: 120px;
+            height: 120px;
+            fill: var(--success);
+        }
+
+        .done-title {
+            font-size: 68px;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 25px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .done-message {
+            font-size: 32px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.95);
+            line-height: 1.5;
+            max-width: 700px;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 50px;
+        }
+
+        .done-stats {
+            display: flex;
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 30px 50px;
+            border-radius: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .stat-value {
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--white);
+        }
+
+        .stat-label {
+            font-size: 22px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            margin-top: 5px;
+        }
+
+        .done-cta {
+            position: absolute;
+            bottom: 80px;
+            background: var(--white);
+            color: var(--success);
+            padding: 25px 70px;
+            border-radius: 60px;
+            font-size: 30px;
+            font-weight: 800;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Brand Footer */
+        .brand-footer {
+            position: absolute;
+            bottom: 40px;
+            left: 70px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-600);
+        }
+
+        .card-intro .brand-footer .brand-name,
+        .card-done .brand-footer .brand-name {
+            color: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+<body>
+    {% if cardType == 'intro' %}
+    <!-- ===================== INTRO CARD ===================== -->
+    <div class="card card-intro">
+        <div class="intro-icon">
+            <svg viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+            </svg>
+        </div>
+        <h1 class="intro-title">{{ title | default('완벽한 하루를 위한 체크리스트') }}</h1>
+        <p class="intro-subtitle">{{ subtitle | default('하나씩 체크하며 목표를 달성해보세요') }}</p>
+        <div class="intro-count">총 {{ items | length | default('5') }}개 항목</div>
+
+        {% if brandLogo %}
+        <div class="brand-footer">
+            <img src="{{ brandLogo }}" alt="Brand" class="brand-logo">
+            <span class="brand-name">{{ brandName | default('Brand') }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    {% elif cardType == 'item' %}
+    <!-- ===================== ITEM CARD ===================== -->
+    <div class="card card-item">
+        <div class="item-header">
+            <div class="item-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ (checkedCount | default(0) / items | length * 100) | int }}%"></div>
+                </div>
+                <span class="progress-text">{{ checkedCount | default(0) }}/{{ items | length }} 완료</span>
+            </div>
+            <div class="item-page">{{ currentPage | default(1) }}/{{ totalPages | default(3) }}</div>
+        </div>
+
+        <div class="checklist-container">
+            {% for item in items %}
+            <div class="checklist-item {% if loop.index <= checkedCount | default(0) %}checked{% elif loop.index == (checkedCount | default(0)) + 1 %}current{% endif %}">
+                <span class="item-number">{{ '%02d' | format(loop.index) }}</span>
+                <div class="checkbox">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                    </svg>
+                </div>
+                <span class="checklist-text">{{ item.text | default(item) }}</span>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if brandLogo %}
+        <div class="brand-footer">
+            <img src="{{ brandLogo }}" alt="Brand" class="brand-logo">
+            <span class="brand-name">{{ brandName | default('Brand') }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    {% elif cardType == 'done' %}
+    <!-- ===================== DONE CARD ===================== -->
+    <div class="card card-done">
+        <div class="done-celebration">
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+            <div class="confetti"></div>
+        </div>
+
+        <div class="done-badge">
+            <svg viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+            </svg>
+        </div>
+        <h1 class="done-title">{{ doneTitle | default('완료!') }}</h1>
+        <p class="done-message">{{ doneMessage | default('모든 체크리스트를 완료했습니다. 오늘도 성공적인 하루!') }}</p>
+
+        <div class="done-stats">
+            <div class="stat-box">
+                <div class="stat-value">{{ items | length | default('5') }}</div>
+                <div class="stat-label">완료 항목</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value">100%</div>
+                <div class="stat-label">달성률</div>
+            </div>
+        </div>
+
+        <div class="done-cta">{{ ctaText | default('지금 시작하기') }}</div>
+
+        {% if brandLogo %}
+        <div class="brand-footer">
+            <img src="{{ brandLogo }}" alt="Brand" class="brand-logo">
+            <span class="brand-name">{{ brandName | default('Brand') }}</span>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>

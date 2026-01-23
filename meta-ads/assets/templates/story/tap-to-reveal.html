@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>Tap to Reveal - Story/Reels</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --brand-primary: {{ brandColor | default('#E84393') }};
+      --brand-secondary: {{ brandSecondary | default('#FD79A8') }};
+      --text-dark: {{ textDark | default('#2D3436') }};
+      --text-light: {{ textLight | default('#FFFFFF') }};
+      --bg-dark: {{ bgDark | default('#1A1A2E') }};
+      --bg-accent: {{ bgAccent | default('#16213E') }};
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Animated Background */
+    .bg-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(232, 67, 147, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 70% 80%, rgba(253, 121, 168, 0.1) 0%, transparent 40%),
+        linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-accent) 100%);
+    }
+
+    /* Sparkle Effects */
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: white;
+      border-radius: 50%;
+      animation: sparkle 2s ease-in-out infinite;
+    }
+
+    .sparkle:nth-child(1) { top: 15%; left: 20%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 25%; right: 15%; animation-delay: 0.3s; }
+    .sparkle:nth-child(3) { top: 45%; left: 10%; animation-delay: 0.6s; }
+    .sparkle:nth-child(4) { bottom: 35%; right: 20%; animation-delay: 0.9s; }
+    .sparkle:nth-child(5) { bottom: 25%; left: 25%; animation-delay: 1.2s; }
+
+    @keyframes sparkle {
+      0%, 100% {
+        opacity: 0.2;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.5);
+      }
+    }
+
+    /* Safe Zone Top */
+    .safe-zone-top {
+      height: 14%;
+      min-height: 268px;
+    }
+
+    /* Teaser Section */
+    .teaser-section {
+      padding: 0 70px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .teaser-label {
+      display: inline-block;
+      padding: 16px 40px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 40px;
+      color: var(--text-light);
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 40px;
+    }
+
+    .teaser-text {
+      font-size: 60px;
+      font-weight: 800;
+      color: var(--text-light);
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+
+    .teaser-highlight {
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Mystery Box / Product Section */
+    .mystery-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .mystery-box {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mystery-ring {
+      position: absolute;
+      border: 3px solid;
+      border-radius: 50%;
+      animation: ring-pulse 2s ease-out infinite;
+    }
+
+    .mystery-ring:nth-child(1) {
+      width: 100%;
+      height: 100%;
+      border-color: rgba(232, 67, 147, 0.4);
+      animation-delay: 0s;
+    }
+
+    .mystery-ring:nth-child(2) {
+      width: 120%;
+      height: 120%;
+      border-color: rgba(232, 67, 147, 0.2);
+      animation-delay: 0.5s;
+    }
+
+    .mystery-ring:nth-child(3) {
+      width: 140%;
+      height: 140%;
+      border-color: rgba(232, 67, 147, 0.1);
+      animation-delay: 1s;
+    }
+
+    @keyframes ring-pulse {
+      0% {
+        transform: scale(0.8);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    .product-image-container {
+      width: 400px;
+      height: 400px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(20px);
+      border: 2px solid rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image {
+      max-width: 280px;
+      max-height: 280px;
+      object-fit: contain;
+      filter: drop-shadow(0 16px 32px rgba(0,0,0,0.3));
+    }
+
+    .blur-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(26, 26, 46, 0.7);
+      backdrop-filter: blur(15px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .question-mark {
+      font-size: 180px;
+      font-weight: 800;
+      color: var(--brand-primary);
+      text-shadow: 0 0 60px rgba(232, 67, 147, 0.5);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    /* Reveal Text */
+    .reveal-section {
+      padding: 0 70px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .reveal-text {
+      font-size: 40px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.5;
+      margin-bottom: 48px;
+    }
+
+    /* Tap Button */
+    .tap-section {
+      padding: 0 70px 60px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tap-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 36px 72px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      border-radius: 60px;
+      color: white;
+      font-size: 38px;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow:
+        0 16px 48px rgba(232, 67, 147, 0.4),
+        0 0 80px rgba(232, 67, 147, 0.2);
+      position: relative;
+      overflow: hidden;
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% {
+        box-shadow:
+          0 16px 48px rgba(232, 67, 147, 0.4),
+          0 0 60px rgba(232, 67, 147, 0.2);
+      }
+      50% {
+        box-shadow:
+          0 16px 48px rgba(232, 67, 147, 0.6),
+          0 0 100px rgba(232, 67, 147, 0.4);
+      }
+    }
+
+    .tap-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shine 3s infinite;
+    }
+
+    @keyframes shine {
+      0% {
+        left: -100%;
+      }
+      50%, 100% {
+        left: 100%;
+      }
+    }
+
+    .tap-icon {
+      width: 44px;
+      height: 44px;
+      position: relative;
+    }
+
+    .tap-icon::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 24px;
+      height: 24px;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .tap-icon::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      border: 3px solid white;
+      border-radius: 50%;
+      animation: tap-ring 1.5s infinite;
+    }
+
+    @keyframes tap-ring {
+      0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    /* Safe Zone Bottom */
+    .safe-zone-bottom {
+      height: 14%;
+      min-height: 268px;
+    }
+
+    /* Touch-friendly */
+    .tap-area {
+      min-height: 88px;
+      min-width: 88px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Animated Background -->
+    <div class="bg-gradient"></div>
+
+    <!-- Sparkles -->
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+
+    <!-- Safe Zone Top -->
+    <div class="safe-zone-top"></div>
+
+    <!-- Teaser -->
+    <div class="teaser-section">
+      <span class="teaser-label">{{ teaserLabel | default('특별 공개') }}</span>
+      <h1 class="teaser-text">{{ teaserText | default('당신만을 위한<br><span class="teaser-highlight">비밀 혜택</span>') | safe }}</h1>
+    </div>
+
+    <!-- Mystery Box -->
+    <div class="mystery-section">
+      <div class="mystery-box">
+        <div class="mystery-ring"></div>
+        <div class="mystery-ring"></div>
+        <div class="mystery-ring"></div>
+        <div class="product-image-container">
+          {% if productImage %}
+          <img src="{{ productImage }}" alt="Product" class="product-image">
+          {% endif %}
+          {% if showBlur | default(true) %}
+          <div class="blur-overlay">
+            <span class="question-mark">?</span>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Reveal Text -->
+    {% if revealText %}
+    <div class="reveal-section">
+      <p class="reveal-text">{{ revealText }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Tap Button -->
+    <div class="tap-section">
+      <a href="#" class="tap-button tap-area">
+        <span class="tap-icon"></span>
+        {{ cta | default('탭해서 확인하기') }}
+      </a>
+    </div>
+
+    <!-- Safe Zone Bottom -->
+    <div class="safe-zone-bottom"></div>
+  </div>
+</body>
+</html>

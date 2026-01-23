@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1080">
+    <title>Tip Series Card</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --primary-color: {{ primaryColor | default('#10B981') }};
+            --secondary-color: {{ secondaryColor | default('#06B6D4') }};
+            --bg-color: {{ bgColor | default('#FFFFFF') }};
+            --text-color: {{ textColor | default('#1F2937') }};
+            --accent-color: {{ accentColor | default('#F59E0B') }};
+            --card-width: 1080px;
+            --card-height: 1080px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            width: var(--card-width);
+            height: var(--card-height);
+            overflow: hidden;
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== TITLE CARD ===== */
+        .card-title {
+            background: var(--bg-color);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px;
+        }
+
+        .card-title .tips-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            padding: 16px 36px;
+            border-radius: 50px;
+            margin-bottom: 50px;
+        }
+
+        .card-title .tips-badge svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .card-title .main-title {
+            font-size: 68px;
+            font-weight: 800;
+            color: var(--text-color);
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+
+        .card-title .main-title span {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .card-title .subtitle {
+            font-size: 28px;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+
+        .card-title .tip-count {
+            position: absolute;
+            bottom: 80px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .card-title .tip-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #E5E7EB;
+        }
+
+        .card-title .tip-dot.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            width: 40px;
+            border-radius: 7px;
+        }
+
+        /* ===== TIP CARD ===== */
+        .card-tip {
+            background: var(--bg-color);
+            padding: 80px;
+        }
+
+        .card-tip .tip-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 60px;
+        }
+
+        .card-tip .tip-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 14px 32px;
+            border-radius: 50px;
+        }
+
+        .card-tip .tip-progress {
+            font-size: 22px;
+            color: #9CA3AF;
+            font-weight: 500;
+        }
+
+        .card-tip .tip-icon-wrapper {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(6, 182, 212, 0.1));
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 60px;
+        }
+
+        .card-tip .tip-icon {
+            width: 100px;
+            height: 100px;
+            color: var(--primary-color);
+        }
+
+        .card-tip .tip-content {
+            text-align: center;
+        }
+
+        .card-tip .tip-text {
+            font-size: 44px;
+            font-weight: 700;
+            color: var(--text-color);
+            line-height: 1.4;
+            margin-bottom: 30px;
+        }
+
+        .card-tip .tip-description {
+            font-size: 26px;
+            color: #6B7280;
+            line-height: 1.6;
+        }
+
+        .card-tip .tip-dots {
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+        }
+
+        .card-tip .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #E5E7EB;
+        }
+
+        .card-tip .dot.current {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            width: 36px;
+            border-radius: 6px;
+        }
+
+        .card-tip .dot.passed {
+            background: var(--primary-color);
+        }
+
+        /* ===== CTA CARD ===== */
+        .card-cta {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px;
+        }
+
+        .card-cta .cta-icon {
+            width: 140px;
+            height: 140px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .card-cta .cta-icon svg {
+            width: 70px;
+            height: 70px;
+            color: white;
+        }
+
+        .card-cta .cta-title {
+            font-size: 52px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 24px;
+        }
+
+        .card-cta .cta-subtitle {
+            font-size: 28px;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 50px;
+            line-height: 1.5;
+        }
+
+        .card-cta .cta-button {
+            background: white;
+            color: var(--primary-color);
+            font-size: 28px;
+            font-weight: 700;
+            padding: 26px 70px;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-cta .cta-button svg {
+            width: 28px;
+            height: 28px;
+        }
+    </style>
+</head>
+<body>
+    {% if cardType == 'title' %}
+    <div class="card card-title">
+        <div class="tips-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+            <span>{{ totalTips | default(5) }} TIPS</span>
+        </div>
+        <h1 class="main-title">{{ title | default('알아두면 좋은') }}<br><span>{{ titleHighlight | default('꿀팁 모음') }}</span></h1>
+        <p class="subtitle">{{ subtitle | default('지금 바로 시작해보세요') }}</p>
+        <div class="tip-count">
+            <div class="tip-dot active"></div>
+            {% for i in range(totalTips | default(5)) %}
+            <div class="tip-dot"></div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% elif cardType == 'tip' %}
+    <div class="card card-tip">
+        <div class="tip-header">
+            <div class="tip-number">Tip #{{ tipNum | default(1) }}</div>
+            <div class="tip-progress">{{ tipNum | default(1) }} / {{ totalTips | default(5) }}</div>
+        </div>
+        <div class="tip-icon-wrapper">
+            {% if icon == 'clock' %}
+            <svg class="tip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+            </svg>
+            {% elif icon == 'star' %}
+            <svg class="tip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            {% elif icon == 'check' %}
+            <svg class="tip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/>
+            </svg>
+            {% elif icon == 'heart' %}
+            <svg class="tip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+            </svg>
+            {% elif icon == 'zap' %}
+            <svg class="tip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            {% else %}
+            <svg class="tip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+            {% endif %}
+        </div>
+        <div class="tip-content">
+            <p class="tip-text">{{ tipText | default('여기에 팁 내용이 들어갑니다') }}</p>
+            {% if tipDescription %}
+            <p class="tip-description">{{ tipDescription }}</p>
+            {% endif %}
+        </div>
+        <div class="tip-dots">
+            {% for i in range(1, (totalTips | default(5)) + 1) %}
+            <div class="dot {% if i < tipNum %}passed{% elif i == tipNum %}current{% endif %}"></div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% elif cardType == 'cta' %}
+    <div class="card card-cta">
+        <div class="cta-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/>
+            </svg>
+        </div>
+        <h2 class="cta-title">{{ ctaTitle | default('모든 팁 확인 완료!') }}</h2>
+        <p class="cta-subtitle">{{ ctaSubtitle | default('지금 바로 적용해보세요') }}</p>
+        <div class="cta-button">
+            {{ ctaButtonText | default('자세히 알아보기') }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+        </div>
+    </div>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>Flash Sale - Story/Reels</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --brand-primary: {{ brandColor | default('#FF3B3B') }};
+      --flash-yellow: {{ flashYellow | default('#FFE135') }};
+      --flash-orange: {{ flashOrange | default('#FF6B00') }};
+      --text-dark: {{ textDark | default('#1A1A1A') }};
+      --text-light: {{ textLight | default('#FFFFFF') }};
+      --bg-dark: {{ bgDark | default('#0D0D0D') }};
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      padding: 80px 60px;
+    }
+
+    /* Flash effect background */
+    .flash-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(255, 107, 0, 0.15) 0%, transparent 70%);
+      animation: flashPulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes flashPulse {
+      0%, 100% { opacity: 0.5; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Lightning bolts */
+    .lightning {
+      position: absolute;
+      font-size: 120px;
+      animation: lightningFlash 0.8s ease-in-out infinite;
+      filter: drop-shadow(0 0 30px var(--flash-yellow));
+    }
+
+    .lightning-1 { top: 200px; left: 60px; animation-delay: 0s; }
+    .lightning-2 { top: 350px; right: 80px; animation-delay: 0.3s; }
+    .lightning-3 { bottom: 600px; left: 100px; animation-delay: 0.6s; }
+
+    @keyframes lightningFlash {
+      0%, 100% { opacity: 0.3; transform: scale(1) rotate(-10deg); }
+      50% { opacity: 1; transform: scale(1.2) rotate(5deg); }
+    }
+
+    /* Safe zone */
+    .safe-top {
+      height: 150px;
+    }
+
+    /* Flash sale header */
+    .flash-header {
+      text-align: center;
+      z-index: 10;
+    }
+
+    .flash-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 50px;
+      background: linear-gradient(135deg, var(--flash-yellow) 0%, var(--flash-orange) 100%);
+      color: var(--text-dark);
+      font-size: 36px;
+      font-weight: 900;
+      border-radius: 60px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      animation: badgePulse 0.6s ease-in-out infinite;
+      box-shadow: 0 8px 40px rgba(255, 225, 53, 0.5);
+    }
+
+    .flash-badge::before,
+    .flash-badge::after {
+      content: '';
+      font-size: 32px;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .sale-text {
+      font-size: 80px;
+      font-weight: 900;
+      color: var(--text-light);
+      margin-top: 40px;
+      text-shadow: 0 4px 24px rgba(255, 107, 0, 0.5);
+      line-height: 1.1;
+    }
+
+    /* Discount section */
+    .discount-section {
+      margin: 50px 0;
+      text-align: center;
+      z-index: 10;
+    }
+
+    .discount-container {
+      display: inline-block;
+      position: relative;
+    }
+
+    .discount-value {
+      font-size: 200px;
+      font-weight: 900;
+      color: var(--flash-yellow);
+      line-height: 1;
+      text-shadow:
+        0 0 40px var(--flash-yellow),
+        0 0 80px var(--flash-orange),
+        0 8px 40px rgba(0,0,0,0.5);
+      animation: discountGlow 1s ease-in-out infinite;
+    }
+
+    @keyframes discountGlow {
+      0%, 100% {
+        text-shadow:
+          0 0 40px var(--flash-yellow),
+          0 0 80px var(--flash-orange),
+          0 8px 40px rgba(0,0,0,0.5);
+      }
+      50% {
+        text-shadow:
+          0 0 60px var(--flash-yellow),
+          0 0 120px var(--flash-orange),
+          0 8px 40px rgba(0,0,0,0.5);
+      }
+    }
+
+    .discount-off {
+      font-size: 60px;
+      font-weight: 800;
+      color: var(--text-light);
+      margin-top: -20px;
+    }
+
+    /* Product section */
+    .product-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .product-image {
+      max-width: 600px;
+      max-height: 500px;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 60px rgba(255, 107, 0, 0.3));
+      animation: productFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes productFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* Timer section */
+    .timer-section {
+      text-align: center;
+      z-index: 10;
+    }
+
+    .timer-label {
+      font-size: 28px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 20px;
+      letter-spacing: 2px;
+    }
+
+    .time-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 24px 48px;
+      background: rgba(255, 59, 59, 0.9);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px rgba(255, 59, 59, 0.4);
+    }
+
+    .time-icon {
+      font-size: 40px;
+    }
+
+    .time-text {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--text-light);
+      letter-spacing: 2px;
+    }
+
+    /* CTA button */
+    .cta-section {
+      margin-top: 50px;
+      z-index: 10;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 36px 120px;
+      background: linear-gradient(135deg, var(--flash-yellow) 0%, var(--flash-orange) 100%);
+      color: var(--text-dark);
+      font-size: 40px;
+      font-weight: 900;
+      border-radius: 60px;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow:
+        0 12px 40px rgba(255, 225, 53, 0.5),
+        inset 0 2px 0 rgba(255,255,255,0.3);
+      animation: ctaPulse 1.2s ease-in-out infinite;
+    }
+
+    @keyframes ctaPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 12px 40px rgba(255, 225, 53, 0.5); }
+      50% { transform: scale(1.03); box-shadow: 0 16px 50px rgba(255, 225, 53, 0.7); }
+    }
+
+    .safe-bottom {
+      height: 150px;
+    }
+
+    /* Sparkle effects */
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--flash-yellow);
+      border-radius: 50%;
+      animation: sparkle 2s ease-in-out infinite;
+    }
+
+    .sparkle:nth-child(1) { top: 15%; left: 10%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 25%; right: 15%; animation-delay: 0.3s; }
+    .sparkle:nth-child(3) { top: 45%; left: 5%; animation-delay: 0.6s; }
+    .sparkle:nth-child(4) { top: 55%; right: 8%; animation-delay: 0.9s; }
+    .sparkle:nth-child(5) { bottom: 35%; left: 12%; animation-delay: 1.2s; }
+    .sparkle:nth-child(6) { bottom: 25%; right: 10%; animation-delay: 1.5s; }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0; transform: scale(0); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="flash-bg"></div>
+
+    <!-- Sparkles -->
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+
+    <!-- Lightning bolts -->
+    <span class="lightning lightning-1"></span>
+    <span class="lightning lightning-2"></span>
+    <span class="lightning lightning-3"></span>
+
+    <div class="safe-top"></div>
+
+    <div class="flash-header">
+      <span class="flash-badge">FLASH SALE</span>
+      <h1 class="sale-text">{{ saleText | default('오늘만 특가!') }}</h1>
+    </div>
+
+    <div class="discount-section">
+      <div class="discount-container">
+        <p class="discount-value">{{ discount | default('70%') }}</p>
+        <p class="discount-off">OFF</p>
+      </div>
+    </div>
+
+    <div class="product-section">
+      <img src="{{ productImage }}" alt="Product" class="product-image">
+    </div>
+
+    <div class="timer-section">
+      <p class="timer-label">ENDS IN</p>
+      <div class="time-left">
+        <span class="time-icon"></span>
+        <span class="time-text">{{ timeLeft | default('02:30:00') }}</span>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <a href="#" class="cta-button">{{ cta | default('지금 구매') }}</a>
+    </div>
+
+    <div class="safe-bottom"></div>
+  </div>
+</body>
+</html>

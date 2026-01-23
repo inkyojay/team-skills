@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1080">
+    <title>Brand Story - {{ brandName|default('브랜드') }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            /* Color Palette */
+            --primary: {{ primaryColor|default('#1E3A5F') }};
+            --primary-light: {{ primaryLight|default('#2E5A8F') }};
+            --secondary: {{ secondaryColor|default('#F5F7FA') }};
+            --accent: {{ accentColor|default('#E8B84A') }};
+            --text-dark: #1A1A1A;
+            --text-light: #FFFFFF;
+            --text-muted: #6B7B8C;
+
+            /* Gradients */
+            --gradient-brand: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            --gradient-warm: linear-gradient(180deg, #FDF8F0 0%, #F5EDE0 100%);
+            --gradient-cool: linear-gradient(180deg, #F5F7FA 0%, #E8EDF2 100%);
+            --gradient-gold: linear-gradient(135deg, #E8B84A 0%, #F5D78E 50%, #E8B84A 100%);
+
+            /* Shadows */
+            --shadow-soft: 0 8px 32px rgba(30,58,95,0.1);
+            --shadow-medium: 0 16px 48px rgba(30,58,95,0.15);
+            --shadow-card: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            width: 1080px;
+            height: 1080px;
+            overflow: hidden;
+        }
+
+        .card {
+            width: 1080px;
+            height: 1080px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== LOGO CARD ===== */
+        .card-logo {
+            background: var(--gradient-brand);
+            color: var(--text-light);
+        }
+
+        .logo-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px;
+            position: relative;
+        }
+
+        .logo-bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0.05;
+            background-image:
+                radial-gradient(circle at 20% 30%, white 1px, transparent 1px),
+                radial-gradient(circle at 80% 70%, white 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .logo-image {
+            max-width: 400px;
+            max-height: 200px;
+            object-fit: contain;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-brand-name {
+            font-size: 72px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-tagline {
+            font-size: 32px;
+            font-weight: 400;
+            opacity: 0.85;
+            text-align: center;
+            line-height: 1.5;
+            max-width: 700px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-established {
+            position: absolute;
+            bottom: 80px;
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            opacity: 0.6;
+        }
+
+        .logo-swipe {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            opacity: 0.7;
+        }
+
+        /* ===== MISSION CARD ===== */
+        .card-mission {
+            background: var(--gradient-warm);
+        }
+
+        .mission-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 80px;
+        }
+
+        .mission-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .mission-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--accent);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mission-icon svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .mission-label {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .mission-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mission-title {
+            font-size: 56px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.3;
+            margin-bottom: 40px;
+        }
+
+        .mission-description {
+            font-size: 28px;
+            color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        .mission-quote {
+            margin-top: auto;
+            padding: 40px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: var(--shadow-card);
+            border-left: 6px solid var(--accent);
+        }
+
+        .mission-quote p {
+            font-size: 26px;
+            font-style: italic;
+            color: var(--primary);
+            line-height: 1.6;
+        }
+
+        .mission-quote cite {
+            display: block;
+            margin-top: 16px;
+            font-size: 20px;
+            font-style: normal;
+            color: var(--text-muted);
+        }
+
+        /* ===== VALUES CARD ===== */
+        .card-values {
+            background: var(--gradient-cool);
+        }
+
+        .values-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 80px;
+        }
+
+        .values-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .values-title {
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .values-subtitle {
+            font-size: 26px;
+            color: var(--text-muted);
+        }
+
+        .values-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .value-item {
+            background: white;
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .value-icon {
+            width: 90px;
+            height: 90px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            font-size: 40px;
+        }
+
+        .value-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .value-desc {
+            font-size: 20px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ===== TEAM CARD ===== */
+        .card-team {
+            background: white;
+        }
+
+        .team-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .team-image-section {
+            height: 550px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .team-image-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(to top, white 0%, transparent 100%);
+        }
+
+        .team-content {
+            flex: 1;
+            padding: 50px 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .team-label {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .team-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1.3;
+            margin-bottom: 24px;
+        }
+
+        .team-description {
+            font-size: 26px;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .team-stats {
+            display: flex;
+            gap: 50px;
+            margin-top: 40px;
+        }
+
+        .team-stat {
+            text-align: center;
+        }
+
+        .team-stat-value {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .team-stat-label {
+            font-size: 18px;
+            color: var(--text-muted);
+        }
+
+        /* ===== CTA CARD ===== */
+        .card-cta {
+            background: var(--gradient-brand);
+            color: var(--text-light);
+        }
+
+        .cta-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px;
+            text-align: center;
+        }
+
+        .cta-icon {
+            width: 120px;
+            height: 120px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .cta-icon svg {
+            width: 60px;
+            height: 60px;
+            fill: white;
+        }
+
+        .cta-title {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 30px;
+        }
+
+        .cta-subtitle {
+            font-size: 28px;
+            opacity: 0.85;
+            line-height: 1.6;
+            max-width: 700px;
+            margin-bottom: 60px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 24px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 24px 56px;
+            border-radius: 50px;
+            font-size: 26px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .cta-btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .cta-btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        .cta-social {
+            position: absolute;
+            bottom: 60px;
+            display: flex;
+            gap: 24px;
+        }
+
+        .cta-social a {
+            width: 56px;
+            height: 56px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cta-social svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
+        }
+    </style>
+</head>
+<body>
+    {% if cardType == 'logo' %}
+    <!-- LOGO CARD -->
+    <div class="card card-logo">
+        <div class="logo-container">
+            <div class="logo-bg-pattern"></div>
+
+            {% if brandLogo %}
+            <img src="{{ brandLogo }}" alt="{{ brandName }}" class="logo-image">
+            {% else %}
+            <h1 class="logo-brand-name">{{ brandName|default('BRAND') }}</h1>
+            {% endif %}
+
+            <p class="logo-tagline">{{ tagline|default('우리의 이야기를 들려드릴게요') }}</p>
+
+            {% if established %}
+            <p class="logo-established">EST. {{ established }}</p>
+            {% endif %}
+        </div>
+
+        <div class="logo-swipe">
+            <span>브랜드 스토리</span>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+            </svg>
+        </div>
+    </div>
+
+    {% elif cardType == 'mission' %}
+    <!-- MISSION CARD -->
+    <div class="card card-mission">
+        <div class="mission-container">
+            <div class="mission-header">
+                <div class="mission-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <span class="mission-label">{{ label|default('OUR MISSION') }}</span>
+            </div>
+
+            <div class="mission-content">
+                <h2 class="mission-title">{{ title|default('더 나은 일상을<br>만들어갑니다') }}</h2>
+                <p class="mission-description">{{ content|default('우리는 고객의 일상에 가치를 더하는 제품을 만듭니다. 품질과 디자인, 지속가능성을 모두 갖춘 제품으로 더 나은 라이프스타일을 제안합니다.') }}</p>
+            </div>
+
+            {% if quote %}
+            <div class="mission-quote">
+                <p>"{{ quote.text }}"</p>
+                <cite>— {{ quote.author }}</cite>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {% elif cardType == 'values' %}
+    <!-- VALUES CARD -->
+    <div class="card card-values">
+        <div class="values-container">
+            <div class="values-header">
+                <h2 class="values-title">{{ title|default('우리의 가치') }}</h2>
+                <p class="values-subtitle">{{ subtitle|default('우리가 지키는 원칙들') }}</p>
+            </div>
+
+            <div class="values-grid">
+                {% for value in values|default([]) %}
+                <div class="value-item">
+                    <div class="value-icon">{{ value.icon|default('⭐') }}</div>
+                    <h3 class="value-name">{{ value.name }}</h3>
+                    <p class="value-desc">{{ value.description }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% elif cardType == 'team' %}
+    <!-- TEAM CARD -->
+    <div class="card card-team">
+        <div class="team-container">
+            <div class="team-image-section">
+                {% if image %}
+                <img src="{{ image }}" alt="team" class="team-image">
+                {% else %}
+                <div style="width:100%;height:100%;background:var(--gradient-brand);"></div>
+                {% endif %}
+                <div class="team-image-overlay"></div>
+            </div>
+
+            <div class="team-content">
+                <p class="team-label">{{ label|default('OUR TEAM') }}</p>
+                <h2 class="team-title">{{ title|default('열정적인 팀') }}</h2>
+                <p class="team-description">{{ content|default('각 분야 전문가들이 모여 최고의 제품을 만들어갑니다') }}</p>
+
+                {% if stats %}
+                <div class="team-stats">
+                    {% for stat in stats %}
+                    <div class="team-stat">
+                        <p class="team-stat-value">{{ stat.value }}</p>
+                        <p class="team-stat-label">{{ stat.label }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% elif cardType == 'cta' %}
+    <!-- CTA CARD -->
+    <div class="card card-cta">
+        <div class="cta-container">
+            <div class="cta-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+
+            <h2 class="cta-title">{{ title|default('함께해요') }}</h2>
+            <p class="cta-subtitle">{{ content|default('우리의 여정에 함께하세요. 새로운 소식과 특별한 혜택을 가장 먼저 받아보실 수 있습니다.') }}</p>
+
+            <div class="cta-buttons">
+                <a href="#" class="cta-btn cta-btn-primary">{{ ctaPrimary|default('지금 시작하기') }}</a>
+                {% if ctaSecondary %}
+                <a href="#" class="cta-btn cta-btn-secondary">{{ ctaSecondary }}</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if socialLinks %}
+        <div class="cta-social">
+            {% for social in socialLinks %}
+            <a href="{{ social.url }}">
+                <svg viewBox="0 0 24 24"><path d="{{ social.iconPath }}"/></svg>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>

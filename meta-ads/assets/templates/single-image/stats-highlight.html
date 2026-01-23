@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1080">
+  <title>Stats Highlight - Meta Ad</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --brand-primary: {{ brandColor | default('#00CEC9') }};
+      --brand-secondary: {{ brandSecondary | default('#81ECEC') }};
+      --text-dark: {{ textDark | default('#2D3436') }};
+      --text-light: {{ textLight | default('#FFFFFF') }};
+      --bg-color: {{ bgColor | default('#0D1B2A') }};
+      --stat-color: {{ statColor | default('#00CEC9') }};
+    }
+
+    body {
+      width: 1080px;
+      height: 1080px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-color);
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      position: relative;
+    }
+
+    /* 배경 그래디언트 & 패턴 */
+    .bg-gradient {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(0, 206, 201, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(129, 236, 236, 0.1) 0%, transparent 50%);
+    }
+
+    .bg-grid {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* 왼쪽 통계 영역 */
+    .stats-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 60px 80px 80px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .stat-label {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--stat-color);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 24px;
+    }
+
+    .stat-number {
+      font-size: 180px;
+      font-weight: 900;
+      color: var(--text-light);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      display: flex;
+      align-items: baseline;
+      text-shadow: 0 0 60px rgba(0, 206, 201, 0.4);
+    }
+
+    .stat-unit {
+      font-size: 80px;
+      font-weight: 700;
+      color: var(--stat-color);
+      margin-left: 8px;
+    }
+
+    .stat-description {
+      font-size: 32px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.5;
+      margin-top: 32px;
+      max-width: 420px;
+    }
+
+    /* 보조 통계 */
+    .sub-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sub-stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sub-stat-number {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--text-light);
+    }
+
+    .sub-stat-label {
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-top: 8px;
+    }
+
+    /* 오른쪽 제품 영역 */
+    .product-section {
+      width: 480px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* 글로우 배경 */
+    .glow-ring {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--stat-color) 0%, transparent 70%);
+      opacity: 0.2;
+      filter: blur(40px);
+    }
+
+    .product-frame {
+      position: relative;
+      width: 360px;
+      height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .frame-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 3px solid var(--stat-color);
+      opacity: 0.3;
+    }
+
+    .frame-ring.ring-2 {
+      width: 110%;
+      height: 110%;
+      border-style: dashed;
+      opacity: 0.15;
+      animation: rotate 30s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .product-image {
+      width: 280px;
+      height: 280px;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+    }
+
+    /* CTA 버튼 */
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 48px;
+      padding: 22px 48px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      color: var(--bg-color);
+      font-size: 22px;
+      font-weight: 700;
+      border-radius: 60px;
+      text-decoration: none;
+      box-shadow: 0 12px 40px rgba(0, 206, 201, 0.4);
+    }
+
+    .cta-button svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    /* 신뢰 마크 */
+    .trust-badges {
+      display: flex;
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .trust-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .trust-badge svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--stat-color);
+    }
+
+    /* 브랜드 로고 */
+    .brand-logo {
+      position: absolute;
+      top: 50px;
+      left: 80px;
+      height: 36px;
+      filter: brightness(0) invert(1);
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="bg-gradient"></div>
+    <div class="bg-grid"></div>
+
+    {% if brandLogo %}
+    <img src="{{ brandLogo }}" alt="Brand Logo" class="brand-logo">
+    {% endif %}
+
+    <!-- 통계 영역 -->
+    <div class="stats-section">
+      {% if statLabel %}
+      <p class="stat-label">{{ statLabel }}</p>
+      {% endif %}
+
+      <div class="stat-number">
+        {{ statNumber | default('98') }}<span class="stat-unit">{{ statUnit | default('%') }}</span>
+      </div>
+
+      <p class="stat-description">{{ statDescription | default('고객 만족도를 자랑하는 프리미엄 품질') }}</p>
+
+      {% if subStats %}
+      <div class="sub-stats">
+        {% for stat in subStats %}
+        <div class="sub-stat">
+          <span class="sub-stat-number">{{ stat.number }}</span>
+          <span class="sub-stat-label">{{ stat.label }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- 제품 영역 -->
+    <div class="product-section">
+      <div class="glow-ring"></div>
+      <div class="product-frame">
+        <div class="frame-ring"></div>
+        <div class="frame-ring ring-2"></div>
+        {% if productImage %}
+        <img src="{{ productImage }}" alt="Product" class="product-image">
+        {% endif %}
+      </div>
+
+      <a href="#" class="cta-button">
+        {{ cta | default('지금 확인하기') }}
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+
+      {% if showTrustBadges %}
+      <div class="trust-badges">
+        <div class="trust-badge">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          안전 인증
+        </div>
+        <div class="trust-badge">
+          <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          품질 보증
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

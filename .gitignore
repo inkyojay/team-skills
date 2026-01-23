@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 압축 파일 (임시)
+*.zip
+
+# 개인 설정
+CLAUDE.local.md
+
+# 로컬 테스트
+*.log
+*.tmp

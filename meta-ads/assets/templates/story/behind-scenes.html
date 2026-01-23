@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>Behind The Scenes - Story/Reels</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --brand-primary: {{ brandColor | default('#2D3436') }};
+      --accent-color: {{ accentColor | default('#E17055') }};
+      --text-dark: {{ textDark | default('#2D3436') }};
+      --text-light: {{ textLight | default('#FFFFFF') }};
+      --overlay-dark: {{ overlayDark | default('rgba(0,0,0,0.6)') }};
+      --film-grain: {{ filmGrain | default('rgba(255,255,255,0.02)') }};
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    /* Full background image */
+    .behind-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Film grain overlay for authentic feel */
+    .film-grain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.05;
+      pointer-events: none;
+    }
+
+    /* Gradient overlay */
+    .gradient-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(0,0,0,0.3) 0%,
+        transparent 25%,
+        transparent 55%,
+        var(--overlay-dark) 100%
+      );
+    }
+
+    /* Brand logo */
+    .brand-logo {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 50px;
+      filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+      z-index: 10;
+    }
+
+    /* BTS badge */
+    .bts-badge {
+      position: absolute;
+      top: 200px;
+      left: 60px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 28px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.2);
+      z-index: 10;
+    }
+
+    .bts-dot {
+      width: 12px;
+      height: 12px;
+      background: var(--accent-color);
+      border-radius: 50%;
+      animation: pulseDot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.8); }
+    }
+
+    .bts-text {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--text-light);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    /* Polaroid frame effect */
+    .polaroid-frame {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%) rotate(-3deg);
+      background: white;
+      padding: 20px 20px 60px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      z-index: 10;
+    }
+
+    .polaroid-inner {
+      width: 400px;
+      height: 400px;
+      overflow: hidden;
+    }
+
+    .polaroid-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .polaroid-caption {
+      position: absolute;
+      bottom: 15px;
+      left: 30px;
+      font-family: 'Courier New', monospace;
+      font-size: 18px;
+      color: #666;
+    }
+
+    /* Content section */
+    .content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 80px 70px 180px;
+      z-index: 10;
+    }
+
+    .caption-container {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 24px;
+      padding: 40px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .caption-label {
+      display: inline-block;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--accent-color);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .caption-text {
+      font-size: 42px;
+      font-weight: 600;
+      color: var(--text-light);
+      line-height: 1.5;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .caption-highlight {
+      color: var(--accent-color);
+    }
+
+    /* CTA section */
+    .cta-section {
+      margin-top: 40px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 24px 48px;
+      background: var(--text-light);
+      color: var(--text-dark);
+      font-size: 28px;
+      font-weight: 700;
+      border-radius: 60px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    .cta-arrow {
+      width: 24px;
+      height: 24px;
+      border-right: 3px solid var(--text-dark);
+      border-top: 3px solid var(--text-dark);
+      transform: rotate(45deg);
+    }
+
+    .watch-more {
+      font-size: 24px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Camera viewfinder corners */
+    .viewfinder-corner {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border: 3px solid rgba(255,255,255,0.4);
+      z-index: 5;
+    }
+
+    .vf-tl { top: 280px; left: 60px; border-right: none; border-bottom: none; }
+    .vf-tr { top: 280px; right: 60px; border-left: none; border-bottom: none; }
+    .vf-bl { top: 900px; left: 60px; border-right: none; border-top: none; }
+    .vf-br { top: 900px; right: 60px; border-left: none; border-top: none; }
+
+    /* Recording indicator */
+    .rec-indicator {
+      position: absolute;
+      top: 200px;
+      right: 60px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .rec-dot {
+      width: 16px;
+      height: 16px;
+      background: #FF0000;
+      border-radius: 50%;
+      animation: recBlink 1s ease-in-out infinite;
+    }
+
+    @keyframes recBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .rec-text {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-light);
+      letter-spacing: 2px;
+    }
+
+    .rec-time {
+      font-size: 22px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="{{ behindImage }}" alt="Behind the Scenes" class="behind-image">
+    <div class="film-grain"></div>
+    <div class="gradient-overlay"></div>
+
+    <!-- Camera viewfinder -->
+    <div class="viewfinder-corner vf-tl"></div>
+    <div class="viewfinder-corner vf-tr"></div>
+    <div class="viewfinder-corner vf-bl"></div>
+    <div class="viewfinder-corner vf-br"></div>
+
+    {% if brandLogo %}
+    <img src="{{ brandLogo }}" alt="Brand Logo" class="brand-logo">
+    {% endif %}
+
+    <div class="bts-badge">
+      <span class="bts-dot"></span>
+      <span class="bts-text">Behind The Scenes</span>
+    </div>
+
+    <div class="rec-indicator">
+      <span class="rec-dot"></span>
+      <span class="rec-text">REC</span>
+      <span class="rec-time">{{ recordTime | default('00:32') }}</span>
+    </div>
+
+    {% if polaroidImage %}
+    <div class="polaroid-frame">
+      <div class="polaroid-inner">
+        <img src="{{ polaroidImage }}" alt="Polaroid" class="polaroid-img">
+      </div>
+      <span class="polaroid-caption">{{ polaroidCaption | default('making of...') }}</span>
+    </div>
+    {% endif %}
+
+    <div class="content">
+      <div class="caption-container">
+        <span class="caption-label">{{ captionLabel | default('OUR STORY') }}</span>
+        <p class="caption-text">{{ caption | default('정성을 담아<br>하나하나 <span class="caption-highlight">직접 만듭니다</span>') | safe }}</p>
+      </div>
+
+      <div class="cta-section">
+        <a href="#" class="cta-button">
+          {{ cta | default('더 알아보기') }}
+          <span class="cta-arrow"></span>
+        </a>
+        {% if watchMoreText %}
+        <span class="watch-more">{{ watchMoreText }}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

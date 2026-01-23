@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>Testimonial Vertical - Story/Reels</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --brand-primary: {{ brandColor | default('#00B894') }};
+      --brand-secondary: {{ brandSecondary | default('#00CEC9') }};
+      --text-dark: {{ textDark | default('#2D3436') }};
+      --text-light: {{ textLight | default('#FFFFFF') }};
+      --star-color: {{ starColor | default('#FDCB6E') }};
+      --bg-color: {{ bgColor | default('#F8FFFE') }};
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-color);
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Background Pattern */
+    .bg-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.03;
+      background-image:
+        radial-gradient(circle at 20% 30%, var(--brand-primary) 1px, transparent 1px),
+        radial-gradient(circle at 80% 70%, var(--brand-primary) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Safe Zone Top */
+    .safe-zone-top {
+      height: 14%;
+      min-height: 268px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 40px;
+    }
+
+    .review-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 36px;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+      border-radius: 40px;
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0, 184, 148, 0.3);
+    }
+
+    .review-badge-icon {
+      font-size: 28px;
+    }
+
+    /* Quote Section */
+    .quote-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 70px;
+      position: relative;
+    }
+
+    .quote-mark {
+      position: absolute;
+      font-size: 300px;
+      font-weight: 800;
+      color: var(--brand-primary);
+      opacity: 0.08;
+      line-height: 1;
+      font-family: Georgia, serif;
+    }
+
+    .quote-mark.top {
+      top: 0;
+      left: 40px;
+    }
+
+    .quote-mark.bottom {
+      bottom: 0;
+      right: 40px;
+    }
+
+    .review-text {
+      font-size: 48px;
+      font-weight: 600;
+      color: var(--text-dark);
+      line-height: 1.6;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+
+    /* Rating Section */
+    .rating-section {
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .stars-container {
+      display: inline-flex;
+      gap: 12px;
+      padding: 24px 48px;
+      background: white;
+      border-radius: 60px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+    }
+
+    .star {
+      font-size: 48px;
+      color: #DFE6E9;
+    }
+
+    .star.filled {
+      color: var(--star-color);
+      filter: drop-shadow(0 2px 4px rgba(253, 203, 110, 0.4));
+    }
+
+    /* Reviewer Section */
+    .reviewer-section {
+      padding: 40px 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    .reviewer-photo-container {
+      position: relative;
+    }
+
+    .reviewer-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    .verified-badge {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      background: var(--brand-primary);
+      border-radius: 50%;
+      border: 3px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .verified-check {
+      width: 18px;
+      height: 12px;
+      border-left: 3px solid white;
+      border-bottom: 3px solid white;
+      transform: rotate(-45deg) translateY(-2px);
+    }
+
+    .reviewer-info {
+      text-align: left;
+    }
+
+    .reviewer-name {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+
+    .reviewer-verified {
+      font-size: 26px;
+      color: var(--brand-primary);
+      font-weight: 500;
+    }
+
+    /* Product Section */
+    .product-section {
+      padding: 0 70px 40px;
+    }
+
+    .product-card {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      padding: 32px 40px;
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+
+    .product-image {
+      width: 160px;
+      height: 160px;
+      object-fit: contain;
+      border-radius: 16px;
+      background: #F8F9FA;
+      padding: 16px;
+    }
+
+    .product-info {
+      flex: 1;
+    }
+
+    .product-label {
+      font-size: 24px;
+      font-weight: 500;
+      color: #636E72;
+      margin-bottom: 8px;
+    }
+
+    .product-name {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    /* Safe Zone Bottom */
+    .safe-zone-bottom {
+      height: 14%;
+      min-height: 268px;
+    }
+
+    /* Decorative elements */
+    .deco-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+    }
+
+    .deco-circle-1 {
+      width: 200px;
+      height: 200px;
+      top: 400px;
+      right: -100px;
+      opacity: 0.1;
+    }
+
+    .deco-circle-2 {
+      width: 150px;
+      height: 150px;
+      bottom: 500px;
+      left: -75px;
+      opacity: 0.08;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Background Pattern -->
+    <div class="bg-pattern"></div>
+
+    <!-- Decorative circles -->
+    <div class="deco-circle deco-circle-1"></div>
+    <div class="deco-circle deco-circle-2"></div>
+
+    <!-- Safe Zone Top with Badge -->
+    <div class="safe-zone-top">
+      <div class="review-badge">
+        <span class="review-badge-icon">{{ reviewBadgeIcon | default('✨') }}</span>
+        <span>{{ reviewBadgeText | default('실제 구매 후기') }}</span>
+      </div>
+    </div>
+
+    <!-- Quote -->
+    <div class="quote-section">
+      <span class="quote-mark top">"</span>
+      <p class="review-text">{{ reviewText | default('정말 좋아요! 매일 사용하고 있어요. 삶의 질이 달라졌습니다.') }}</p>
+      <span class="quote-mark bottom">"</span>
+    </div>
+
+    <!-- Rating -->
+    <div class="rating-section">
+      <div class="stars-container">
+        {% set rating_value = rating | default(5) | int %}
+        {% for i in range(5) %}
+        <span class="star {{ 'filled' if i < rating_value else '' }}">★</span>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Reviewer -->
+    <div class="reviewer-section">
+      <div class="reviewer-photo-container">
+        {% if reviewerPhoto %}
+        <img src="{{ reviewerPhoto }}" alt="{{ reviewerName }}" class="reviewer-photo">
+        {% else %}
+        <div class="reviewer-photo" style="background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary)); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: 700;">
+          {{ reviewerName | default('고객') | truncate(1, true, '') }}
+        </div>
+        {% endif %}
+        <div class="verified-badge">
+          <div class="verified-check"></div>
+        </div>
+      </div>
+      <div class="reviewer-info">
+        <h3 class="reviewer-name">{{ reviewerName | default('김*영 고객님') }}</h3>
+        <p class="reviewer-verified">인증된 구매자</p>
+      </div>
+    </div>
+
+    <!-- Product -->
+    {% if productImage %}
+    <div class="product-section">
+      <div class="product-card">
+        <img src="{{ productImage }}" alt="Product" class="product-image">
+        <div class="product-info">
+          <p class="product-label">사용 제품</p>
+          <h4 class="product-name">{{ productName | default('제품명') }}</h4>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Safe Zone Bottom -->
+    <div class="safe-zone-bottom"></div>
+  </div>
+</body>
+</html>

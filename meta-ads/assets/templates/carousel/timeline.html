@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1080">
+    <title>Timeline Card</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --primary-color: {{ primaryColor | default('#3B82F6') }};
+            --secondary-color: {{ secondaryColor | default('#8B5CF6') }};
+            --bg-color: {{ bgColor | default('#0F172A') }};
+            --text-color: {{ textColor | default('#FFFFFF') }};
+            --accent-color: {{ accentColor | default('#22D3EE') }};
+            --card-width: 1080px;
+            --card-height: 1080px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            width: var(--card-width);
+            height: var(--card-height);
+            overflow: hidden;
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== START CARD ===== */
+        .card-start {
+            background: var(--bg-color);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px;
+        }
+
+        .card-start::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 70%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+        }
+
+        .card-start .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-start .timeline-icon {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 50px;
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.4);
+        }
+
+        .card-start .timeline-icon svg {
+            width: 70px;
+            height: 70px;
+            color: white;
+        }
+
+        .card-start .start-label {
+            font-size: 22px;
+            font-weight: 600;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent-color);
+            margin-bottom: 24px;
+        }
+
+        .card-start .start-title {
+            font-size: 64px;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .card-start .start-subtitle {
+            font-size: 28px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.5;
+        }
+
+        .card-start .year-range {
+            position: absolute;
+            bottom: 80px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .card-start .year {
+            font-size: 32px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.5);
+        }
+
+        .card-start .year-line {
+            width: 200px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        /* ===== MILESTONE CARD ===== */
+        .card-milestone {
+            background: var(--bg-color);
+        }
+
+        .card-milestone .milestone-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+        }
+
+        .card-milestone .milestone-image-placeholder {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-milestone .milestone-image-placeholder svg {
+            width: 120px;
+            height: 120px;
+            color: rgba(255,255,255,0.2);
+        }
+
+        .card-milestone .milestone-content {
+            flex: 1;
+            padding: 50px 70px;
+            position: relative;
+        }
+
+        .card-milestone .timeline-line {
+            position: absolute;
+            left: 70px;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-color), transparent);
+        }
+
+        .card-milestone .year-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            font-size: 36px;
+            font-weight: 800;
+            padding: 18px 40px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            margin-left: 40px;
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .card-milestone .milestone-dot {
+            position: absolute;
+            left: 58px;
+            top: 50px;
+            width: 28px;
+            height: 28px;
+            background: var(--accent-color);
+            border-radius: 50%;
+            border: 4px solid var(--bg-color);
+            box-shadow: 0 0 20px var(--accent-color);
+        }
+
+        .card-milestone .milestone-text {
+            margin-left: 40px;
+        }
+
+        .card-milestone .milestone-title {
+            font-size: 44px;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .card-milestone .milestone-description {
+            font-size: 26px;
+            color: rgba(255,255,255,0.7);
+            line-height: 1.5;
+        }
+
+        /* ===== PRESENT CARD ===== */
+        .card-present {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px;
+        }
+
+        .card-present::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 50%);
+        }
+
+        .card-present .content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-present .present-year {
+            font-size: 140px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .card-present .present-label {
+            font-size: 26px;
+            font-weight: 600;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 40px;
+        }
+
+        .card-present .present-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 24px;
+            line-height: 1.3;
+        }
+
+        .card-present .present-description {
+            font-size: 26px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+            max-width: 700px;
+            margin-bottom: 50px;
+        }
+
+        .card-present .cta-button {
+            background: white;
+            color: var(--primary-color);
+            font-size: 26px;
+            font-weight: 700;
+            padding: 26px 60px;
+            border-radius: 60px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .card-present .cta-button svg {
+            width: 26px;
+            height: 26px;
+        }
+
+        .card-present .milestone-count {
+            position: absolute;
+            bottom: 60px;
+            display: flex;
+            gap: 60px;
+        }
+
+        .card-present .count-item {
+            text-align: center;
+        }
+
+        .card-present .count-value {
+            font-size: 48px;
+            font-weight: 900;
+            color: white;
+        }
+
+        .card-present .count-label {
+            font-size: 20px;
+            color: rgba(255,255,255,0.8);
+        }
+    </style>
+</head>
+<body>
+    {% if cardType == 'start' %}
+    <div class="card card-start">
+        <div class="content">
+            <div class="timeline-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                </svg>
+            </div>
+            <div class="start-label">{{ label | default('Our Journey') }}</div>
+            <h1 class="start-title">{{ title | default('브랜드 히스토리') }}</h1>
+            <p class="start-subtitle">{{ subtitle | default('우리의 성장 스토리를 확인하세요') }}</p>
+        </div>
+        <div class="year-range">
+            <span class="year">{{ startYear | default('2010') }}</span>
+            <div class="year-line"></div>
+            <span class="year">{{ endYear | default('2024') }}</span>
+        </div>
+    </div>
+
+    {% elif cardType == 'milestone' %}
+    <div class="card card-milestone">
+        {% if image %}
+        <img src="{{ image }}" alt="{{ year }} Milestone" class="milestone-image">
+        {% else %}
+        <div class="milestone-image-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/>
+            </svg>
+        </div>
+        {% endif %}
+        <div class="milestone-content">
+            <div class="timeline-line"></div>
+            <div class="milestone-dot"></div>
+            <div class="year-badge">{{ year | default('2020') }}</div>
+            <div class="milestone-text">
+                <h2 class="milestone-title">{{ milestone | default('중요한 이정표') }}</h2>
+                <p class="milestone-description">{{ description | default('이 해에 우리는 큰 변화를 만들어냈습니다.') }}</p>
+            </div>
+        </div>
+    </div>
+
+    {% elif cardType == 'present' %}
+    <div class="card card-present">
+        <div class="content">
+            <div class="present-year">{{ year | default('2024') }}</div>
+            <div class="present-label">{{ label | default('Present Day') }}</div>
+            <h2 class="present-title">{{ title | default('지금, 그리고 미래') }}</h2>
+            <p class="present-description">{{ description | default('우리의 여정은 계속됩니다. 함께 더 나은 미래를 만들어가요.') }}</p>
+            {% if ctaText %}
+            <div class="cta-button">
+                {{ ctaText }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </div>
+            {% endif %}
+        </div>
+        {% if showStats %}
+        <div class="milestone-count">
+            <div class="count-item">
+                <div class="count-value">{{ yearsCount | default('14') }}+</div>
+                <div class="count-label">Years</div>
+            </div>
+            <div class="count-item">
+                <div class="count-value">{{ milestonesCount | default('50') }}+</div>
+                <div class="count-label">Milestones</div>
+            </div>
+            <div class="count-item">
+                <div class="count-value">{{ customersCount | default('10K') }}+</div>
+                <div class="count-label">Customers</div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>

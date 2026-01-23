@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>Minimal Text - Story/Reels</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-color: {{ bgColor | default('#fafafa') }};
+      --accent-color: {{ accentColor | default('#ff6b6b') }};
+      --text-dark: {{ textDark | default('#1a1a1a') }};
+      --text-muted: {{ textMuted | default('#6b7280') }};
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-color);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Safe zones */
+    .safe-zone-top {
+      height: 14%;
+      min-height: 268px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .safe-zone-bottom {
+      height: 14%;
+      min-height: 268px;
+    }
+
+    .brand-logo {
+      height: 48px;
+      opacity: 0.8;
+    }
+
+    /* Decorative accent line */
+    .accent-line {
+      position: absolute;
+      left: 70px;
+      top: 350px;
+      width: 8px;
+      height: 200px;
+      background: var(--accent-color);
+      border-radius: 4px;
+    }
+
+    /* Large decorative letter */
+    .deco-letter {
+      position: absolute;
+      right: -50px;
+      top: 25%;
+      font-size: 500px;
+      font-weight: 900;
+      color: rgba(0,0,0,0.03);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    /* Main content */
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 70px 0 110px;
+    }
+
+    .main-text {
+      font-size: 84px;
+      font-weight: 900;
+      color: var(--text-dark);
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 40px;
+    }
+
+    .main-text .highlight {
+      color: var(--accent-color);
+      position: relative;
+    }
+
+    .main-text .highlight::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 8px;
+      width: 100%;
+      height: 16px;
+      background: var(--accent-color);
+      opacity: 0.2;
+      border-radius: 4px;
+      z-index: -1;
+    }
+
+    .sub-text {
+      font-size: 38px;
+      font-weight: 400;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 750px;
+    }
+
+    /* Product thumbnail */
+    .thumbnail-section {
+      padding: 60px 70px;
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .product-thumbnail {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    }
+
+    .thumbnail-info {
+      flex: 1;
+    }
+
+    .product-name {
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 12px;
+    }
+
+    .product-desc {
+      font-size: 28px;
+      color: var(--text-muted);
+    }
+
+    /* Quote marks */
+    .quote-mark {
+      position: absolute;
+      font-size: 200px;
+      font-weight: 900;
+      color: var(--accent-color);
+      opacity: 0.1;
+      line-height: 1;
+    }
+
+    .quote-open {
+      top: 280px;
+      left: 40px;
+    }
+
+    .quote-close {
+      bottom: 400px;
+      right: 60px;
+    }
+
+    /* CTA section */
+    .cta-section {
+      padding: 30px 70px 60px;
+    }
+
+    .cta-row {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .cta-button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 36px;
+      background: var(--accent-color);
+      color: white;
+      font-size: 36px;
+      font-weight: 700;
+      border-radius: 20px;
+      text-decoration: none;
+      box-shadow: 0 16px 40px rgba(255, 107, 107, 0.35);
+    }
+
+    .cta-secondary {
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      border: 3px solid #e5e7eb;
+      border-radius: 20px;
+      text-decoration: none;
+    }
+
+    .share-icon {
+      font-size: 40px;
+    }
+
+    /* Minimal dots pattern */
+    .dots-pattern {
+      position: absolute;
+      bottom: 350px;
+      right: 80px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      background: var(--accent-color);
+      border-radius: 50%;
+      opacity: 0.15;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Decorative elements -->
+    <div class="accent-line"></div>
+    <div class="deco-letter">{{ decoLetter | default('A') }}</div>
+    <div class="quote-mark quote-open">"</div>
+    <div class="quote-mark quote-close">"</div>
+
+    <div class="dots-pattern">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <div class="safe-zone-top">
+      {% if brandLogo %}
+      <img src="{{ brandLogo }}" alt="Brand" class="brand-logo">
+      {% endif %}
+    </div>
+
+    <div class="content-area">
+      <h1 class="main-text">
+        {% if highlightWord %}
+        {{ mainTextBefore }}<span class="highlight">{{ highlightWord }}</span>{{ mainTextAfter }}
+        {% else %}
+        {{ mainText | default('당신의 일상을 바꿀 단 하나') }}
+        {% endif %}
+      </h1>
+
+      {% if subText %}
+      <p class="sub-text">{{ subText }}</p>
+      {% endif %}
+    </div>
+
+    {% if productThumbnail %}
+    <div class="thumbnail-section">
+      <img src="{{ productThumbnail }}" alt="Product" class="product-thumbnail">
+      <div class="thumbnail-info">
+        {% if productName %}
+        <div class="product-name">{{ productName }}</div>
+        {% endif %}
+        {% if productShortDesc %}
+        <div class="product-desc">{{ productShortDesc }}</div>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="cta-section">
+      <div class="cta-row">
+        <a href="#" class="cta-button">
+          {{ cta | default('자세히 보기') }}
+          <span>→</span>
+        </a>
+        {% if showShare %}
+        <a href="#" class="cta-secondary">
+          <span class="share-icon">↗</span>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="safe-zone-bottom"></div>
+  </div>
+</body>
+</html>

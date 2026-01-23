@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1080">
+    <title>Color Variants - {{ colorName|default('컬러') }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            /* Color Palette */
+            --primary: {{ primaryColor|default('#1A1A1A') }};
+            --secondary: {{ secondaryColor|default('#F8F8F8') }};
+            --accent: {{ accentColor|default('#FF6B6B') }};
+            --text-dark: #1A1A1A;
+            --text-light: #FFFFFF;
+            --text-muted: #888888;
+
+            /* Dynamic Color */
+            --product-color: {{ colorCode|default('#E8D4C4') }};
+
+            /* Gradients */
+            --gradient-elegant: linear-gradient(180deg, #FFFFFF 0%, #F5F5F5 100%);
+            --gradient-dark: linear-gradient(180deg, #2A2A2A 0%, #1A1A1A 100%);
+            --gradient-shimmer: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%, rgba(255,255,255,0.1) 100%);
+
+            /* Shadows */
+            --shadow-product: 0 30px 60px rgba(0,0,0,0.15);
+            --shadow-soft: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-swatch: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            width: 1080px;
+            height: 1080px;
+            overflow: hidden;
+        }
+
+        .card {
+            width: 1080px;
+            height: 1080px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== INTRO CARD ===== */
+        .card-intro {
+            background: var(--gradient-elegant);
+        }
+
+        .intro-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 80px;
+        }
+
+        .intro-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .intro-label {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .intro-title {
+            font-size: 64px;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        .intro-product-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .intro-product-image {
+            max-width: 500px;
+            max-height: 500px;
+            object-fit: contain;
+            filter: drop-shadow(var(--shadow-product));
+        }
+
+        .intro-color-preview {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 16px;
+        }
+
+        .color-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: var(--shadow-swatch);
+            border: 3px solid white;
+        }
+
+        .intro-footer {
+            text-align: center;
+        }
+
+        .intro-count {
+            font-size: 28px;
+            color: var(--text-muted);
+        }
+
+        .intro-count strong {
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        /* ===== VARIANT CARD ===== */
+        .card-variant {
+            background: var(--gradient-elegant);
+        }
+
+        .variant-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .variant-product-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            position: relative;
+        }
+
+        .variant-bg-circle {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: var(--product-color);
+            opacity: 0.15;
+        }
+
+        .variant-product-image {
+            max-width: 480px;
+            max-height: 520px;
+            object-fit: contain;
+            filter: drop-shadow(var(--shadow-product));
+            position: relative;
+            z-index: 1;
+        }
+
+        .variant-info-section {
+            background: white;
+            padding: 60px 80px;
+            border-radius: 40px 40px 0 0;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.05);
+        }
+
+        .variant-color-display {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .variant-swatch {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--product-color);
+            box-shadow: var(--shadow-swatch);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .variant-swatch::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-shimmer);
+        }
+
+        .variant-color-name {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .variant-color-code {
+            font-size: 22px;
+            color: var(--text-muted);
+            font-family: 'SF Mono', monospace;
+            margin-left: auto;
+            background: var(--secondary);
+            padding: 12px 24px;
+            border-radius: 12px;
+        }
+
+        .variant-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .variant-price {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .variant-price .currency {
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .variant-stock {
+            font-size: 20px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ===== ALL COLORS CARD ===== */
+        .card-all {
+            background: var(--gradient-dark);
+            color: var(--text-light);
+        }
+
+        .all-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 80px;
+        }
+
+        .all-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .all-title {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .all-subtitle {
+            font-size: 24px;
+            opacity: 0.7;
+        }
+
+        .all-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .all-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .all-item-swatch {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            box-shadow: var(--shadow-swatch);
+        }
+
+        .all-item-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .all-item-code {
+            font-size: 16px;
+            opacity: 0.6;
+            font-family: 'SF Mono', monospace;
+        }
+
+        .all-cta {
+            margin-top: 50px;
+            text-align: center;
+        }
+
+        .all-cta-btn {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 24px 64px;
+            border-radius: 50px;
+            font-size: 26px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* Swipe Indicator */
+        .swipe-indicator {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            opacity: 0.7;
+        }
+
+        .swipe-indicator svg {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    {% if cardType == 'intro' %}
+    <!-- INTRO CARD -->
+    <div class="card card-intro">
+        <div class="intro-container">
+            <div class="intro-header">
+                <p class="intro-label">{{ label|default('NEW COLORS') }}</p>
+                <h1 class="intro-title">{{ title|default('나만의 컬러를<br>찾아보세요') }}</h1>
+            </div>
+
+            <div class="intro-product-area">
+                {% if productImage %}
+                <img src="{{ productImage }}" alt="product" class="intro-product-image">
+                {% endif %}
+
+                {% if colors %}
+                <div class="intro-color-preview">
+                    {% for color in colors %}
+                    <div class="color-dot" style="background-color: {{ color.code }};"></div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="intro-footer">
+                <p class="intro-count">총 <strong>{{ colorCount|default('6') }}가지</strong> 컬러</p>
+            </div>
+        </div>
+
+        <div class="swipe-indicator" style="color: var(--text-muted);">
+            <span>스와이프</span>
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+            </svg>
+        </div>
+    </div>
+
+    {% elif cardType == 'variant' %}
+    <!-- VARIANT CARD -->
+    <div class="card card-variant">
+        <div class="variant-container">
+            <div class="variant-product-section">
+                <div class="variant-bg-circle"></div>
+                {% if productImage %}
+                <img src="{{ productImage }}" alt="{{ colorName }}" class="variant-product-image">
+                {% endif %}
+            </div>
+
+            <div class="variant-info-section">
+                <div class="variant-color-display">
+                    <div class="variant-swatch" style="background: {{ colorCode|default('#E8D4C4') }};"></div>
+                    <h2 class="variant-color-name">{{ colorName|default('로즈 베이지') }}</h2>
+                    <span class="variant-color-code">{{ colorCode|default('#E8D4C4') }}</span>
+                </div>
+
+                <div class="variant-details">
+                    <p class="variant-price">
+                        <span class="currency">₩</span>{{ price|default('39,000') }}
+                    </p>
+                    {% if stockStatus %}
+                    <span class="variant-stock">{{ stockStatus }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% elif cardType == 'all' %}
+    <!-- ALL COLORS CARD -->
+    <div class="card card-all">
+        <div class="all-container">
+            <div class="all-header">
+                <h2 class="all-title">{{ title|default('전체 컬러 라인업') }}</h2>
+                <p class="all-subtitle">{{ subtitle|default('당신의 스타일에 맞는 컬러를 선택하세요') }}</p>
+            </div>
+
+            <div class="all-grid">
+                {% for color in colors|default([]) %}
+                <div class="all-item">
+                    <div class="all-item-swatch" style="background: {{ color.code }};"></div>
+                    <p class="all-item-name">{{ color.name }}</p>
+                    <p class="all-item-code">{{ color.code }}</p>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="all-cta">
+                <a href="#" class="all-cta-btn">{{ ctaText|default('전체 컬러 보기') }}</a>
+            </div>
+        </div>
+
+        {% if brandLogo %}
+        <div style="position:absolute;bottom:40px;left:50%;transform:translateX(-50%);">
+            <img src="{{ brandLogo }}" alt="brand" style="height:36px;opacity:0.5;">
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>

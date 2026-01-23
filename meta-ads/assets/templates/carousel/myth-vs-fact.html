@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1080, height=1080">
+    <title>Myth vs Fact Carousel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            /* Brand Colors */
+            --primary: {{ primaryColor | default('#6366F1') }};
+            --primary-light: {{ primaryLightColor | default('#818CF8') }};
+            --secondary: {{ secondaryColor | default('#14B8A6') }};
+            --accent: {{ accentColor | default('#F59E0B') }};
+
+            /* Myth vs Fact Colors */
+            --myth-color: #EF4444;
+            --myth-bg: #FEF2F2;
+            --myth-light: #FECACA;
+            --fact-color: #22C55E;
+            --fact-bg: #F0FDF4;
+            --fact-light: #BBF7D0;
+
+            /* Neutral Colors */
+            --white: #FFFFFF;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+
+            /* Typography */
+            --font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family);
+            width: 1080px;
+            height: 1080px;
+            overflow: hidden;
+        }
+
+        .card {
+            width: 1080px;
+            height: 1080px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ===================== INTRO CARD ===================== */
+        .card-intro {
+            background: linear-gradient(135deg, var(--gray-900) 0%, var(--gray-800) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px;
+            text-align: center;
+        }
+
+        .intro-vs-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .intro-symbol {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 90px;
+            font-weight: 900;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .intro-symbol.myth {
+            background: var(--myth-color);
+            color: var(--white);
+        }
+
+        .intro-symbol.fact {
+            background: var(--fact-color);
+            color: var(--white);
+        }
+
+        .intro-vs-text {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--gray-400);
+            letter-spacing: 5px;
+        }
+
+        .intro-title {
+            font-size: 64px;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 25px;
+        }
+
+        .intro-subtitle {
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--gray-400);
+            max-width: 700px;
+            line-height: 1.5;
+            margin-bottom: 50px;
+        }
+
+        .intro-count {
+            display: flex;
+            gap: 30px;
+        }
+
+        .count-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 25px 45px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .count-number {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--white);
+        }
+
+        .count-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-400);
+            margin-top: 5px;
+        }
+
+        /* ===================== MYTH CARD ===================== */
+        .card-myth {
+            background: var(--myth-bg);
+            display: flex;
+            flex-direction: column;
+            padding: 70px;
+        }
+
+        .myth-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .myth-badge {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--myth-color);
+            color: var(--white);
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 3px;
+        }
+
+        .myth-badge-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--myth-color);
+        }
+
+        .myth-page {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-400);
+        }
+
+        .myth-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .myth-icon-large {
+            width: 140px;
+            height: 140px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 40px rgba(239, 68, 68, 0.2);
+        }
+
+        .myth-icon-large svg {
+            width: 80px;
+            height: 80px;
+            fill: var(--myth-color);
+        }
+
+        .myth-label {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--myth-color);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+        }
+
+        .myth-text {
+            font-size: 52px;
+            font-weight: 800;
+            color: var(--gray-900);
+            line-height: 1.3;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .myth-text::before {
+            content: '"';
+            font-size: 120px;
+            font-weight: 900;
+            color: var(--myth-light);
+            position: absolute;
+            top: -40px;
+            left: -30px;
+            line-height: 1;
+            z-index: 0;
+        }
+
+        .myth-explanation {
+            font-size: 26px;
+            font-weight: 500;
+            color: var(--gray-600);
+            line-height: 1.6;
+            padding-left: 30px;
+            border-left: 5px solid var(--myth-color);
+        }
+
+        .myth-strikethrough {
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            background: var(--myth-color);
+            top: 50%;
+            left: 0;
+            transform: rotate(-2deg);
+            opacity: 0.7;
+        }
+
+        /* ===================== FACT CARD ===================== */
+        .card-fact {
+            background: var(--fact-bg);
+            display: flex;
+            flex-direction: column;
+            padding: 70px;
+        }
+
+        .fact-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 50px;
+        }
+
+        .fact-badge {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--fact-color);
+            color: var(--white);
+            padding: 18px 40px;
+            border-radius: 50px;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 3px;
+        }
+
+        .fact-badge-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--fact-color);
+        }
+
+        .fact-page {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-400);
+        }
+
+        .fact-main {
+            flex: 1;
+            display: flex;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .fact-content {
+            flex: 1;
+        }
+
+        .fact-icon-large {
+            width: 120px;
+            height: 120px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 35px;
+            box-shadow: 0 15px 40px rgba(34, 197, 94, 0.2);
+        }
+
+        .fact-icon-large svg {
+            width: 70px;
+            height: 70px;
+            fill: var(--fact-color);
+        }
+
+        .fact-label {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--fact-color);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 20px;
+        }
+
+        .fact-text {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--gray-900);
+            line-height: 1.3;
+            margin-bottom: 30px;
+        }
+
+        .fact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .fact-detail-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .fact-check {
+            width: 36px;
+            height: 36px;
+            background: var(--fact-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        .fact-check svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--white);
+        }
+
+        .fact-detail-text {
+            font-size: 26px;
+            font-weight: 500;
+            color: var(--gray-700);
+            line-height: 1.5;
+        }
+
+        .fact-image {
+            width: 350px;
+            height: 420px;
+            border-radius: 30px;
+            object-fit: cover;
+            box-shadow: 0 25px 60px rgba(34, 197, 94, 0.2);
+        }
+
+        .fact-image-placeholder {
+            width: 350px;
+            height: 420px;
+            border-radius: 30px;
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            box-shadow: 0 25px 60px rgba(34, 197, 94, 0.15);
+        }
+
+        .placeholder-icon {
+            font-size: 80px;
+        }
+
+        .placeholder-text {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--gray-400);
+        }
+
+        /* ===================== COMPARISON CARD ===================== */
+        .card-comparison {
+            background: var(--white);
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+        }
+
+        .comparison-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .comparison-title {
+            font-size: 44px;
+            font-weight: 800;
+            color: var(--gray-900);
+            margin-bottom: 15px;
+        }
+
+        .comparison-subtitle {
+            font-size: 24px;
+            font-weight: 500;
+            color: var(--gray-500);
+        }
+
+        .comparison-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .comparison-side {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comparison-side.myth-side {
+            background: var(--myth-bg);
+            border-radius: 30px 0 0 30px;
+        }
+
+        .comparison-side.fact-side {
+            background: var(--fact-bg);
+            border-radius: 0 30px 30px 0;
+        }
+
+        .comparison-side-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .side-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--white);
+        }
+
+        .myth-side .side-icon { background: var(--myth-color); }
+        .fact-side .side-icon { background: var(--fact-color); }
+
+        .side-title {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .myth-side .side-title { color: var(--myth-color); }
+        .fact-side .side-title { color: var(--fact-color); }
+
+        .comparison-items {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 20px 25px;
+            background: var(--white);
+            border-radius: 16px;
+        }
+
+        .comparison-item-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+
+        .myth-side .comparison-item-icon {
+            background: var(--myth-color);
+        }
+
+        .fact-side .comparison-item-icon {
+            background: var(--fact-color);
+        }
+
+        .comparison-item-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--white);
+        }
+
+        .comparison-item-text {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--gray-700);
+            line-height: 1.4;
+        }
+
+        /* ===================== CONCLUSION CARD ===================== */
+        .card-conclusion {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px;
+            text-align: center;
+        }
+
+        .conclusion-badge {
+            background: var(--white);
+            padding: 20px 50px;
+            border-radius: 60px;
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .conclusion-myth-icon,
+        .conclusion-fact-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--white);
+        }
+
+        .conclusion-myth-icon { background: var(--myth-color); }
+        .conclusion-fact-icon { background: var(--fact-color); }
+
+        .conclusion-arrow {
+            font-size: 36px;
+            color: var(--gray-400);
+        }
+
+        .conclusion-title {
+            font-size: 60px;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 25px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .conclusion-subtitle {
+            font-size: 28px;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 700px;
+            margin-bottom: 50px;
+            line-height: 1.5;
+        }
+
+        .conclusion-cta {
+            background: var(--white);
+            color: var(--primary);
+            padding: 28px 70px;
+            border-radius: 60px;
+            font-size: 30px;
+            font-weight: 800;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .conclusion-cta svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--primary);
+        }
+
+        .conclusion-stats {
+            display: flex;
+            gap: 50px;
+            margin-top: 50px;
+        }
+
+        .conclusion-stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--white);
+        }
+
+        .stat-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 5px;
+        }
+
+        /* Brand Footer */
+        .brand-footer {
+            position: absolute;
+            bottom: 40px;
+            left: 70px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-600);
+        }
+
+        .card-intro .brand-footer .brand-name,
+        .card-conclusion .brand-footer .brand-name {
+            color: rgba(255, 255, 255, 0.9);
+        }
+    </style>
+</head>
+<body>
+    {% if cardType == 'intro' %}
+    <!-- ===================== INTRO CARD ===================== -->
+    <div class="card card-intro">
+        <div class="intro-vs-container">
+            <div class="intro-symbol myth">X</div>
+            <span class="intro-vs-text">VS</span>
+            <div class="intro-symbol fact">O</div>
+        </div>
+
+        <h1 class="intro-title">{{ title | default('당신이 몰랐던 오해와 진실') }}</h1>
+        <p class="intro-subtitle">{{ subtitle | default('잘못 알려진 상식을 바로잡고 진짜 정보를 알려드립니다') }}</p>
+
+        <div class="intro-count">
+            <div class="count-item">
+                <div class="count-number">{{ mythCount | default('5') }}</div>
+                <div class="count-label">가지 오해</div>
+            </div>
+            <div class="count-item">
+                <div class="count-number">{{ factCount | default('5') }}</div>
+                <div class="count-label">가지 진실</div>
+            </div>
+        </div>
+
+        {% if brandLogo %}
+        <div class="brand-footer">
+            <img src="{{ brandLogo }}" alt="Brand" class="brand-logo">
+            <span class="brand-name">{{ brandName | default('Brand') }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    {% elif cardType == 'myth' %}
+    <!-- ===================== MYTH CARD ===================== -->
+    <div class="card card-myth">
+        <div class="myth-header">
+            <div class="myth-badge">
+                <div class="myth-badge-icon">X</div>
+                오해
+            </div>
+            <span class="myth-page">{{ currentPage | default(1) }}/{{ totalPages | default(5) }}</span>
+        </div>
+
+        <div class="myth-main">
+            <div class="myth-icon-large">
+                <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </div>
+
+            <div class="myth-label">MYTH #{{ mythNumber | default(1) }}</div>
+            <p class="myth-text" style="position: relative; z-index: 1;">
+                {{ mythText | default('"비타민은 많이 먹을수록 좋다"') }}
+            </p>
+            <p class="myth-explanation">{{ mythExplanation | default('사실 과다 복용 시 오히려 건강에 해로울 수 있습니다. 적정량을 지키는 것이 중요합니다.') }}</p>
+        </div>
+
+        {% if brandLogo %}
+        <div class="brand-footer">
+            <img src="{{ brandLogo }}" alt="Brand" class="brand-logo">
+            <span class="brand-name">{{ brandName | default('Brand') }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    {% elif cardType == 'fact' %}
+    <!-- ===================== FACT CARD ===================== -->
+    <div class="card card-fact">
+        <div class="fact-header">
+            <div class="fact-badge">
+                <div class="fact-badge-icon">O</div>
+                진실
+            </div>
+            <span class="fact-page">{{ currentPage | default(1) }}/{{ totalPages | default(5) }}</span>
+        </div>
+
+        <div class="fact-main">
+            <div class="fact-content">
+                <div class="fact-icon-large">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                </div>
+
+                <div class="fact-label">FACT #{{ factNumber | default(1) }}</div>
+                <p class="fact-text">{{ factText | default('적정량의 비타민은 건강 유지에 도움이 됩니다') }}</p>
+
+                {% if factDetails %}
+                <div class="fact-details">
+                    {% for detail in factDetails %}
+                    <div class="fact-detail-item">
+                        <div class="fact-check">
+                            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                        </div>
+                        <span class="fact-detail-text">{{ detail }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            {% if image %}
+            <img src="{{ image }}" alt="Fact" class="fact-image">
+            {% else %}
+            <div class="fact-image-placeholder">
+                <span class="placeholder-icon">✓</span>
+                <span class="placeholder-text">과학적 근거</span>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if brandLogo %}
+        <div class="brand-footer">
+            <img src="{{ brandLogo }}" alt="Brand" class="brand-logo">
+            <span class="brand-name">{{ brandName | default('Brand') }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    {% elif cardType == 'comparison' %}
+    <!-- ===================== COMPARISON CARD ===================== -->
+    <div class="card card-comparison">
+        <div class="comparison-header">
+            <h2 class="comparison-title">{{ comparisonTitle | default('오해 vs 진실 한눈에 보기') }}</h2>
+            <p class="comparison-subtitle">{{ comparisonSubtitle | default('올바른 정보로 더 건강한 선택을 하세요') }}</p>
+        </div>
+
+        <div class="comparison-grid">
+            <div class="comparison-side myth-side">
+                <div class="comparison-side-header">
+                    <div class="side-icon">X</div>
+                    <span class="side-title">오해</span>
+                </div>
+                <div class="comparison-items">
+                    {% set mythItems = myths | default([
+                        '많이 먹을수록 좋다',
+                        '비싸면 효과가 좋다',
+                        '천연만 안전하다',
+                        '아무 때나 먹어도 된다'
+                    ]) %}
+                    {% for myth in mythItems %}
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">
+                            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                        </div>
+                        <span class="comparison-item-text">{{ myth }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="comparison-side fact-side">
+                <div class="comparison-side-header">
+                    <div class="side-icon">O</div>
+                    <span class="side-title">진실</span>
+                </div>
+                <div class="comparison-items">
+                    {% set factItems = facts | default([
+                        '적정량이 가장 중요',
+                        '성분과 흡수율이 핵심',
+                        '안전성 검증이 필수',
+                        '복용 시간도 중요'
+                    ]) %}
+                    {% for fact in factItems %}
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">
+                            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                        </div>
+                        <span class="comparison-item-text">{{ fact }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        {% if brandLogo %}
+        <div class="brand-footer">
+            <img src="{{ brandLogo }}" alt="Brand" class="brand-logo">
+            <span class="brand-name">{{ brandName | default('Brand') }}</span>
+        </div>
+        {% endif %}
+    </div>
+
+    {% elif cardType == 'conclusion' %}
+    <!-- ===================== CONCLUSION CARD ===================== -->
+    <div class="card card-conclusion">
+        <div class="conclusion-badge">
+            <div class="conclusion-myth-icon">X</div>
+            <span class="conclusion-arrow">→</span>
+            <div class="conclusion-fact-icon">O</div>
+        </div>
+
+        <h1 class="conclusion-title">{{ conclusionTitle | default('이제 진실을 알았으니') }}</h1>
+        <p class="conclusion-subtitle">{{ conclusionSubtitle | default('올바른 정보를 바탕으로 현명한 선택을 해보세요. 당신의 건강한 변화를 응원합니다.') }}</p>
+
+        <div class="conclusion-cta">
+            {{ ctaText | default('올바른 선택 시작하기') }}
+            <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+        </div>
+
+        <div class="conclusion-stats">
+            <div class="conclusion-stat">
+                <div class="stat-value">{{ stat1Value | default('98%') }}</div>
+                <div class="stat-label">{{ stat1Label | default('고객 만족도') }}</div>
+            </div>
+            <div class="conclusion-stat">
+                <div class="stat-value">{{ stat2Value | default('50만+') }}</div>
+                <div class="stat-label">{{ stat2Label | default('판매량') }}</div>
+            </div>
+            <div class="conclusion-stat">
+                <div class="stat-value">{{ stat3Value | default('1위') }}</div>
+                <div class="stat-label">{{ stat3Label | default('판매 순위') }}</div>
+            </div>
+        </div>
+
+        {% if brandLogo %}
+        <div class="brand-footer">
+            <img src="{{ brandLogo }}" alt="Brand" class="brand-logo">
+            <span class="brand-name">{{ brandName | default('Brand') }}</span>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+</html>

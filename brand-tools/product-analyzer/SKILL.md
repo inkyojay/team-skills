@@ -206,7 +206,7 @@ python -m http.server 8080
 ## 파일 구조
 
 ```
-product_analyzer/
+product-analyzer/
 ├── SKILL.md                              # 이 문서
 ├── scripts/
 │   ├── crawl_smartstore.py               # 크롤링 스크립트

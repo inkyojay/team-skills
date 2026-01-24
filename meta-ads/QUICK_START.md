@@ -58,7 +58,7 @@ playwright install chromium
 ## 출력 위치
 
 ```
-/Users/inkyo/skills/meta-ads/output/
+meta-ads/output/
 ├── campaign-name/
 │   ├── images/        # 원본 이미지
 │   ├── creatives/     # 생성된 광고

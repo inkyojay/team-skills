@@ -31,18 +31,24 @@ SAFE_ZONE_PX = int(REELS_HEIGHT * SAFE_ZONE_PERCENT / 100)  # 약 268px
 
 def find_font(bold: bool = True) -> str:
     """사용 가능한 한글 폰트 찾기"""
+    # 스크립트 위치 기준 상대 경로
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    assets_dir = os.path.join(script_dir, '..', 'assets', 'fonts')
+
     if bold:
         font_paths = [
-            '/Users/inkyo/skills/reels-editor/assets/fonts/Pretendard-Bold.otf',
-            '/Users/inkyo/skills/reels-editor/assets/fonts/Pretendard-SemiBold.otf',
+            os.path.join(assets_dir, 'Pretendard-Bold.otf'),
+            os.path.join(assets_dir, 'Pretendard-SemiBold.otf'),
             '/System/Library/Fonts/AppleSDGothicNeo.ttc',
             '/Library/Fonts/AppleGothic.ttf',
+            '/usr/share/fonts/truetype/noto/NotoSansCJK-Bold.ttc',
         ]
     else:
         font_paths = [
-            '/Users/inkyo/skills/reels-editor/assets/fonts/Pretendard-Regular.otf',
-            '/Users/inkyo/skills/reels-editor/assets/fonts/Pretendard-SemiBold.otf',
+            os.path.join(assets_dir, 'Pretendard-Regular.otf'),
+            os.path.join(assets_dir, 'Pretendard-SemiBold.otf'),
             '/System/Library/Fonts/AppleSDGothicNeo.ttc',
+            '/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc',
         ]
 
     for font_path in font_paths:

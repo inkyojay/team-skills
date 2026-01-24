@@ -7,7 +7,7 @@ HTML/CSS 기반 광고 템플릿으로, Jinja2 템플릿 엔진을 사용하여 
 ## 프리셋 위치
 
 ```
-/Users/inkyo/skills/meta-ads/assets/templates/
+meta-ads/assets/templates/
 ├── single-image/     # 피드 단일 이미지 (1080×1080)
 ├── carousel/         # 캐러셀 (1080×1080 × N장)
 └── story/            # 스토리/릴스 (1080×1920)
@@ -386,7 +386,7 @@ HTML/CSS 기반 광고 템플릿으로, Jinja2 템플릿 엔진을 사용하여 
 
 ### 컬러 파일 위치
 ```
-/Users/inkyo/skills/meta-ads/assets/brands/
+meta-ads/assets/brands/
 ├── sundayhug-colors.css
 └── default-colors.css
 ```

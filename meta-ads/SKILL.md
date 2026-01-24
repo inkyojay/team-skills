@@ -30,9 +30,9 @@ Meta(Facebook/Instagram) 광고 카피와 크리에이티브를 자동으로 생
 스킬 실행 전 반드시 참조 파일을 읽어주세요:
 
 ```
-/Users/inkyo/skills/meta-ads/references/ad-specs.md      # Meta 광고 규격
-/Users/inkyo/skills/meta-ads/references/copy-templates.md # 카피 템플릿
-/Users/inkyo/skills/meta-ads/references/preset-guide.md   # 프리셋 가이드
+meta-ads/references/ad-specs.md      # Meta 광고 규격
+meta-ads/references/copy-templates.md # 카피 템플릿
+meta-ads/references/preset-guide.md   # 프리셋 가이드
 ```
 
 ## 워크플로우
@@ -59,9 +59,8 @@ Meta(Facebook/Instagram) 광고 카피와 크리에이티브를 자동으로 생
 URL이 제공된 경우:
 
 ```bash
-cd /Users/inkyo/skills/meta-ads
-python scripts/crawl_product.py --url "URL" --output output/campaign-name/
-python scripts/download_images.py --urls "이미지URL목록" --output output/campaign-name/images/
+python meta-ads/scripts/crawl_product.py --url "URL" --output meta-ads/output/campaign-name/
+python meta-ads/scripts/download_images.py --urls "이미지URL목록" --output meta-ads/output/campaign-name/images/
 ```
 
 이미지가 없으면 사용자에게 이미지 제공 요청.
@@ -124,11 +123,10 @@ references/copy-templates.md를 참고하여 5가지 톤으로 카피 생성:
 #### 크리에이티브 생성
 
 ```bash
-cd /Users/inkyo/skills/meta-ads
-python scripts/generate_ad.py \
-  --template assets/templates/single-image/product-hero.html \
+python meta-ads/scripts/generate_ad.py \
+  --template meta-ads/assets/templates/single-image/product-hero.html \
   --data '{"headline": "...", "image": "...", "cta": "..."}' \
-  --output output/campaign-name/creatives/hero-v1.png
+  --output meta-ads/output/campaign-name/creatives/hero-v1.png
 ```
 
 ### Step 5: 출력
@@ -225,8 +223,8 @@ Claude:
 ## 브랜드 컬러
 
 브랜드별 컬러 CSS:
-- `/Users/inkyo/skills/meta-ads/assets/brands/sundayhug-colors.css`
-- `/Users/inkyo/skills/meta-ads/assets/brands/default-colors.css`
+- `meta-ads/assets/brands/sundayhug-colors.css`
+- `meta-ads/assets/brands/default-colors.css`
 
 ## 텍스트 제한 (Meta 정책)
 

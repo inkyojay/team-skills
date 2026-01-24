@@ -161,7 +161,7 @@ Claude가 해당 스킬 파일을 참고해서 작업합니다.
 ---
 
 ### 5. 브랜드 DNA 추출
-**폴더:** `brand-tools/brand_dna/`
+**폴더:** `brand-tools/brand-dna/`
 
 **요청 예시:**
 - "브랜드 분석해줘"
@@ -177,7 +177,7 @@ Claude가 해당 스킬 파일을 참고해서 작업합니다.
 ---
 
 ### 6. 제품 분석
-**폴더:** `brand-tools/product_analyzer/`
+**폴더:** `brand-tools/product-analyzer/`
 
 **요청 예시:**
 - "제품 분석해줘"
@@ -242,8 +242,8 @@ skills/
 ├── meta-ads/                # 메타 광고 기획
 │
 ├── brand-tools/             # 브랜드 도구
-│   ├── brand_dna/           # 브랜드 DNA 추출
-│   └── product_analyzer/    # 제품 분석
+│   ├── brand-dna/           # 브랜드 DNA 추출
+│   └── product-analyzer/    # 제품 분석
 │
 ├── commands/                # 유틸리티 명령어
 │   ├── inline-css.md        # CSS 인라인 변환

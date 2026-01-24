@@ -257,21 +257,31 @@ skills/
 │   ├── html-section-capture/
 │   └── youtube-collector/
 │
-├── external-skills/         # 외부 마케팅 스킬
+├── external-skills/         # 외부 마케팅 스킬 (17개)
 │   ├── page-cro/            # 랜딩페이지 CRO 분석
 │   ├── copywriting/         # 마케팅 카피라이팅
 │   ├── seo-audit/           # SEO 감사
 │   ├── email-sequence/      # 이메일 시퀀스
 │   ├── csv-analyzer/        # 데이터 분석
 │   ├── competitor-analysis/ # 경쟁사 분석
-│   └── ab-test/             # A/B 테스트
+│   ├── ab-test/             # A/B 테스트
+│   ├── marketing-psychology/# 마케팅 심리학 (70+기법)
+│   ├── social-content/      # 소셜미디어 콘텐츠
+│   ├── pricing-strategy/    # 가격 전략
+│   ├── launch-strategy/     # 출시 전략
+│   ├── paid-ads/            # 유료 광고 캠페인
+│   ├── referral-program/    # 추천 프로그램
+│   ├── analytics-tracking/  # 분석 추적 (GA4/Pixel)
+│   ├── video-script/        # 영상 스크립트
+│   ├── review-management/   # 리뷰 관리
+│   └── marketing-ideas/     # 140개 마케팅 아이디어
 │
 └── upload-package/          # 배포용 패키지 (zip 파일들)
 ```
 
 ---
 
-## 총 스킬 수: 29개
+## 총 스킬 수: 39개
 
 - 콘텐츠 제작: 4개
 - 브랜드 도구: 2개
@@ -279,7 +289,7 @@ skills/
 - 마케팅 에이전트: 6개
 - 브랜드 관리 에이전트: 3개
 - 스킬 생성 도구: 4개
-- **외부 마케팅 스킬: 7개** (신규)
+- **외부 마케팅 스킬: 17개** (신규)
 
 ---
 
@@ -386,3 +396,150 @@ Corey Haines 마케팅 스킬을 기반으로 썬데이허그에 맞게 커스�
 - 가설 수립
 - 샘플 크기 계산
 - 결과 분석
+
+---
+
+### 8. 마케팅 심리학
+**폴더:** `external-skills/marketing-psychology/`
+
+**요청 예시:**
+- "구매 유도 심리 기법 알려줘"
+- "사회적 증거 활용법 알려줘"
+
+**기법 (70+개):**
+- 희소성/긴급성 (Scarcity)
+- 사회적 증거 (Social Proof)
+- 앵커링 효과
+- 손실 회피
+- 호혜성의 원칙
+
+---
+
+### 9. 소셜 콘텐츠
+**폴더:** `external-skills/social-content/`
+
+**요청 예시:**
+- "인스타그램 콘텐츠 캘린더 만들어줘"
+- "릴스 아이디어 10개 줘"
+
+**플랫폼:**
+- Instagram (피드, 스토리, 릴스)
+- YouTube (숏츠, 롱폼)
+- 네이버 블로그
+
+---
+
+### 10. 가격 전략
+**폴더:** `external-skills/pricing-strategy/`
+
+**요청 예시:**
+- "가격 전략 수립해줘"
+- "번들 패키지 설계해줘"
+
+**프레임워크:**
+- 가치 기반 가격
+- 심리적 가격
+- 번들링/언번들링
+- 프리미엄 포지셔닝
+
+---
+
+### 11. 출시 전략
+**폴더:** `external-skills/launch-strategy/`
+
+**요청 예시:**
+- "신제품 출시 계획 세워줘"
+- "런칭 캠페인 설계해줘"
+
+**단계:**
+- 사전 출시 (티저)
+- D-Day 캠페인
+- 사후 육성
+
+---
+
+### 12. 유료 광고
+**폴더:** `external-skills/paid-ads/`
+
+**요청 예시:**
+- "메타 광고 전략 세워줘"
+- "네이버 검색광고 설계해줘"
+
+**플랫폼:**
+- Meta (Facebook/Instagram)
+- Google Ads
+- 네이버 검색광고
+- 카카오모먼트
+
+---
+
+### 13. 추천 프로그램
+**폴더:** `external-skills/referral-program/`
+
+**요청 예시:**
+- "추천인 프로그램 설계해줘"
+- "바이럴 루프 만들어줘"
+
+**구성요소:**
+- 보상 구조
+- 참여 메커니즘
+- 추적 시스템
+
+---
+
+### 14. 분석/추적 설정
+**폴더:** `external-skills/analytics-tracking/`
+
+**요청 예시:**
+- "GA4 이벤트 설정해줘"
+- "메타 픽셀 설치해줘"
+
+**도구:**
+- Google Analytics 4
+- Meta Pixel
+- 전환 추적
+- UTM 파라미터
+
+---
+
+### 15. 영상 스크립트
+**폴더:** `external-skills/video-script/`
+
+**요청 예시:**
+- "제품 소개 영상 스크립트 써줘"
+- "고객 후기 영상 구성해줘"
+
+**템플릿:**
+- 제품 소개 (30초/60초)
+- 고객 후기
+- 튜토리얼
+- 브랜드 스토리
+
+---
+
+### 16. 리뷰 관리
+**폴더:** `external-skills/review-management/`
+
+**요청 예시:**
+- "리뷰 수집 전략 세워줘"
+- "부정 리뷰 대응 가이드 만들어줘"
+
+**기능:**
+- 리뷰 수집 자동화
+- 긍정/부정 리뷰 대응
+- 리뷰 인센티브 설계
+
+---
+
+### 17. 마케팅 아이디어
+**폴더:** `external-skills/marketing-ideas/`
+
+**요청 예시:**
+- "마케팅 아이디어 10개 줘"
+- "저비용 고효율 마케팅 방법 알려줘"
+
+**카테고리 (140개 아이디어):**
+- 콘텐츠 마케팅
+- 커뮤니티 빌딩
+- 파트너십
+- 오프라인 연계

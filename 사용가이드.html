@@ -247,6 +247,53 @@
             white-space: nowrap;
         }
 
+        /* 템플릿 섹션 */
+        .template-section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border-left: 4px solid #9C27B0;
+        }
+
+        .template-section h2 {
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: #333;
+        }
+
+        .template-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .template-table th {
+            text-align: left;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .template-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .template-name {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: #9C27B0;
+            white-space: nowrap;
+        }
+
+        .template-duration {
+            white-space: nowrap;
+            color: #666;
+        }
+
         /* 푸터 */
         footer {
             text-align: center;
@@ -275,7 +322,7 @@
                     <div class="stat-label">스킬</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-num">10</div>
+                    <div class="stat-num">11</div>
                     <div class="stat-label">에이전트</div>
                 </div>
                 <div class="stat">
@@ -649,8 +696,48 @@
             </div>
         </details>
 
+            <div class="template-section">
+                <h2>🎬 영상 템플릿 (5개)</h2>
+                <table class="template-table">
+                    <thead>
+                        <tr>
+                            <th>템플릿</th>
+                            <th>설명</th>
+                            <th>권장 길이</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="template-name">branded-showcase</td>
+                            <td>고정 헤더(로고+제품명+썸네일) + 하단 콘텐츠 순환 구조의 전문적 브랜드 공식 광고 템플릿입니다.</td>
+                            <td class="template-duration">30~45초</td>
+                        </tr>
+                        <tr>
+                            <td class="template-name">comparison</td>
+                            <td>문제 제시 → 제품 비교 → 솔루션 시연 → 차별화 → CTA 흐름의 정보 전달형 비교 광고 템플릿입니다.</td>
+                            <td class="template-duration">45~60초</td>
+                        </tr>
+                        <tr>
+                            <td class="template-name">meta-reels-ad</td>
+                            <td>Config 기반 멀티씬 세로형 릴스/스토리 광고 영상 템플릿입니다.</td>
+                            <td class="template-duration">6~15초</td>
+                        </tr>
+                        <tr>
+                            <td class="template-name">review-banner</td>
+                            <td>정적 컴포지트 레이아웃의 짧은 피드 광고 템플릿입니다. 리뷰 카드 + 제품 배너로 소셜 프루프를 강조합니다.</td>
+                            <td class="template-duration">5~10초</td>
+                        </tr>
+                        <tr>
+                            <td class="template-name">ugc-review</td>
+                            <td>셀카 훅 → 검색 화면 → 제품 시연 → 기능 소개 → CTA 흐름의 캐주얼 UGC 스타일 광고 템플릿입니다...</td>
+                            <td class="template-duration">30~45초</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
             <div class="agent-section">
-                <h2>🤖 에이전트 (10개)</h2>
+                <h2>🤖 에이전트 (11개)</h2>
                 <table class="agent-table">
                     <thead>
                         <tr>
@@ -680,6 +767,10 @@
                         <td>-</td>
                     </tr>
                     <tr>
+                        <td class="agent-name">메타 광고 이미지 제작 에이전트</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
                         <td class="agent-name">시장 조사 리포트: [조사 주제]</td>
                         <td>-</td>
                     </tr>
@@ -705,7 +796,7 @@
         </main>
 
         <footer>
-            자동 생성됨 · 2026-01-27 14:54
+            자동 생성됨 · 2026-01-27 15:04
         </footer>
     </div>
 </body>

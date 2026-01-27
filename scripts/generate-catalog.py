@@ -20,6 +20,7 @@ from datetime import datetime
 BASE_DIR = Path(__file__).parent.parent
 SKILLS_DIR = BASE_DIR / "skills"
 AGENTS_DIR = BASE_DIR / "agents"
+TEMPLATES_DIR = BASE_DIR / "skills" / "video" / "remotion" / "templates"
 OUTPUT_CATALOG = BASE_DIR / "SKILL-CATALOG.md"
 OUTPUT_HTML = BASE_DIR / "사용가이드.html"
 
@@ -282,7 +283,68 @@ def scan_agents() -> list:
     return agents
 
 
-def generate_markdown_catalog(skills: dict, agents: list) -> str:
+def scan_templates() -> list:
+    """영상 템플릿 폴더 스캔하여 정보 수집"""
+    templates = []
+
+    if not TEMPLATES_DIR.exists():
+        return templates
+
+    for tpl_dir in sorted(TEMPLATES_DIR.iterdir()):
+        if not tpl_dir.is_dir():
+            continue
+
+        readme = tpl_dir / "README.md"
+        if not readme.exists():
+            continue
+
+        content = readme.read_text(encoding="utf-8")
+        lines = content.strip().split("\n")
+
+        # 첫 줄에서 제목 추출 (# 제거)
+        name = tpl_dir.name
+        title = name
+        if lines and lines[0].startswith("#"):
+            title = lines[0].lstrip("#").strip()
+
+        # 두 번째 문단(빈 줄 다음 첫 텍스트)에서 설명 추출
+        description = ""
+        found_blank = False
+        for line in lines[1:]:
+            if not line.strip():
+                found_blank = True
+                continue
+            if found_blank and line.strip() and not line.startswith("#") and not line.startswith("|"):
+                description = line.strip()
+                break
+
+        # 권장 길이 추출 (README.md 또는 analysis.md)
+        duration = "-"
+        duration_match = re.search(r'권장\s*길이\s*\|\s*(.+?)\s*\|', content)
+        if duration_match:
+            duration = duration_match.group(1).strip()
+        else:
+            analysis = tpl_dir / "analysis.md"
+            if analysis.exists():
+                analysis_content = analysis.read_text(encoding="utf-8")
+                dur_match = re.search(r'권장\s*길이\s*\|\s*(.+?)\s*\|', analysis_content)
+                if dur_match:
+                    duration = dur_match.group(1).strip()
+
+        if len(description) > 60:
+            description = description[:60] + "..."
+
+        templates.append({
+            "name": name,
+            "title": title,
+            "description": description,
+            "duration": duration,
+        })
+
+    return templates
+
+
+def generate_markdown_catalog(skills: dict, agents: list, templates: list = None) -> str:
     """마크다운 카탈로그 생성"""
 
     total_skills = sum(len(s) for s in skills.values())
@@ -326,6 +388,15 @@ def generate_markdown_catalog(skills: dict, agents: list) -> str:
 
         md += "\n"
 
+    # 영상 템플릿 섹션
+    if templates:
+        md += f"## 🎬 영상 템플릿 ({len(templates)}개)\n\n"
+        md += "| 템플릿 | 설명 | 권장 길이 |\n"
+        md += "|--------|------|---------|\n"
+        for tpl in templates:
+            md += f"| `{tpl['name']}` | {tpl['description'] or tpl['title']} | {tpl['duration']} |\n"
+        md += "\n"
+
     # 에이전트 섹션
     md += "## 🤖 에이전트\n\n"
     md += "| 에이전트 | 설명 |\n"
@@ -340,7 +411,7 @@ def generate_markdown_catalog(skills: dict, agents: list) -> str:
     return md
 
 
-def generate_html_guide(skills: dict, agents: list) -> str:
+def generate_html_guide(skills: dict, agents: list, templates: list = None) -> str:
     """HTML 사용 가이드 생성 - 깔끔한 버전"""
 
     total_skills = sum(len(s) for s in skills.values())
@@ -657,6 +728,53 @@ def generate_html_guide(skills: dict, agents: list) -> str:
             white-space: nowrap;
         }}
 
+        /* 템플릿 섹션 */
+        .template-section {{
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            border-left: 4px solid #9C27B0;
+        }}
+
+        .template-section h2 {{
+            font-size: 1.1rem;
+            margin-bottom: 16px;
+            color: #333;
+        }}
+
+        .template-table {{
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }}
+
+        .template-table th {{
+            text-align: left;
+            padding: 10px 12px;
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #555;
+        }}
+
+        .template-table td {{
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }}
+
+        .template-name {{
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.85rem;
+            color: #9C27B0;
+            white-space: nowrap;
+        }}
+
+        .template-duration {{
+            white-space: nowrap;
+            color: #666;
+        }}
+
         /* 푸터 */
         footer {{
             text-align: center;
@@ -709,6 +827,26 @@ def generate_html_guide(skills: dict, agents: list) -> str:
         <main>
             {category_sections}
 
+            {"" if not templates else f"""<div class="template-section">
+                <h2>🎬 영상 템플릿 ({len(templates)}개)</h2>
+                <table class="template-table">
+                    <thead>
+                        <tr>
+                            <th>템플릿</th>
+                            <th>설명</th>
+                            <th>권장 길이</th>
+                        </tr>
+                    </thead>
+                    <tbody>{"".join(f'''
+                        <tr>
+                            <td class="template-name">{tpl["name"]}</td>
+                            <td>{tpl["description"] or tpl["title"]}</td>
+                            <td class="template-duration">{tpl["duration"]}</td>
+                        </tr>''' for tpl in templates)}
+                    </tbody>
+                </table>
+            </div>"""}
+
             <div class="agent-section">
                 <h2>🤖 에이전트 ({len(agents)}개)</h2>
                 <table class="agent-table">
@@ -741,24 +879,28 @@ def main():
     print("🤖 에이전트 스캔 중...")
     agents = scan_agents()
 
+    print("🎬 영상 템플릿 스캔 중...")
+    templates = scan_templates()
+
     total_skills = sum(len(s) for s in skills.values())
     print(f"   - 발견된 스킬: {total_skills}개")
     print(f"   - 발견된 에이전트: {len(agents)}개")
+    print(f"   - 발견된 템플릿: {len(templates)}개")
 
     # 마크다운 생성
     print("\n📝 마크다운 카탈로그 생성 중...")
-    md_content = generate_markdown_catalog(skills, agents)
+    md_content = generate_markdown_catalog(skills, agents, templates)
     OUTPUT_CATALOG.write_text(md_content, encoding="utf-8")
     print(f"   ✅ {OUTPUT_CATALOG}")
 
     # HTML 생성
     print("\n🌐 HTML 가이드 생성 중...")
-    html_content = generate_html_guide(skills, agents)
+    html_content = generate_html_guide(skills, agents, templates)
     OUTPUT_HTML.write_text(html_content, encoding="utf-8")
     print(f"   ✅ {OUTPUT_HTML}")
 
     print(f"\n✨ 완료!")
-    print(f"   총 {total_skills}개 스킬, {len(agents)}개 에이전트 문서화됨")
+    print(f"   총 {total_skills}개 스킬, {len(agents)}개 에이전트, {len(templates)}개 템플릿 문서화됨")
 
 
 if __name__ == "__main__":

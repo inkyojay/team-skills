@@ -97,6 +97,42 @@
 | `social-content` | 소셜 미디어 콘텐츠 제작 |
 | `video-script` | 영상 스크립트 작성 |
 
+## 🔊 외부 API 연동
+
+| 서비스 | 용도 | 환경변수 | 비고 |
+|--------|------|---------|------|
+| `Supertone TTS` | 자연스러운 한국어 TTS 음성 생성 | `SUPERTONE_API_KEY` | Sona Speech 2 모델, ko/en/ja 지원 |
+
+### Supertone TTS API 사용법
+
+```bash
+# 음성 목록 조회
+curl -s "https://supertoneapi.com/v1/voices/search?language=ko&gender=female" \
+  -H "x-sup-api-key: $SUPERTONE_API_KEY"
+
+# TTS 생성
+curl -X POST "https://supertoneapi.com/v1/text-to-speech/{voice_id}" \
+  -H "x-sup-api-key: $SUPERTONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"text":"안녕하세요","language":"ko","style":"neutral","model":"sona_speech_2"}' \
+  --output output.wav
+```
+
+- **추천 음성**: Agatha (`e5f6fb1a53d0add87afb4f`) — 여성, narration 특화, happy/neutral/serene
+- **파라미터**: `style` (감정), `voice_settings.speed` (0.5~2), `voice_settings.pitch_shift` (-24~24)
+- **제한**: 최대 300자/요청, $0.10/분
+- **문서**: [docs.supertoneapi.com](https://docs.supertoneapi.com/en/user-guide/welcome)
+
+---
+
+## 📦 제작 결과물
+
+| 프로젝트 | 위치 | 설명 |
+|---------|------|------|
+| 나비잠 속싸개 광고 | `output/영상/nabijam-ad/` | Remotion 19초 Meta 광고 (1080x1920, Supertone TTS + BGM) |
+
+---
+
 ## 🎬 영상 템플릿 (5개)
 
 | 템플릿 | 설명 | 권장 길이 |

@@ -696,6 +696,64 @@
             </div>
         </details>
 
+            <!-- 외부 API 연동 섹션 -->
+            <div class="agent-section" style="border-left: 4px solid #00BCD4; margin-top: 30px;">
+                <h2>🔊 외부 API 연동</h2>
+                <table class="skill-table">
+                    <thead>
+                        <tr>
+                            <th>서비스</th>
+                            <th>용도</th>
+                            <th>환경변수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td class="skill-name">Supertone TTS</td>
+                        <td class="skill-desc">자연스러운 한국어 TTS 음성 생성 (Sona Speech 2)</td>
+                        <td><code>SUPERTONE_API_KEY</code></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="example-box" style="margin-top: 16px;">
+                    <span class="example-label">사용 예시:</span>
+                    <span class="example-tag">"나레이션 생성해줘"</span>
+                    <span class="example-tag">"TTS로 음성 만들어줘"</span>
+                    <span class="example-tag">"Supertone으로 더빙해줘"</span>
+                </div>
+                <div style="padding: 12px 16px; background: #f8f9fa; border-radius: 8px; margin-top: 8px; font-size: 0.85rem; color: #555;">
+                    <strong>Supertone TTS</strong>: 한국어 최적화 뉴럴 TTS. 감정(style) 제어 가능 (neutral, happy, serene 등).<br>
+                    추천 음성: <code>Agatha</code> (여성, narration 특화) | 최대 300자/요청 | $0.10/분<br>
+                    <a href="https://docs.supertoneapi.com/en/user-guide/welcome" style="color: #00BCD4;">API 문서</a> |
+                    <a href="https://console.supertoneapi.com" style="color: #00BCD4;">개발자 콘솔</a>
+                </div>
+            </div>
+
+            <!-- 제작 결과물 섹션 -->
+            <div class="agent-section" style="border-left: 4px solid #4CAF50; margin-top: 30px;">
+                <h2>📦 제작 결과물</h2>
+                <table class="skill-table">
+                    <thead>
+                        <tr>
+                            <th>프로젝트</th>
+                            <th>설명</th>
+                            <th>위치</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td style="font-weight: 600;">나비잠 속싸개 광고</td>
+                        <td class="skill-desc">Remotion 19초 Meta 광고 (1080x1920, 30fps, Supertone TTS + BGM, 7씬)</td>
+                        <td><code>output/영상/nabijam-ad/</code></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div style="padding: 12px 16px; background: #f8f9fa; border-radius: 8px; margin-top: 12px; font-size: 0.85rem; color: #555;">
+                    <strong>미리보기:</strong> <code>cd output/영상/nabijam-ad && npm run dev</code><br>
+                    <strong>렌더링:</strong> <code>cd output/영상/nabijam-ad && npm run build</code>
+                </div>
+            </div>
+
             <div class="template-section">
                 <h2>🎬 영상 템플릿 (5개)</h2>
                 <table class="template-table">

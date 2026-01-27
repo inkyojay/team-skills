@@ -1,53 +1,99 @@
-# 썬데이허그 마케팅 스킬팩 사용 가이드
+# 썬데이허그 마케팅 스킬팩
 
-마케팅 업무 자동화를 위한 스킬 & 에이전트 패키지입니다.
+마케팅 업무 자동화를 위한 **41개 스킬 + 13개 에이전트** 패키지입니다.
+
+> 전체 스킬 목록은 [SKILL-CATALOG.md](SKILL-CATALOG.md) 참조
+
+---
+
+## 폴더 구조
+
+```
+team-skills/
+├── skills/                     # 모든 스킬 (41개)
+│   ├── content-creation/       # 콘텐츠 제작 (2)
+│   │   ├── page-builder/       # 상세페이지 빌더
+│   │   └── card-news/          # 카드뉴스
+│   ├── video/                  # 영상 제작 (2)
+│   │   ├── reels-editor/       # 릴스 편집
+│   │   └── remotion/           # React 영상
+│   ├── advertising/            # 광고 (1)
+│   │   └── meta-ads/           # 메타 광고
+│   ├── brand/                  # 브랜드 (5)
+│   │   ├── brand-dna/          # 브랜드 DNA 추출
+│   │   ├── product-analyzer/   # 제품 분석
+│   │   └── ...
+│   ├── marketing/              # 마케팅 전략 (22)
+│   │   ├── copywriting/        # 카피라이팅
+│   │   ├── paid-ads/           # 유료 광고
+│   │   ├── page-cro/           # 전환율 최적화
+│   │   └── ...
+│   └── tools/                  # 유틸리티 (9)
+│       ├── skill-creator/      # 스킬 생성
+│       └── ...
+├── agents/                     # AI 에이전트 (13개)
+└── commands/                   # 슬래시 커맨드
+```
 
 ---
 
 ## 사용 방법
 
-**슬래시 명령어가 아닙니다.** 그냥 자연어로 요청하세요.
+**슬래시 명령어가 아닙니다.** 자연어로 요청하세요.
 
 ```
 "상세페이지 만들어줘"
 "카드뉴스 만들어줘"
 "메타 광고 기획해줘"
+"랜딩페이지 CRO 분석해줘"
 ```
-
-Claude가 해당 스킬 파일을 참고해서 작업합니다.
 
 ---
 
-## 전체 스킬 & 에이전트 목록
+## 주요 스킬
 
-### 콘텐츠 제작 (4개)
+### 콘텐츠 제작
 
-| 스킬 | 요청 예시 | 기능 |
-|------|----------|------|
-| **상세페이지 빌더** | "상세페이지 만들어줘" | 이커머스 상품 상세페이지 HTML 생성 |
-| **카드뉴스 제작** | "카드뉴스 만들어줘" | YouTube/웹/PDF에서 카드뉴스 자동 생성 |
-| **릴스 영상 편집** | "릴스로 만들어줘" | Instagram Reels 규격 영상 편집 |
-| **메타 광고 기획** | "광고 캠페인 기획해줘" | Meta 광고 전략 수립 및 크리에이티브 제작 |
+| 스킬 | 위치 | 기능 |
+|------|------|------|
+| **상세페이지 빌더** | `skills/content-creation/page-builder/` | 이커머스 상품 상세페이지 |
+| **카드뉴스** | `skills/content-creation/card-news/` | 인스타그램 카드뉴스 |
+| **릴스 편집** | `skills/video/reels-editor/` | 9:16 릴스 영상 |
+| **Remotion** | `skills/video/remotion/` | React 영상 제작 |
+| **메타 광고** | `skills/advertising/meta-ads/` | Facebook/Instagram 광고 |
 
-### 브랜드 도구 (2개)
+### 브랜드 도구
 
-| 스킬 | 요청 예시 | 기능 |
-|------|----------|------|
-| **브랜드 DNA 추출** | "브랜드 분석해줘" | 웹사이트에서 컬러, 폰트, 톤앤매너 추출 |
-| **제품 분석** | "제품 분석해줘" | 제품 정보 수집 및 분석 리포트 생성 |
+| 스킬 | 위치 | 기능 |
+|------|------|------|
+| **브랜드 DNA** | `skills/brand/brand-dna/` | 웹사이트 브랜드 분석 |
+| **제품 분석** | `skills/brand/product-analyzer/` | 상품 페이지 분석 |
 
-### 유틸리티 (3개)
+### 마케팅 전략 (22개)
 
-| 스킬 | 요청 예시 | 기능 |
-|------|----------|------|
-| **CSS 인라인 변환** | "CSS 인라인으로 변환해줘" | HTML의 CSS 클래스를 인라인 스타일로 변환 |
-| **HTML 섹션 캡처** | "섹션 캡처해줘" | HTML 섹션별 이미지 캡처 |
-| **YouTube 수집기** | "유튜브 자막 추출해줘" | YouTube 영상 자막/정보 수집 |
+| 카테고리 | 스킬 |
+|----------|------|
+| **광고** | paid-ads, page-cro, ab-test |
+| **콘텐츠** | copywriting, social-content, email-sequence, video-script |
+| **분석** | competitor-analysis, csv-analyzer, analytics-tracking |
+| **전략** | launch-strategy, pricing-strategy, marketing-psychology |
+| **디자인** | canvas-design, social-media-designer |
 
-### 마케팅 에이전트 (6개)
+### 유틸리티 (9개)
 
-| 에이전트 | 요청 예시 | 역할 |
-|----------|----------|------|
+| 스킬 | 기능 |
+|------|------|
+| skill-creator | 새 스킬 생성 |
+| subagent-creator | 서브에이전트 생성 |
+| youtube-collector | YouTube 콘텐츠 수집 |
+| html2img | HTML → 이미지 변환 |
+
+---
+
+## 에이전트 (13개)
+
+| 에이전트 | 역할 |
+|----------|------|
 | **마케팅 허브** | "마케팅 도와줘" | 마케팅 업무 총괄, 워크플로우 설계 |
 | **경쟁사 분석** | "코니바이에린 분석해줘" | 경쟁 브랜드 SWOT 분석 및 대응 전략 |
 | **시장 조사** | "시장 조사해줘" | 시장 규모, 트렌드, 소비자 인사이트 |

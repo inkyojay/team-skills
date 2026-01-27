@@ -1,0 +1,222 @@
+{
+  "meta": {
+    "date": "2026-01-13",
+    "client": "썬데이허그",
+    "status": "FINAL",
+    "projectCode": "썬데이허그_DNA_2026.json"
+  },
+  "summary": {
+    "mainTitle": "가족의 평화로운 안식,\n꿀잠을 선물합니다",
+    "subTitle": "아기와 부모 모두를 위한 슬립솔루션",
+    "description": "썬데이허그는 신생아와 영아를 위한 프리미엄 수면 솔루션 브랜드입니다. '꿀잠'이라는 핵심 가치를 중심으로, 밤부 소재의 친환경 제품과 과학적인 수면 보조 기술을 결합하여 아기와 부모 모두에게 평화로운 밤을 선사합니다.",
+    "insights": [
+      {
+        "label": "슬립솔루션 전문",
+        "icon": "trending"
+      },
+      {
+        "label": "친환경 밤부 소재",
+        "icon": "shield"
+      },
+      {
+        "label": "가족 중심 가치",
+        "icon": "chart"
+      }
+    ]
+  },
+  "identity": {
+    "mission": "모든 가족이 평화로운 밤을 보낼 수 있도록 최고의 수면 솔루션을 제공한다",
+    "vision": "아기 수면 솔루션의 새로운 기준이 된다",
+    "values": [
+      "평화 (Peace)",
+      "안식 (Rest)",
+      "사랑 (Love)",
+      "자연 (Nature)"
+    ],
+    "archetype": {
+      "name": "Caregiver (돌봄이)",
+      "description": "따뜻하고 보호적인 성격으로, 가족의 안녕과 편안함을 최우선으로 생각하는 돌봄의 전문가"
+    },
+    "coreTraits": [
+      "따뜻한 (Warm)",
+      "신뢰할 수 있는 (Trustworthy)",
+      "전문적인 (Professional)"
+    ]
+  },
+  "personality": {
+    "radarData": [
+      {
+        "subject": "진실성 (Sincerity)",
+        "A": 85,
+        "fullMark": 100
+      },
+      {
+        "subject": "흥미로움 (Excitement)",
+        "A": 45,
+        "fullMark": 100
+      },
+      {
+        "subject": "능력 (Competence)",
+        "A": 75,
+        "fullMark": 100
+      },
+      {
+        "subject": "세련됨 (Sophistication)",
+        "A": 70,
+        "fullMark": 100
+      },
+      {
+        "subject": "강인함 (Ruggedness)",
+        "A": 25,
+        "fullMark": 100
+      }
+    ],
+    "highlight": {
+      "title": "Sincerity (진실성)",
+      "score": 85
+    }
+  },
+  "tone": {
+    "spectrum": [
+      {
+        "label": "형식성 (Formality)",
+        "left": "캐주얼",
+        "right": "공식적",
+        "value": 40
+      },
+      {
+        "label": "감정성 (Emotion)",
+        "left": "이성적",
+        "right": "감성적",
+        "value": 70
+      },
+      {
+        "label": "에너지 (Energy)",
+        "left": "차분한",
+        "right": "역동적",
+        "value": 35
+      },
+      {
+        "label": "접근성 (Accessibility)",
+        "left": "권위적",
+        "right": "친근한",
+        "value": 80
+      }
+    ],
+    "guidelines": {
+      "dos": [
+        "아이와 가족을 향한 따뜻한 마음을 담아 이야기하세요",
+        "꿀잠, 나비잠 등 브랜드 고유의 언어를 사용하세요",
+        "육아의 어려움에 공감하며 해결책을 제시하세요"
+      ],
+      "donts": [
+        "과도한 할인 강조나 자극적인 마케팅 문구",
+        "경쟁사를 직접 비교하거나 폄하하는 표현",
+        "차갑거나 기계적인 톤의 커뮤니케이션"
+      ]
+    }
+  },
+  "visuals": {
+    "colors": [
+      {
+        "role": "Primary",
+        "name": "Warm Cream",
+        "hex": "#FFF8EE",
+        "desc": "따뜻함, 포근함, 평화",
+        "textColor": "text-gray-800"
+      },
+      {
+        "role": "Secondary",
+        "name": "Soft Black",
+        "hex": "#2C2C2C",
+        "desc": "신뢰, 프리미엄, 세련됨",
+        "textColor": "text-white"
+      },
+      {
+        "role": "Accent",
+        "name": "Sunday Orange",
+        "hex": "#FF8605",
+        "desc": "따뜻한 햇살, 활력, 희망",
+        "textColor": "text-white"
+      }
+    ],
+    "styleGuide": [
+      {
+        "title": "Photography",
+        "description": "자연광 아래 아기와 가족의 따뜻한 순간을 담은 라이프스타일 포토그래피. 밝고 부드러운 톤."
+      },
+      {
+        "title": "Typography",
+        "description": "부드럽고 둥근 산세리프 폰트로 친근하면서도 신뢰감 있는 느낌. 한글 가독성 우선."
+      },
+      {
+        "title": "Iconography",
+        "description": "둥글고 부드러운 라인의 아이콘. 날카로운 모서리 지양, 아기 친화적 이미지."
+      }
+    ]
+  },
+  "persona": {
+    "name": "이수진",
+    "role": "32세, 첫째 아이(6개월) 육아 중인 직장맘",
+    "imageUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8M3x8YXNpYW4lMjB3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTcwOTM0MDQ3Nnww&ixlib=rb-4.0.3&q=80&w=400",
+    "quote": "아기가 잘 자야 저도 잘 수 있어요",
+    "description": "육아휴직 중이지만 곧 복직 예정. 아기의 수면 패턴을 잡는 것이 최우선 과제. 제품 성분과 소재를 꼼꼼히 확인하며, 검증된 브랜드를 선호함. 육아 커뮤니티에서 정보를 활발히 공유함.",
+    "goals": [
+      "아기 통잠 성공",
+      "안전하고 편한 수면 환경 조성",
+      "육아 스트레스 감소"
+    ],
+    "painPoints": [
+      "모로반사로 인한 잦은 기상",
+      "어떤 제품이 좋은지 정보 과부하",
+      "가격 대비 품질 고민"
+    ],
+    "tags": [
+      "첫째맘",
+      "워킹맘",
+      "육아정보러",
+      "성분체커"
+    ]
+  },
+  "strategy": {
+    "strengths": [
+      "'꿀잠' 브랜드 언어의 높은 인지도",
+      "밤부 소재 전문성",
+      "다양한 번들/세트 구성"
+    ],
+    "opportunities": [
+      "수면 교육 콘텐츠 확대",
+      "글로벌 시장 진출 (WORLD SHIPPING 인프라 보유)",
+      "유아 성장 단계별 제품 라인 확장"
+    ],
+    "watchOut": [
+      "가격 경쟁력 유지",
+      "시즌별 수요 변동성",
+      "유사 경쟁 브랜드 증가"
+    ]
+  },
+  "moodboard": {
+    "keywords": [
+      "꿀잠",
+      "평화",
+      "안식",
+      "밤부",
+      "자연",
+      "따뜻함",
+      "가족",
+      "신생아",
+      "크림톤",
+      "부드러움"
+    ],
+    "images": [
+      "https://www.sundayhug.kr/web/product/medium/202512/6bfbd0eae58bf11c0934288e852942ff.jpg",
+      "https://www.sundayhug.kr/web/product/medium/202512/1804967cf712f0300781cf7cea264a81.jpg",
+      "https://www.sundayhug.kr/web/product/medium/202511/03b20b0610c779388ad9a87c16d398eb.jpg",
+      "https://www.sundayhug.kr/web/product/medium/202511/49f8f0804d2e6a6f76cd9e6e7640ec6c.png",
+      "https://www.sundayhug.kr/web/product/medium/202506/50ae6b9848f4d45838b32bbc3c2a27f9.jpg",
+      "https://www.sundayhug.kr/web/product/medium/202507/6baa18bb46a9b158df6236299217cade.jpg",
+      "https://www.sundayhug.kr/web/product/medium/202505/7078e03b4c1197ff81863ca4e5b786e7.jpg",
+      "https://www.sundayhug.kr/web/product/medium/202505/f511fa8607b146044186b5398d091c4a.jpg"
+    ]
+  }
+}

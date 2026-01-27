@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>Feature Stack - Story/Reels</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --brand-primary: {{ brandColor | default('#5F27CD') }};
+      --brand-secondary: {{ brandSecondary | default('#A29BFE') }};
+      --accent-color: {{ accentColor | default('#00D2D3') }};
+      --text-dark: {{ textDark | default('#2D3436') }};
+      --text-light: {{ textLight | default('#FFFFFF') }};
+      --bg-gradient-start: {{ bgGradientStart | default('#667EEA') }};
+      --bg-gradient-end: {{ bgGradientEnd | default('#764BA2') }};
+      --card-bg: {{ cardBg | default('rgba(255,255,255,0.12)') }};
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      padding: 80px 60px;
+    }
+
+    /* Decorative circles */
+    .deco-circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.1;
+    }
+
+    .deco-1 {
+      width: 400px;
+      height: 400px;
+      background: white;
+      top: -100px;
+      right: -100px;
+    }
+
+    .deco-2 {
+      width: 300px;
+      height: 300px;
+      background: white;
+      bottom: 200px;
+      left: -150px;
+    }
+
+    /* Safe zone */
+    .safe-top {
+      height: 100px;
+    }
+
+    /* Product section */
+    .product-section {
+      text-align: center;
+      margin-bottom: 40px;
+      z-index: 10;
+    }
+
+    .product-image {
+      max-width: 400px;
+      max-height: 400px;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
+      margin-bottom: 30px;
+    }
+
+    .product-name {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--text-light);
+      margin-bottom: 12px;
+      text-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    }
+
+    .product-tagline {
+      font-size: 28px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.8);
+    }
+
+    /* Features stack */
+    .features-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 10;
+    }
+
+    .feature-card {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 28px 32px;
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .feature-card:nth-child(1) { animation: slideIn 0.5s ease forwards; animation-delay: 0.1s; opacity: 0; }
+    .feature-card:nth-child(2) { animation: slideIn 0.5s ease forwards; animation-delay: 0.2s; opacity: 0; }
+    .feature-card:nth-child(3) { animation: slideIn 0.5s ease forwards; animation-delay: 0.3s; opacity: 0; }
+    .feature-card:nth-child(4) { animation: slideIn 0.5s ease forwards; animation-delay: 0.4s; opacity: 0; }
+    .feature-card:nth-child(5) { animation: slideIn 0.5s ease forwards; animation-delay: 0.5s; opacity: 0; }
+    .feature-card:nth-child(6) { animation: slideIn 0.5s ease forwards; animation-delay: 0.6s; opacity: 0; }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      background: linear-gradient(135deg, var(--accent-color) 0%, var(--brand-secondary) 100%);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      flex-shrink: 0;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    .feature-content {
+      flex: 1;
+    }
+
+    .feature-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+
+    .feature-desc {
+      font-size: 24px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.4;
+    }
+
+    .feature-badge {
+      padding: 10px 20px;
+      background: var(--accent-color);
+      color: var(--text-dark);
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 30px 0;
+      z-index: 10;
+    }
+
+    .scroll-text {
+      font-size: 22px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+    }
+
+    .scroll-arrows {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      animation: scrollBounce 1.5s ease-in-out infinite;
+    }
+
+    .scroll-arrow {
+      width: 20px;
+      height: 20px;
+      border-right: 3px solid rgba(255,255,255,0.5);
+      border-bottom: 3px solid rgba(255,255,255,0.5);
+      transform: rotate(45deg);
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+
+    /* CTA section */
+    .cta-section {
+      margin-top: auto;
+      z-index: 10;
+    }
+
+    .cta-button {
+      display: block;
+      width: 100%;
+      padding: 36px;
+      background: var(--text-light);
+      color: var(--brand-primary);
+      font-size: 38px;
+      font-weight: 800;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 20px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    }
+
+    .cta-subtext {
+      font-size: 24px;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .safe-bottom {
+      height: 120px;
+    }
+
+    /* Feature count badge */
+    .feature-count {
+      position: absolute;
+      top: 200px;
+      right: 60px;
+      width: 100px;
+      height: 100px;
+      background: var(--accent-color);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 210, 211, 0.4);
+      z-index: 10;
+    }
+
+    .count-number {
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1;
+    }
+
+    .count-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Decorative elements -->
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+
+    <div class="safe-top"></div>
+
+    {% if showFeatureCount | default(true) %}
+    <div class="feature-count">
+      <span class="count-number">{{ features | length if features else '5' }}</span>
+      <span class="count-label">features</span>
+    </div>
+    {% endif %}
+
+    <div class="product-section">
+      <img src="{{ productImage }}" alt="Product" class="product-image">
+      {% if productName %}
+      <h1 class="product-name">{{ productName }}</h1>
+      {% endif %}
+      {% if productTagline %}
+      <p class="product-tagline">{{ productTagline }}</p>
+      {% endif %}
+    </div>
+
+    <div class="features-section">
+      {% if features %}
+        {% for feature in features %}
+        <div class="feature-card">
+          <div class="feature-icon">{{ feature.icon | default('') }}</div>
+          <div class="feature-content">
+            <h3 class="feature-title">{{ feature.title }}</h3>
+            {% if feature.desc %}
+            <p class="feature-desc">{{ feature.desc }}</p>
+            {% endif %}
+          </div>
+          {% if feature.badge %}
+          <span class="feature-badge">{{ feature.badge }}</span>
+          {% endif %}
+        </div>
+        {% endfor %}
+      {% else %}
+        <!-- Default features for preview -->
+        <div class="feature-card">
+          <div class="feature-icon"></div>
+          <div class="feature-content">
+            <h3 class="feature-title">초경량 디자인</h3>
+            <p class="feature-desc">단 180g의 놀라운 가벼움</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"></div>
+          <div class="feature-content">
+            <h3 class="feature-title">방수 기능</h3>
+            <p class="feature-desc">IPX7 등급 완벽 방수</p>
+          </div>
+          <span class="feature-badge">NEW</span>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"></div>
+          <div class="feature-content">
+            <h3 class="feature-title">긴 배터리</h3>
+            <p class="feature-desc">최대 40시간 연속 사용</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"></div>
+          <div class="feature-content">
+            <h3 class="feature-title">프리미엄 사운드</h3>
+            <p class="feature-desc">Hi-Res 오디오 지원</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"></div>
+          <div class="feature-content">
+            <h3 class="feature-title">스마트 연결</h3>
+            <p class="feature-desc">멀티포인트 블루투스</p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if showScrollIndicator | default(false) %}
+    <div class="scroll-indicator">
+      <span class="scroll-text">SWIPE FOR MORE</span>
+      <div class="scroll-arrows">
+        <span class="scroll-arrow"></span>
+        <span class="scroll-arrow"></span>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="cta-section">
+      <a href="#" class="cta-button">{{ cta | default('자세히 보기') }}</a>
+      {% if ctaSubtext %}
+      <p class="cta-subtext">{{ ctaSubtext }}</p>
+      {% endif %}
+    </div>
+
+    <div class="safe-bottom"></div>
+  </div>
+</body>
+</html>

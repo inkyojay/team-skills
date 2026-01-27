@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>썬데이허그 마케팅 스킬팩 사용 가이드</title>
     <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
         * {
             margin: 0;
             padding: 0;
@@ -12,7 +14,7 @@
         }
 
         body {
-            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
             background: linear-gradient(135deg, #FFFBF5 0%, #EAE2D5 100%);
             min-height: 100vh;
             color: #2d2420;
@@ -20,7 +22,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
         }
@@ -39,6 +41,59 @@
         .subtitle {
             font-size: 1.1rem;
             color: #666;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #A38068;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            background: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            color: #666;
+            transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .nav-tab:hover, .nav-tab.active {
+            background: #A38068;
+            color: white;
         }
 
         .card {
@@ -57,615 +112,989 @@
             border-bottom: 2px solid #EAE2D5;
         }
 
-        h3 {
-            font-size: 1.2rem;
-            color: #2d2420;
-            margin: 25px 0 15px 0;
+        .category-section {
+            margin-bottom: 40px;
         }
 
-        .highlight-box {
-            background: linear-gradient(135deg, #ff8605 0%, #ffab4a 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 12px;
-            margin: 20px 0;
-        }
-
-        .highlight-box h3 {
-            color: white;
-            margin-top: 0;
-        }
-
-        .step {
+        .category-header {
             display: flex;
-            align-items: flex-start;
-            margin: 20px 0;
-            padding: 20px;
-            background: #FFFBF5;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background: white;
             border-radius: 12px;
+            margin-bottom: 20px;
             border-left: 4px solid #A38068;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        .step-number {
-            background: #A38068;
-            color: white;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 20px;
-            flex-shrink: 0;
+        .category-icon {
+            font-size: 1.8rem;
         }
 
-        .step-content {
+        .category-header h3 {
             flex: 1;
+            font-size: 1.3rem;
+            color: #2d2420;
         }
 
-        .step-content h4 {
-            margin-bottom: 8px;
-            color: #A38068;
-        }
-
-        code {
-            background: #f5f5f5;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9em;
-            color: #e74c3c;
-        }
-
-        .code-block {
-            background: #2d2420;
-            color: #f8f8f2;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 15px 0;
-            overflow-x: auto;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        .code-block .comment {
-            color: #6272a4;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #EAE2D5;
-        }
-
-        th {
-            background: #A38068;
-            color: white;
-            font-weight: 600;
-        }
-
-        tr:hover {
-            background: #FFFBF5;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
+        .skill-count {
+            background: #EAE2D5;
+            padding: 5px 15px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .badge-content { background: #d4edda; color: #155724; }
-        .badge-brand { background: #cce5ff; color: #004085; }
-        .badge-util { background: #fff3cd; color: #856404; }
-        .badge-agent { background: #f8d7da; color: #721c24; }
-        .badge-tool { background: #e2e3e5; color: #383d41; }
-
-        .example-box {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin: 10px 0;
-        }
-
-        .example-box strong {
-            color: #A38068;
-        }
-
-        .warning {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin: 20px 0;
-        }
-
-        .warning::before {
-            content: "⚠️ ";
-        }
-
-        .tip {
-            background: #d1ecf1;
-            border: 1px solid #bee5eb;
-            border-radius: 8px;
-            padding: 15px 20px;
-            margin: 20px 0;
-        }
-
-        .tip::before {
-            content: "💡 ";
-        }
-
-        .color-swatch {
-            display: inline-flex;
-            align-items: center;
-            margin: 5px 10px 5px 0;
-        }
-
-        .color-box {
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            margin-right: 8px;
-            border: 1px solid rgba(0,0,0,0.1);
+            font-size: 0.85rem;
+            color: #666;
         }
 
         .skill-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
         }
 
-        .skill-item {
-            background: #FFFBF5;
-            border-radius: 10px;
-            padding: 15px;
-            border: 1px solid #EAE2D5;
+        .skill-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .skill-item h4 {
-            color: #A38068;
-            margin-bottom: 8px;
-            font-size: 1rem;
+        .skill-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-        .skill-item p {
-            font-size: 0.9rem;
-            color: #666;
+        .skill-header {
             margin-bottom: 10px;
         }
 
-        .skill-item .example {
+        .skill-header h4 {
+            font-size: 1.1rem;
+            color: #2d2420;
+            margin-bottom: 5px;
+        }
+
+        .skill-path {
+            font-size: 0.75rem;
+            color: #999;
+            font-family: 'Monaco', 'Consolas', monospace;
+            background: #f5f5f5;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .skill-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .triggers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .trigger-tag {
+            background: linear-gradient(135deg, #ff8605 0%, #ffab4a 100%);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-list li {
             font-size: 0.85rem;
-            color: #888;
-            font-style: italic;
+            color: #666;
+            padding: 4px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #A38068;
+        }
+
+        .agent-section {
+            margin-top: 50px;
+        }
+
+        .agent-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .agent-table th {
+            background: #A38068;
+            color: white;
+            padding: 15px 20px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .agent-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid #EAE2D5;
+        }
+
+        .agent-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .agent-table tr:hover {
+            background: #FFFBF5;
+        }
+
+        .usage-box {
+            background: linear-gradient(135deg, #ff8605 0%, #ffab4a 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 16px;
+            margin: 30px 0;
+        }
+
+        .usage-box h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .usage-box code {
+            display: block;
+            background: rgba(255,255,255,0.2);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: 'Monaco', 'Consolas', monospace;
         }
 
         footer {
             text-align: center;
-            padding: 40px 20px;
-            color: #888;
-            font-size: 0.9rem;
+            margin-top: 50px;
+            padding: 20px;
+            color: #999;
+            font-size: 0.85rem;
         }
 
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .container { padding: 20px 15px; }
-            .card { padding: 20px; }
-            .step { flex-direction: column; }
-            .step-number { margin-bottom: 10px; }
+        @media (max-width: 768px) {
+            .stats {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .skill-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>썬데이허그 마케팅 스킬팩</h1>
-            <p class="subtitle">Claude Code와 함께하는 마케팅 업무 자동화</p>
+            <h1>🎨 썬데이허그 마케팅 스킬팩</h1>
+            <p class="subtitle">마케팅 업무 자동화를 위한 AI 스킬 & 에이전트 모음</p>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">53</div>
+                    <div class="stat-label">스킬</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">13</div>
+                    <div class="stat-label">에이전트</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">카테고리</div>
+                </div>
+            </div>
         </header>
 
-        <!-- 핵심 사용법 -->
-        <div class="card">
-            <h2>🚀 핵심 사용법</h2>
-
-            <div class="highlight-box">
-                <h3>슬래시 명령어가 아닙니다!</h3>
-                <p>그냥 <strong>자연어로 요청</strong>하세요. Claude가 알아서 스킬을 찾아 실행합니다.</p>
-            </div>
-
-            <div class="example-box">
-                <strong>예시:</strong><br>
-                "상세페이지 만들어줘"<br>
-                "카드뉴스 만들어줘"<br>
-                "메타 광고 기획해줘"<br>
-                "경쟁사 분석해줘"
-            </div>
+        <div class="usage-box">
+            <h3>💡 사용 방법</h3>
+            <p>슬래시 명령어가 아닙니다. 자연어로 요청하세요!</p>
+            <code>"상세페이지 만들어줘"</code>
+            <code>"카드뉴스 만들어줘"</code>
+            <code>"메타 광고 기획해줘"</code>
+            <code>"랜딩페이지 CRO 분석해줘"</code>
         </div>
 
-        <!-- 시작하기 -->
-        <div class="card">
-            <h2>📦 시작하기</h2>
+        <nav class="nav-tabs">
+            <button class="nav-tab" onclick="scrollToCategory('content-creation')">📝 콘텐츠 제작</button>
+            <button class="nav-tab" onclick="scrollToCategory('video')">🎬 영상 제작</button>
+            <button class="nav-tab" onclick="scrollToCategory('tools')">🔧 유틸리티 도구</button>
+            <button class="nav-tab" onclick="scrollToCategory('brand')">🏷️ 브랜드 관리</button>
+            <button class="nav-tab" onclick="scrollToCategory('advertising')">📢 광고</button>
+            <button class="nav-tab" onclick="scrollToCategory('marketing')">📊 마케팅 전략</button>
+            
+            <button class="nav-tab" onclick="scrollToCategory('agents')">🤖 에이전트</button>
+        </nav>
 
-            <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                    <h4>skills 폴더를 원하는 위치에 복사</h4>
-                    <p>예: <code>/Users/사용자명/skills</code> 또는 <code>~/Documents/skills</code></p>
-                </div>
+        <main>
+            
+        <div class="category-section" id="content-creation">
+            <div class="category-header" style="border-left-color: #4CAF50">
+                <span class="category-icon">📝</span>
+                <h3>콘텐츠 제작</h3>
+                <span class="skill-count">2개 스킬</span>
             </div>
-
-            <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                    <h4>Claude Code 실행</h4>
-                    <p>터미널에서 skills 폴더로 이동 후 Claude Code 실행</p>
-                    <div class="code-block">
-cd ~/skills<br>
-claude
-                    </div>
-                </div>
-            </div>
-
-            <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                    <h4>자연어로 요청</h4>
-                    <p>하고 싶은 작업을 말하면 됩니다!</p>
-                    <div class="code-block">
-<span class="comment"># Claude Code 프롬프트에서</span><br>
-> 슬리핑백 상세페이지 만들어줘
-                    </div>
-                </div>
-            </div>
-
-            <div class="tip">
-                <strong>Tip:</strong> Claude가 스킬 파일을 참고해서 작업합니다. 특정 스킬을 지정하고 싶으면
-                "page-builder/SKILL.md 참고해서 상세페이지 만들어줘"처럼 요청하세요.
-            </div>
-        </div>
-
-        <!-- 전체 스킬 목록 -->
-        <div class="card">
-            <h2>📋 전체 스킬 목록 (22개)</h2>
-
-            <h3><span class="badge badge-content">콘텐츠 제작</span> 4개</h3>
             <div class="skill-grid">
-                <div class="skill-item">
-                    <h4>상세페이지 빌더</h4>
-                    <p>이커머스 상품 상세페이지 HTML 생성</p>
-                    <div class="example">"상세페이지 만들어줘"</div>
+                
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>card-news-creator</h4>
+                    <span class="skill-path">skills/content-creation/card-news/</span>
                 </div>
-                <div class="skill-item">
-                    <h4>카드뉴스 제작</h4>
-                    <p>YouTube/웹/PDF에서 카드뉴스 자동 생성</p>
-                    <div class="example">"카드뉴스 만들어줘"</div>
-                </div>
-                <div class="skill-item">
-                    <h4>릴스 영상 편집</h4>
-                    <p>Instagram Reels 규격 영상 편집</p>
-                    <div class="example">"릴스로 만들어줘"</div>
-                </div>
-                <div class="skill-item">
-                    <h4>메타 광고 기획</h4>
-                    <p>Meta 광고 전략 수립 및 크리에이티브 제작</p>
-                    <div class="example">"광고 캠페인 기획해줘"</div>
-                </div>
+                <p class="skill-desc">유튜브, 웹페이지, PDF 등 다양한 소스에서 콘텐츠를 추출하여 인스타그램 스타일 카드뉴스로 변환. 나노바나 API로 배경 이미지를 자동 생성하고, Sunday Hug 스타일의 세련된 카드뉴스 제작. 사용자가 (1) 유튜브 URL을 주고 카드뉴스 제작을 요청하거나, (</p>
+                
+                
             </div>
-
-            <h3><span class="badge badge-brand">브랜드 도구</span> 2개</h3>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>page-builder</h4>
+                    <span class="skill-path">skills/content-creation/page-builder/</span>
+                </div>
+                <p class="skill-desc">---
+name: page-builder
+description: |
+  멀티 브랜드 상세페이지를 생성하는 스킬.
+  트리거: "상세페이지 만들어줘", "제품 페이지 작성", "[브랜드명] 스타일로",
+  "URL 분석해서 리뉴얼", "경쟁사 페이지 참고해서"
+---</p>
+                
+                
+            </div>
+            
+            </div>
+        </div>
+        
+        <div class="category-section" id="video">
+            <div class="category-header" style="border-left-color: #9C27B0">
+                <span class="category-icon">🎬</span>
+                <h3>영상 제작</h3>
+                <span class="skill-count">2개 스킬</span>
+            </div>
             <div class="skill-grid">
-                <div class="skill-item">
-                    <h4>브랜드 DNA 추출</h4>
-                    <p>웹사이트에서 컬러, 폰트, 톤앤매너 추출</p>
-                    <div class="example">"브랜드 분석해줘"</div>
+                
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>reels-editor</h4>
+                    <span class="skill-path">skills/video/reels-editor/</span>
                 </div>
-                <div class="skill-item">
-                    <h4>제품 분석</h4>
-                    <p>제품 정보 수집 및 분석 리포트 생성</p>
-                    <div class="example">"제품 분석해줘"</div>
-                </div>
+                <p class="skill-desc">사용자가 업로드한 영상을 Instagram Reels 광고 형식(9:16, 1080x1920, 최대 90초)으로 자동 편집합니다.</p>
+                
+                <ul class='feature-list'><li>A</li><li>9</li><li>클</li><li>오</li></ul>
             </div>
-
-            <h3><span class="badge badge-util">유틸리티</span> 3개</h3>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>remotion-best-practices</h4>
+                    <span class="skill-path">skills/video/remotion/</span>
+                </div>
+                <p class="skill-desc">Best practices for Remotion - Video creation in React</p>
+                
+                
+            </div>
+            
+            </div>
+        </div>
+        
+        <div class="category-section" id="tools">
+            <div class="category-header" style="border-left-color: #607D8B">
+                <span class="category-icon">🔧</span>
+                <h3>유틸리티 도구</h3>
+                <span class="skill-count">10개 스킬</span>
+            </div>
             <div class="skill-grid">
-                <div class="skill-item">
-                    <h4>CSS 인라인 변환</h4>
-                    <p>HTML의 CSS 클래스를 인라인 스타일로 변환</p>
-                    <div class="example">"CSS 인라인으로 변환해줘"</div>
+                
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>capture-sections</h4>
+                    <span class="skill-path">skills/tools/capture-sections/</span>
                 </div>
-                <div class="skill-item">
-                    <h4>HTML 섹션 캡처</h4>
-                    <p>HTML 섹션별 이미지 캡처</p>
-                    <div class="example">"섹션 캡처해줘"</div>
-                </div>
-                <div class="skill-item">
-                    <h4>YouTube 수집기</h4>
-                    <p>YouTube 영상 자막/정보 수집</p>
-                    <div class="example">"유튜브 자막 추출해줘"</div>
-                </div>
+                <p class="skill-desc">HTML 상세페이지를 섹션별 고해상도 이미지로 캡처합니다. "섹션 캡처", "HTML 이미지로", "스크린샷" 요청 시 사용.</p>
+                
+                <ul class='feature-list'><li>H</li><li>고</li><li>2</li></ul>
             </div>
-
-            <h3><span class="badge badge-agent">마케팅 에이전트</span> 6개</h3>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>hook-creator</h4>
+                    <span class="skill-path">skills/tools/hook-creator/</span>
+                </div>
+                <p class="skill-desc">Create and configure Claude Code hooks for customizing agent behavior. Use when the user wants to (1) create a new hook, (2) configure automatic forma</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>html-section-capture</h4>
+                    <span class="skill-path">skills/tools/html-section-capture/</span>
+                </div>
+                <p class="skill-desc">HTML 상세페이지 파일을 섹션별로 구분하여 고해상도 이미지로 변환하는 skill. 사용자가 (1) HTML 파일을 이미지로 변환 요청하거나, (2) 상세페이지를 섹션별 이미지로 나눠달라고 하거나, (3) HTML을 고해상도 스크린샷으로 캡처해달라고 할 때 사용.</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>html2img</h4>
+                    <span class="skill-path">skills/tools/html2img/</span>
+                </div>
+                <p class="skill-desc">HTML 파일 전체를 고해상도 이미지로 변환합니다. "HTML 이미지로", "스크린샷", "고해상도 캡처" 요청 시 사용.</p>
+                
+                <ul class='feature-list'><li>H</li><li>2</li><li>섹</li></ul>
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>inline-css</h4>
+                    <span class="skill-path">skills/tools/inline-css/</span>
+                </div>
+                <p class="skill-desc">HTML 파일의 CSS 클래스를 인라인 스타일로 변환합니다. "CSS 인라인 변환", "인라인 스타일로 만들어줘" 요청 시 사용.</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>skill-creator</h4>
+                    <span class="skill-path">skills/tools/skill-creator/</span>
+                </div>
+                <p class="skill-desc">Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Claude</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>slash-command-creator</h4>
+                    <span class="skill-path">skills/tools/slash-command-creator/</span>
+                </div>
+                <p class="skill-desc">Guide for creating Claude Code slash commands. Use when the user wants to create a new slash command, update an existing slash command, or asks about </p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>subagent-creator</h4>
+                    <span class="skill-path">skills/tools/subagent-creator/</span>
+                </div>
+                <p class="skill-desc">Create specialized Claude Code sub-agents with custom system prompts and tool configurations. Use when users ask to create a new sub-agent, custom age</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>youtube-collector</h4>
+                    <span class="skill-path">skills/tools/youtube-collector/</span>
+                </div>
+                <p class="skill-desc">유튜브 채널을 등록하고 새 컨텐츠를 수집하여 자막 기반 요약을 생성하는 skill. 사용자가 (1) 유튜브 채널 등록/관리를 요청하거나, (2) 등록된 채널의 새 영상 수집을 요청하거나, (3) 유튜브 영상 요약을 요청할 때 사용. 데이터는 .reference/ 폴더에</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>youtube-transcribe-skill</h4>
+                    <span class="skill-path">skills/tools/youtube-transcribe-skill/</span>
+                </div>
+                <p class="skill-desc">'Extract subtitles/transcripts from YouTube videos. Triggers: "youtube transcript", "extract subtitles", "video captions", "视频字幕", "字幕提取", "YouTube转文字</p>
+                
+                
+            </div>
+            
+            </div>
+        </div>
+        
+        <div class="category-section" id="brand">
+            <div class="category-header" style="border-left-color: #2196F3">
+                <span class="category-icon">🏷️</span>
+                <h3>브랜드 관리</h3>
+                <span class="skill-count">5개 스킬</span>
+            </div>
             <div class="skill-grid">
-                <div class="skill-item">
-                    <h4>마케팅 허브</h4>
-                    <p>마케팅 업무 총괄, 워크플로우 설계</p>
-                    <div class="example">"마케팅 도와줘"</div>
+                
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>brand-dna-extractor</h4>
+                    <span class="skill-path">skills/brand/brand-dna/</span>
                 </div>
-                <div class="skill-item">
-                    <h4>경쟁사 분석</h4>
-                    <p>경쟁 브랜드 SWOT 분석 및 대응 전략</p>
-                    <div class="example">"코니바이에린 분석해줘"</div>
-                </div>
-                <div class="skill-item">
-                    <h4>시장 조사</h4>
-                    <p>시장 규모, 트렌드, 소비자 인사이트</p>
-                    <div class="example">"시장 조사해줘"</div>
-                </div>
-                <div class="skill-item">
-                    <h4>콘텐츠 검토</h4>
-                    <p>브랜드 일관성, 품질 검토</p>
-                    <div class="example">"콘텐츠 검토해줘"</div>
-                </div>
-                <div class="skill-item">
-                    <h4>데이터 리포트</h4>
-                    <p>광고 성과 데이터 분석</p>
-                    <div class="example">"리포트 분석해줘"</div>
-                </div>
-                <div class="skill-item">
-                    <h4>메타 광고 에이전트</h4>
-                    <p>대화형 Meta 광고 캠페인 기획</p>
-                    <div class="example">"메타 광고 전략 세워줘"</div>
-                </div>
+                <p class="skill-desc">웹사이트 URL에서 브랜드 DNA를 추출하고 인터랙티브 웹 리포트를 생성하는 스킬. 사용자가 "브랜드 분석", "브랜드 DNA 추출", "무드보드 만들어줘", "이 사이트 분석해줘", "경쟁사 분석", "레퍼런스 수집" 등을 요청할 때 사용. URL 크롤링 → AI 분</p>
+                
+                
             </div>
-
-            <h3><span class="badge badge-agent">브랜드 관리 에이전트</span> 3개</h3>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>brand-logo</h4>
+                    <span class="skill-path">skills/brand/brand-logo/</span>
+                </div>
+                <p class="skill-desc">브랜드 로고를 검색하고 다운로드 링크를 제공합니다. "로고 찾아줘", "브랜드 로고", "로고 검색" 요청 시 사용.</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>brand-setup</h4>
+                    <span class="skill-path">skills/brand/brand-setup/</span>
+                </div>
+                <p class="skill-desc">새 브랜드 초기 설정을 도와주는 마법사입니다. "브랜드 설정", "새 브랜드 추가", "브랜드 초기화" 요청 시 사용.</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>brand-updater</h4>
+                    <span class="skill-path">skills/brand/brand-updater/</span>
+                </div>
+                <p class="skill-desc">브랜드 정보를 업데이트하고 동기화합니다. "브랜드 수정", "정보 업데이트", "제품 추가" 요청 시 사용.</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>product-analyzer</h4>
+                    <span class="skill-path">skills/brand/product-analyzer/</span>
+                </div>
+                <p class="skill-desc">스마트스토어 상세페이지 URL에서 제품 이미지를 분석하여 강점/단점 리포트를 생성하는 스킬. 사용자가 "제품 분석", "상품 리뷰", "상세페이지 분석", "이 제품 어때?", "구매할만해?" 등을 요청할 때 사용. URL 크롤링 → Claude Vision 이미지 분</p>
+                
+                
+            </div>
+            
+            </div>
+        </div>
+        
+        <div class="category-section" id="advertising">
+            <div class="category-header" style="border-left-color: #FF5722">
+                <span class="category-icon">📢</span>
+                <h3>광고</h3>
+                <span class="skill-count">1개 스킬</span>
+            </div>
             <div class="skill-grid">
-                <div class="skill-item">
-                    <h4>브랜드 설정 위자드</h4>
-                    <p>신규 브랜드 초기 설정 가이드</p>
-                    <div class="example">"새 브랜드 설정해줘"</div>
+                
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>meta-ads</h4>
+                    <span class="skill-path">skills/advertising/meta-ads/</span>
                 </div>
-                <div class="skill-item">
-                    <h4>브랜드 업데이터</h4>
-                    <p>기존 브랜드 정보 수정</p>
-                    <div class="example">"브랜드 정보 업데이트해줘"</div>
+                <p class="skill-desc">Meta(Facebook/Instagram) 광고 카피와 크리에이티브를 생성합니다.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"메타 광고"</span> <span class="trigger-tag">"페이스북 광고"</span> <span class="trigger-tag">"인스타 광고"</span>
                 </div>
-                <div class="skill-item">
-                    <h4>브랜드 로고 파인더</h4>
-                    <p>브랜드 로고 검색 및 추출</p>
-                    <div class="example">"로고 찾아줘"</div>
-                </div>
+                
             </div>
-
-            <h3><span class="badge badge-tool">스킬 생성 도구</span> 4개</h3>
+            
+            </div>
+        </div>
+        
+        <div class="category-section" id="marketing">
+            <div class="category-header" style="border-left-color: #FF9800">
+                <span class="category-icon">📊</span>
+                <h3>마케팅 전략</h3>
+                <span class="skill-count">33개 스킬</span>
+            </div>
             <div class="skill-grid">
-                <div class="skill-item">
-                    <h4>스킬 생성기</h4>
-                    <p>새로운 스킬 템플릿 생성</p>
-                    <div class="example">"새 스킬 만들어줘"</div>
+                
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>Social Media Designer</h4>
+                    <span class="skill-path">skills/marketing/social-media-designer/</span>
                 </div>
-                <div class="skill-item">
-                    <h4>서브에이전트 생성</h4>
-                    <p>서브에이전트 정의 파일 생성</p>
-                    <div class="example">"에이전트 만들어줘"</div>
+                <p class="skill-desc">Create platform-optimized social media graphics</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"social media design"</span> <span class="trigger-tag">"social graphics"</span> <span class="trigger-tag">"instagram post"</span>
                 </div>
-                <div class="skill-item">
-                    <h4>슬래시 명령어 생성</h4>
-                    <p>슬래시 명령어 스킬 생성</p>
-                    <div class="example">"명령어 만들어줘"</div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>ab-test</h4>
+                    <span class="skill-path">skills/marketing/ab-test/</span>
                 </div>
-                <div class="skill-item">
-                    <h4>훅 생성기</h4>
-                    <p>이벤트 훅 생성</p>
-                    <div class="example">"훅 만들어줘"</div>
+                <p class="skill-desc">A/B 테스트 설계 및 분석.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"A/B 테스트"</span> <span class="trigger-tag">"실험 설계"</span> <span class="trigger-tag">"전환율 테스트"</span>
                 </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>ab-test-setup</h4>
+                    <span class="skill-path">skills/marketing/ab-test-setup/</span>
+                </div>
+                <p class="skill-desc">When the user wants to plan, design, or implement an A/B test or experiment. Also use when the user mentions "A/B test," "split test," "experiment," "</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>analytics-tracking</h4>
+                    <span class="skill-path">skills/marketing/analytics-tracking/</span>
+                </div>
+                <p class="skill-desc">분석 추적 설정 및 이벤트 기획.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"분석 설정"</span> <span class="trigger-tag">"GA4"</span> <span class="trigger-tag">"이벤트 추적"</span>
+                </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>canvas-design</h4>
+                    <span class="skill-path">skills/marketing/canvas-design/</span>
+                </div>
+                <p class="skill-desc">Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>competitor-alternatives</h4>
+                    <span class="skill-path">skills/marketing/competitor-alternatives/</span>
+                </div>
+                <p class="skill-desc">"When the user wants to create competitor comparison or alternative pages for SEO and sales enablement. Also use when the user mentions 'alternative p</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>competitor-analysis</h4>
+                    <span class="skill-path">skills/marketing/competitor-analysis/</span>
+                </div>
+                <p class="skill-desc">경쟁사 분석 및 벤치마킹.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"경쟁사 분석"</span> <span class="trigger-tag">"벤치마킹"</span> <span class="trigger-tag">"시장 조사"</span>
+                </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>content-strategy</h4>
+                    <span class="skill-path">skills/marketing/content-strategy/</span>
+                </div>
+                <p class="skill-desc">When the user wants to plan a content strategy, decide what content to create, or figure out what topics to cover. Also use when the user mentions "co</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>copy-editing</h4>
+                    <span class="skill-path">skills/marketing/copy-editing/</span>
+                </div>
+                <p class="skill-desc">"When the user wants to edit, review, or improve existing marketing copy. Also use when the user mentions 'edit this copy,' 'review my copy,' 'copy fe</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>copywriting</h4>
+                    <span class="skill-path">skills/marketing/copywriting/</span>
+                </div>
+                <p class="skill-desc">When the user wants to write, rewrite, or improve marketing copy for any page — including homepage, landing pages, pricing pages, feature pages, about</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>csv-analyzer</h4>
+                    <span class="skill-path">skills/marketing/csv-analyzer/</span>
+                </div>
+                <p class="skill-desc">CSV 데이터 분석 및 인사이트 추출.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"데이터 분석"</span> <span class="trigger-tag">"CSV 분석"</span> <span class="trigger-tag">"매출 분석"</span>
+                </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>data-report</h4>
+                    <span class="skill-path">skills/marketing/data-report/</span>
+                </div>
+                <p class="skill-desc">마케팅 데이터를 분석하고 인사이트 리포트를 생성합니다. "데이터 분석", "리포트 생성", "성과 분석" 요청 시 사용.</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>email-sequence</h4>
+                    <span class="skill-path">skills/marketing/email-sequence/</span>
+                </div>
+                <p class="skill-desc">이메일 마케팅 시퀀스 생성. 웰컴, 육성, 재구매 유도 이메일을 작성합니다.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"이메일 시퀀스"</span> <span class="trigger-tag">"드립 캠페인"</span> <span class="trigger-tag">"웰컴 이메일"</span>
+                </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>form-cro</h4>
+                    <span class="skill-path">skills/marketing/form-cro/</span>
+                </div>
+                <p class="skill-desc">When the user wants to optimize any form that is NOT signup/registration — including lead capture forms, contact forms, demo request forms, applicatio</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>free-tool-strategy</h4>
+                    <span class="skill-path">skills/marketing/free-tool-strategy/</span>
+                </div>
+                <p class="skill-desc">When the user wants to plan, evaluate, or build a free tool for marketing purposes — lead generation, SEO value, or brand awareness. Also use when the</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>launch-strategy</h4>
+                    <span class="skill-path">skills/marketing/launch-strategy/</span>
+                </div>
+                <p class="skill-desc">제품/기능 출시 전략 수립.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"출시 전략"</span> <span class="trigger-tag">"런칭"</span> <span class="trigger-tag">"신제품 출시"</span>
+                </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>marketing-ideas</h4>
+                    <span class="skill-path">skills/marketing/marketing-ideas/</span>
+                </div>
+                <p class="skill-desc">140개 마케팅 아이디어 & 전술.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"마케팅 아이디어"</span> <span class="trigger-tag">"프로모션 아이디어"</span> <span class="trigger-tag">"캠페인 아이디어"</span>
+                </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>marketing-psychology</h4>
+                    <span class="skill-path">skills/marketing/marketing-psychology/</span>
+                </div>
+                <p class="skill-desc">"When the user wants to apply psychological principles, mental models, or behavioral science to marketing. Also use when the user mentions 'psychology</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>onboarding-cro</h4>
+                    <span class="skill-path">skills/marketing/onboarding-cro/</span>
+                </div>
+                <p class="skill-desc">When the user wants to optimize post-signup onboarding, user activation, first-run experience, or time-to-value. Also use when the user mentions "onbo</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>page-cro</h4>
+                    <span class="skill-path">skills/marketing/page-cro/</span>
+                </div>
+                <p class="skill-desc">When the user wants to optimize, improve, or increase conversions on any marketing page — including homepage, landing pages, pricing pages, feature pa</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>paid-ads</h4>
+                    <span class="skill-path">skills/marketing/paid-ads/</span>
+                </div>
+                <p class="skill-desc">"When the user wants help with paid advertising campaigns on Google Ads, Meta (Facebook/Instagram), LinkedIn, Twitter/X, or other ad platforms. Also u</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>paywall-upgrade-cro</h4>
+                    <span class="skill-path">skills/marketing/paywall-upgrade-cro/</span>
+                </div>
+                <p class="skill-desc">When the user wants to create or optimize in-app paywalls, upgrade screens, upsell modals, or feature gates. Also use when the user mentions "paywall,</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>popup-cro</h4>
+                    <span class="skill-path">skills/marketing/popup-cro/</span>
+                </div>
+                <p class="skill-desc">When the user wants to create or optimize popups, modals, overlays, slide-ins, or banners for conversion purposes. Also use when the user mentions "ex</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>pricing-strategy</h4>
+                    <span class="skill-path">skills/marketing/pricing-strategy/</span>
+                </div>
+                <p class="skill-desc">가격 전략 및 수익화 최적화.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"가격 책정"</span> <span class="trigger-tag">"프라이싱"</span> <span class="trigger-tag">"할인 전략"</span>
+                </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>product-marketing-context</h4>
+                    <span class="skill-path">skills/marketing/product-marketing-context/</span>
+                </div>
+                <p class="skill-desc">"When the user wants to create or update their product marketing context document. Also use when the user mentions 'product context,' 'marketing conte</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>programmatic-seo</h4>
+                    <span class="skill-path">skills/marketing/programmatic-seo/</span>
+                </div>
+                <p class="skill-desc">When the user wants to create SEO-driven pages at scale using templates and data. Also use when the user mentions "programmatic SEO," "template pages,</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>referral-program</h4>
+                    <span class="skill-path">skills/marketing/referral-program/</span>
+                </div>
+                <p class="skill-desc">추천/리퍼럴 프로그램 설계.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"추천 프로그램"</span> <span class="trigger-tag">"리퍼럴"</span> <span class="trigger-tag">"친구 초대"</span>
+                </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>review-management</h4>
+                    <span class="skill-path">skills/marketing/review-management/</span>
+                </div>
+                <p class="skill-desc">고객 리뷰 관리 및 활용 전략.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"리뷰 관리"</span> <span class="trigger-tag">"후기 요청"</span> <span class="trigger-tag">"리뷰 분석"</span>
+                </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>schema-markup</h4>
+                    <span class="skill-path">skills/marketing/schema-markup/</span>
+                </div>
+                <p class="skill-desc">When the user wants to add, fix, or optimize schema markup and structured data on their site. Also use when the user mentions "schema markup," "struct</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>seo-audit</h4>
+                    <span class="skill-path">skills/marketing/seo-audit/</span>
+                </div>
+                <p class="skill-desc">웹사이트 SEO 감사 및 최적화 제안.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"SEO 분석"</span> <span class="trigger-tag">"검색 최적화"</span> <span class="trigger-tag">"사이트 감사"</span>
+                </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>signup-flow-cro</h4>
+                    <span class="skill-path">skills/marketing/signup-flow-cro/</span>
+                </div>
+                <p class="skill-desc">When the user wants to optimize signup, registration, account creation, or trial activation flows. Also use when the user mentions "signup conversions</p>
+                
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>social-content</h4>
+                    <span class="skill-path">skills/marketing/social-content/</span>
+                </div>
+                <p class="skill-desc">소셜 미디어 콘텐츠 기획 및 작성.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"인스타 포스팅"</span> <span class="trigger-tag">"SNS 콘텐츠"</span> <span class="trigger-tag">"소셜 미디어"</span>
+                </div>
+                
+            </div>
+            
+            <div class="skill-card">
+                <div class="skill-header">
+                    <h4>video-script</h4>
+                    <span class="skill-path">skills/marketing/video-script/</span>
+                </div>
+                <p class="skill-desc">마케팅 영상 스크립트 작성.</p>
+                
+                <div class="triggers">
+                    <span class="trigger-tag">"영상 스크립트"</span> <span class="trigger-tag">"릴스 대본"</span> <span class="trigger-tag">"광고 영상"</span>
+                </div>
+                
+            </div>
+            
             </div>
         </div>
+        
 
-        <!-- 빠른 요청 예시 -->
-        <div class="card">
-            <h2>⚡ 빠른 요청 예시</h2>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>하고 싶은 것</th>
-                        <th>이렇게 요청하세요</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>상세페이지 제작</td>
-                        <td>"아기띠 상세페이지 만들어줘"</td>
-                    </tr>
-                    <tr>
-                        <td>카드뉴스 제작</td>
-                        <td>"이 유튜브 영상으로 카드뉴스 만들어줘"</td>
-                    </tr>
-                    <tr>
-                        <td>릴스 제작</td>
-                        <td>"이 영상 릴스로 편집해줘"</td>
-                    </tr>
-                    <tr>
-                        <td>광고 기획</td>
-                        <td>"슬리핑백 인스타 광고 기획해줘"</td>
-                    </tr>
-                    <tr>
-                        <td>경쟁사 분석</td>
-                        <td>"스와들업 분석해줘"</td>
-                    </tr>
-                    <tr>
-                        <td>시장 조사</td>
-                        <td>"신생아 수면용품 시장 조사해줘"</td>
-                    </tr>
-                    <tr>
-                        <td>CSS 변환</td>
-                        <td>"page.html 인라인으로 변환해줘"</td>
-                    </tr>
-                    <tr>
-                        <td>브랜드 분석</td>
-                        <td>"이 사이트 브랜드 DNA 추출해줘"</td>
-                    </tr>
-                    <tr>
-                        <td>콘텐츠 검토</td>
-                        <td>"방금 만든 상세페이지 검토해줘"</td>
-                    </tr>
-                    <tr>
-                        <td>복합 작업</td>
-                        <td>"신제품 런칭 준비해줘" (마케팅 허브가 워크플로우 제안)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- 브랜드 컨텍스트 -->
-        <div class="card">
-            <h2>🎨 브랜드 컨텍스트</h2>
-
-            <p>이 스킬팩은 <strong>썬데이허그</strong> 브랜드에 최적화되어 있습니다.</p>
-
-            <table>
-                <tbody>
-                    <tr>
-                        <td><strong>브랜드</strong></td>
-                        <td>썬데이허그 (SUNDAYHUG)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>카테고리</strong></td>
-                        <td>프리미엄 베이비 슬립케어</td>
-                    </tr>
-                    <tr>
-                        <td><strong>타겟</strong></td>
-                        <td>0-36개월 아기 부모 (30대 여성)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>톤앤매너</strong></td>
-                        <td>따뜻하고 신뢰감 있는 육아 전문가</td>
-                    </tr>
-                    <tr>
-                        <td><strong>핵심 가치</strong></td>
-                        <td>따뜻함, 편안함, 자연친화, 신뢰</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>브랜드 컬러</h3>
-            <div style="margin: 15px 0;">
-                <div class="color-swatch">
-                    <div class="color-box" style="background: #A38068;"></div>
-                    <span>다크 브라운 #A38068 (메인)</span>
+            <div class="agent-section" id="agents">
+                <div class="category-header" style="border-left-color: #9C27B0">
+                    <span class="category-icon">🤖</span>
+                    <h3>AI 에이전트</h3>
+                    <span class="skill-count">13개 에이전트</span>
                 </div>
-                <div class="color-swatch">
-                    <div class="color-box" style="background: #FFFBF5;"></div>
-                    <span>데일리 크림 #FFFBF5 (밝은 배경)</span>
-                </div>
-                <div class="color-swatch">
-                    <div class="color-box" style="background: #EAE2D5;"></div>
-                    <span>오트 #EAE2D5 (중간 배경)</span>
-                </div>
-                <div class="color-swatch">
-                    <div class="color-box" style="background: #ff8605;"></div>
-                    <span>오렌지 #ff8605 (CTA, 강조)</span>
-                </div>
-                <div class="color-swatch">
-                    <div class="color-box" style="background: #eaccca;"></div>
-                    <span>코랄 #eaccca (서브 배경)</span>
-                </div>
+
+                <table class="agent-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 30%">에이전트</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr>
+            <td><strong>Brand Logo Finder</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Instagram Reels 영상 편집 에이전트</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Meta 광고 전략 에이전트</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Meta 광고 카피 에이전트</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Meta 광고 캠페인 에이전트</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>Meta 광고 크리에이티브 에이전트</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>[브랜드명] 경쟁사 분석 리포트</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>[브랜드명] 브랜드 가이드</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>시장 조사 리포트: [조사 주제]</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>콘텐츠 품질 리뷰 리포트</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>현재 디렉토리의 데이터 파일 검색</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>활성 브랜드 확인</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+        <tr>
+            <td><strong>활성 브랜드 확인</strong></td>
+            <td>설명 없음</td>
+        </tr>
+        
+                    </tbody>
+                </table>
             </div>
-
-            <h3>주요 경쟁사</h3>
-            <p>코니바이에린, 스와들업, 에이든아네이, 도노도노</p>
-        </div>
-
-        <!-- 폴더 구조 -->
-        <div class="card">
-            <h2>📁 폴더 구조</h2>
-
-            <div class="code-block">
-skills/<br>
-├── SKILL.md                 <span class="comment"># 마크다운 가이드</span><br>
-├── 사용가이드.html           <span class="comment"># 이 문서</span><br>
-│<br>
-├── agents/                  <span class="comment"># 에이전트 정의 파일 (10개)</span><br>
-│<br>
-├── page-builder/            <span class="comment"># 상세페이지 빌더</span><br>
-├── card-news/               <span class="comment"># 카드뉴스 제작</span><br>
-├── reels-editor/            <span class="comment"># 릴스 영상 편집</span><br>
-├── meta-ads/                <span class="comment"># 메타 광고 기획</span><br>
-│<br>
-├── brand-tools/             <span class="comment"># 브랜드 도구</span><br>
-│   ├── brand-dna/           <span class="comment"># 브랜드 DNA 추출</span><br>
-│   └── product-analyzer/    <span class="comment"># 제품 분석</span><br>
-│<br>
-├── commands/                <span class="comment"># 유틸리티 명령어</span><br>
-├── cc-skills/               <span class="comment"># 스킬 생성 도구</span><br>
-└── upload-package/          <span class="comment"># 배포용 패키지</span>
-            </div>
-        </div>
-
-        <!-- 필수 설치 -->
-        <div class="card">
-            <h2>⚙️ 필수 설치 (일부 스킬용)</h2>
-
-            <h3>릴스 영상 편집 사용 시</h3>
-            <div class="code-block">
-<span class="comment"># FFmpeg 설치 (Mac)</span><br>
-brew install ffmpeg<br>
-<br>
-<span class="comment"># Gemini API 키 설정</span><br>
-export GEMINI_API_KEY="your-api-key"
-            </div>
-
-            <h3>카드뉴스 제작 사용 시</h3>
-            <div class="code-block">
-<span class="comment"># Python 패키지 설치</span><br>
-pip install youtube-transcript-api playwright requests pyyaml beautifulsoup4 PyPDF2<br>
-<br>
-<span class="comment"># Playwright 브라우저 설치</span><br>
-playwright install chromium<br>
-<br>
-<span class="comment"># 나노바나 API 설정 (이미지 생성용)</span><br>
-python3 scripts/nanobanana_api.py --setup
-            </div>
-
-            <div class="warning">
-                <strong>참고:</strong> 상세페이지 빌더, 경쟁사 분석 등 대부분의 스킬은 별도 설치 없이 바로 사용 가능합니다.
-            </div>
-        </div>
-
-        <!-- FAQ -->
-        <div class="card">
-            <h2>❓ 자주 묻는 질문</h2>
-
-            <h3>Q. /명령어 형식으로 안 되나요?</h3>
-            <p>이 스킬팩은 슬래시 명령어로 등록된 것이 아닙니다. 그냥 자연어로 "상세페이지 만들어줘"처럼 요청하면 Claude가 스킬 파일을 참고해서 작업합니다.</p>
-
-            <h3>Q. 다른 브랜드에도 사용할 수 있나요?</h3>
-            <p>네! "XX 브랜드 스타일로 상세페이지 만들어줘"처럼 브랜드를 지정하거나, brand-tools로 새 브랜드를 설정할 수 있습니다.</p>
-
-            <h3>Q. 어떤 스킬을 써야 할지 모르겠어요</h3>
-            <p>"마케팅 도와줘"라고 요청하세요. 마케팅 허브 에이전트가 상황에 맞는 스킬과 워크플로우를 추천해줍니다.</p>
-
-            <h3>Q. 결과물 품질이 마음에 안 들어요</h3>
-            <p>"콘텐츠 검토해줘"로 품질 체크를 요청하거나, 구체적인 수정 사항을 말씀해 주세요.</p>
-        </div>
+        </main>
 
         <footer>
-            <p>썬데이허그 마케팅 스킬팩 v1.0</p>
-            <p>Made with Claude Code</p>
+            <p>마지막 업데이트: 2026-01-27 12:06</p>
+            <p>자동 생성됨 by generate-catalog.py</p>
         </footer>
     </div>
+
+    <script>
+        function scrollToCategory(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>

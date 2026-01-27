@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floating Product - Meta Ads Template</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+    <style>
+        :root {
+            --brand-primary: #0ea5e9;
+            --brand-secondary: #0284c7;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --bg-color: #f8fafc;
+            --shadow-color: {{ shadowColor | default('rgba(14, 165, 233, 0.3)') }};
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            width: 1080px;
+            height: 1080px;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 1080px;
+            height: 1080px;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle background pattern */
+        .bg-pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            z-index: 1;
+        }
+
+        .content-top {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .tagline {
+            font-size: 22px;
+            font-weight: 500;
+            color: var(--brand-primary);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .headline {
+            font-size: 58px;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        .product-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 700px;
+            height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image {
+            max-width: 85%;
+            max-height: 85%;
+            object-fit: contain;
+            filter: drop-shadow(0 60px 80px var(--shadow-color));
+            transform: translateY(-20px);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(-20px);
+            }
+            50% {
+                transform: translateY(-40px);
+            }
+        }
+
+        /* Shadow on ground */
+        .shadow-ground {
+            position: absolute;
+            bottom: 120px;
+            width: 400px;
+            height: 60px;
+            background: radial-gradient(ellipse at center, var(--shadow-color) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 5;
+            animation: shadow-pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes shadow-pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(0.85);
+                opacity: 0.4;
+            }
+        }
+
+        /* Decorative rings */
+        .ring {
+            position: absolute;
+            border: 2px solid rgba(14, 165, 233, 0.1);
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        .ring-1 {
+            width: 800px;
+            height: 800px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .ring-2 {
+            width: 600px;
+            height: 600px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .ring-3 {
+            width: 400px;
+            height: 400px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Bottom badge */
+        .badge-bottom {
+            position: absolute;
+            bottom: 60px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: white;
+            padding: 16px 32px;
+            border-radius: 60px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .badge-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .badge-icon svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        .badge-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bg-pattern"></div>
+
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+
+        <div class="content-top">
+            <p class="tagline">{{ tagline | default('Premium Quality') }}</p>
+            <h1 class="headline">{{ headline | default('완벽한 디자인') }}</h1>
+        </div>
+
+        <div class="product-wrapper">
+            <img src="{{ productImage }}" alt="Product" class="product-image">
+        </div>
+
+        <div class="shadow-ground"></div>
+
+        <div class="badge-bottom">
+            <div class="badge-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12l5 5L20 7"/>
+                </svg>
+            </div>
+            <span class="badge-text">무료 배송 · 30일 무료 반품</span>
+        </div>
+    </div>
+</body>
+</html>

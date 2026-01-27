@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>Countdown - Story/Reels</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --brand-primary: {{ brandColor | default('#FF6B6B') }};
+      --urgency-color: {{ urgencyColor | default('#FF4444') }};
+      --text-dark: {{ textDark | default('#2D3436') }};
+      --text-light: {{ textLight | default('#FFFFFF') }};
+      --bg-gradient-start: {{ bgGradientStart | default('#1a1a2e') }};
+      --bg-gradient-end: {{ bgGradientEnd | default('#16213e') }};
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      padding: 80px 60px;
+    }
+
+    /* Safe zones */
+    .safe-top {
+      height: 180px;
+    }
+
+    .promo-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .promo-label {
+      display: inline-block;
+      padding: 16px 36px;
+      background: var(--urgency-color);
+      color: white;
+      font-size: 28px;
+      font-weight: 700;
+      border-radius: 50px;
+      margin-bottom: 24px;
+      letter-spacing: 2px;
+    }
+
+    .promo-title {
+      font-size: 72px;
+      font-weight: 800;
+      color: var(--text-light);
+      line-height: 1.2;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.3);
+    }
+
+    .discount-section {
+      margin: 40px 0;
+      text-align: center;
+    }
+
+    .discount-text {
+      font-size: 160px;
+      font-weight: 900;
+      color: var(--urgency-color);
+      line-height: 1;
+      text-shadow: 0 8px 32px rgba(255, 68, 68, 0.4);
+    }
+
+    .discount-label {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--text-light);
+      margin-top: 8px;
+    }
+
+    .product-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .product-image {
+      max-width: 100%;
+      max-height: 480px;
+      object-fit: contain;
+      filter: drop-shadow(0 20px 60px rgba(0,0,0,0.4));
+    }
+
+    .countdown-section {
+      margin: 40px 0;
+      text-align: center;
+    }
+
+    .countdown-label {
+      font-size: 32px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 24px;
+    }
+
+    .countdown-timer {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .time-block {
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 24px 32px;
+      min-width: 140px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .time-value {
+      font-size: 72px;
+      font-weight: 800;
+      color: var(--text-light);
+      line-height: 1;
+    }
+
+    .time-label {
+      font-size: 22px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      margin-top: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .colon {
+      font-size: 60px;
+      font-weight: 700;
+      color: var(--urgency-color);
+      align-self: center;
+    }
+
+    .cta-section {
+      margin-top: 40px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 32px 100px;
+      background: var(--urgency-color);
+      color: var(--text-light);
+      font-size: 36px;
+      font-weight: 800;
+      border-radius: 60px;
+      text-decoration: none;
+      box-shadow: 0 12px 40px rgba(255, 68, 68, 0.5);
+    }
+
+    .deadline-text {
+      font-size: 26px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    /* Decorative elements */
+    .sparkle {
+      position: absolute;
+      font-size: 40px;
+      animation: sparkle 2s infinite;
+    }
+
+    .sparkle-1 { top: 300px; left: 80px; animation-delay: 0s; }
+    .sparkle-2 { top: 450px; right: 100px; animation-delay: 0.5s; }
+    .sparkle-3 { bottom: 500px; left: 120px; animation-delay: 1s; }
+    .sparkle-4 { bottom: 400px; right: 80px; animation-delay: 1.5s; }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .safe-bottom {
+      height: 180px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="safe-top"></div>
+
+    <!-- Decorative sparkles -->
+    <span class="sparkle sparkle-1">✨</span>
+    <span class="sparkle sparkle-2">✨</span>
+    <span class="sparkle sparkle-3">✨</span>
+    <span class="sparkle sparkle-4">✨</span>
+
+    <div class="promo-header">
+      <span class="promo-label">{{ promoLabel | default('LIMITED TIME') }}</span>
+      <h1 class="promo-title">{{ promoTitle | default('블랙프라이데이') }}</h1>
+    </div>
+
+    <div class="discount-section">
+      <p class="discount-text">{{ discountRate | default('30%') }}</p>
+      <p class="discount-label">{{ discountLabel | default('할인') }}</p>
+    </div>
+
+    <div class="product-section">
+      <img src="{{ productImage }}" alt="Product" class="product-image">
+    </div>
+
+    <div class="countdown-section">
+      <p class="countdown-label">{{ countdownLabel | default('종료까지 남은 시간') }}</p>
+      <div class="countdown-timer">
+        <div class="time-block">
+          <p class="time-value">{{ days | default('02') }}</p>
+          <p class="time-label">일</p>
+        </div>
+        <span class="colon">:</span>
+        <div class="time-block">
+          <p class="time-value">{{ hours | default('14') }}</p>
+          <p class="time-label">시간</p>
+        </div>
+        <span class="colon">:</span>
+        <div class="time-block">
+          <p class="time-value">{{ minutes | default('30') }}</p>
+          <p class="time-label">분</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <a href="#" class="cta-button">{{ cta | default('지금 구매하기') }}</a>
+      {% if deadline %}
+      <p class="deadline-text">{{ deadline }}</p>
+      {% endif %}
+    </div>
+
+    <div class="safe-bottom"></div>
+  </div>
+</body>
+</html>

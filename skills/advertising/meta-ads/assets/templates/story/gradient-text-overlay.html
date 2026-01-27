@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>Gradient Text Overlay - Story/Reels</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --brand-primary: {{ brandColor | default('#6C5CE7') }};
+      --brand-secondary: {{ brandSecondary | default('#A29BFE') }};
+      --text-light: {{ textLight | default('#FFFFFF') }};
+      --gradient-start: {{ gradientStart | default('rgba(0,0,0,0)') }};
+      --gradient-end: {{ gradientEnd | default('rgba(0,0,0,0.85)') }};
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    /* Background Image */
+    .background-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Gradient Overlay */
+    .gradient-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .gradient-overlay.to-bottom {
+      background: linear-gradient(
+        180deg,
+        var(--gradient-start) 0%,
+        var(--gradient-start) 30%,
+        var(--gradient-end) 100%
+      );
+    }
+
+    .gradient-overlay.to-top {
+      background: linear-gradient(
+        0deg,
+        var(--gradient-start) 0%,
+        var(--gradient-start) 30%,
+        var(--gradient-end) 100%
+      );
+    }
+
+    .gradient-overlay.to-center {
+      background: linear-gradient(
+        180deg,
+        var(--gradient-end) 0%,
+        var(--gradient-start) 40%,
+        var(--gradient-start) 60%,
+        var(--gradient-end) 100%
+      );
+    }
+
+    .gradient-overlay.diagonal {
+      background: linear-gradient(
+        135deg,
+        var(--gradient-end) 0%,
+        var(--gradient-start) 50%,
+        var(--gradient-end) 100%
+      );
+    }
+
+    .gradient-overlay.cinematic {
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 25%),
+        linear-gradient(180deg, transparent 50%, var(--gradient-end) 100%);
+    }
+
+    /* Cinematic Bars */
+    .cinematic-bar {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 120px;
+      background: black;
+    }
+
+    .cinematic-bar.top {
+      top: 0;
+    }
+
+    .cinematic-bar.bottom {
+      bottom: 0;
+    }
+
+    /* Content */
+    .content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 0 70px;
+      z-index: 1;
+    }
+
+    .content-inner {
+      padding-bottom: 320px;
+    }
+
+    /* Headline */
+    .headline {
+      font-size: 72px;
+      font-weight: 800;
+      color: var(--text-light);
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    }
+
+    .headline-line {
+      display: block;
+    }
+
+    .headline-accent {
+      position: relative;
+      display: inline;
+    }
+
+    .headline-accent::after {
+      content: '';
+      position: absolute;
+      bottom: 8px;
+      left: 0;
+      width: 100%;
+      height: 16px;
+      background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary));
+      opacity: 0.6;
+      border-radius: 8px;
+      z-index: -1;
+    }
+
+    /* Subtext */
+    .subtext {
+      font-size: 36px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.6;
+      margin-bottom: 60px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+      max-width: 800px;
+    }
+
+    /* Divider Line */
+    .divider {
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand-primary), var(--brand-secondary));
+      border-radius: 2px;
+      margin-bottom: 40px;
+    }
+
+    /* CTA Button */
+    .cta-container {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      padding: 32px 56px;
+      background: var(--text-light);
+      color: var(--brand-primary);
+      font-size: 34px;
+      font-weight: 700;
+      border-radius: 60px;
+      text-decoration: none;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+      transition: transform 0.3s ease;
+    }
+
+    .cta-arrow {
+      width: 24px;
+      height: 24px;
+      border-right: 4px solid var(--brand-primary);
+      border-top: 4px solid var(--brand-primary);
+      transform: rotate(45deg);
+    }
+
+    .cta-secondary {
+      font-size: 28px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Brand Logo */
+    .brand-logo {
+      position: absolute;
+      top: 180px;
+      left: 70px;
+      height: 60px;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+      opacity: 0.9;
+    }
+
+    /* Play Button (for video feel) */
+    .play-indicator {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.8;
+    }
+
+    .play-icon {
+      width: 0;
+      height: 0;
+      border-left: 40px solid white;
+      border-top: 24px solid transparent;
+      border-bottom: 24px solid transparent;
+      margin-left: 10px;
+    }
+
+    /* Film Grain Effect */
+    .film-grain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.03;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* Touch-friendly */
+    .tap-area {
+      min-height: 88px;
+      min-width: 88px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Background Image -->
+    <img src="{{ backgroundImage }}" alt="Background" class="background-image">
+
+    <!-- Gradient Overlay -->
+    <div class="gradient-overlay {{ gradientDirection | default('cinematic') }}"></div>
+
+    <!-- Film Grain -->
+    {% if showFilmGrain | default(true) %}
+    <div class="film-grain"></div>
+    {% endif %}
+
+    <!-- Cinematic Bars (optional) -->
+    {% if showCinematicBars %}
+    <div class="cinematic-bar top"></div>
+    <div class="cinematic-bar bottom"></div>
+    {% endif %}
+
+    <!-- Brand Logo -->
+    {% if brandLogo %}
+    <img src="{{ brandLogo }}" alt="Brand" class="brand-logo">
+    {% endif %}
+
+    <!-- Play Indicator (optional) -->
+    {% if showPlayButton %}
+    <div class="play-indicator">
+      <div class="play-icon"></div>
+    </div>
+    {% endif %}
+
+    <!-- Content -->
+    <div class="content">
+      <div class="content-inner">
+        <!-- Divider -->
+        <div class="divider"></div>
+
+        <!-- Headline -->
+        <h1 class="headline">
+          {% if headlineLines %}
+            {% for line in headlineLines %}
+            <span class="headline-line">{{ line | safe }}</span>
+            {% endfor %}
+          {% else %}
+            {{ headline | default('당신의 일상에<br><span class="headline-accent">특별함</span>을 더하다') | safe }}
+          {% endif %}
+        </h1>
+
+        <!-- Subtext -->
+        {% if subtext %}
+        <p class="subtext">{{ subtext }}</p>
+        {% endif %}
+
+        <!-- CTA -->
+        {% if cta %}
+        <div class="cta-container">
+          <a href="#" class="cta-button tap-area">
+            {{ cta }}
+            <span class="cta-arrow"></span>
+          </a>
+          {% if ctaSecondary %}
+          <span class="cta-secondary">{{ ctaSecondary }}</span>
+          {% endif %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

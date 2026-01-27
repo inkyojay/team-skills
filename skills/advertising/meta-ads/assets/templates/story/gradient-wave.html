@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920">
+  <title>Gradient Wave - Story/Reels</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --wave-color-1: {{ waveColor1 | default('#667eea') }};
+      --wave-color-2: {{ waveColor2 | default('#764ba2') }};
+      --text-light: {{ textLight | default('#FFFFFF') }};
+      --text-dark: {{ textDark | default('#1a1a2e') }};
+    }
+
+    body {
+      width: 1080px;
+      height: 1920px;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .background {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--wave-color-1) 0%, var(--wave-color-2) 100%);
+    }
+
+    /* Wave SVG backgrounds */
+    .wave-container {
+      position: absolute;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .wave-top {
+      top: 0;
+      height: 400px;
+    }
+
+    .wave-bottom {
+      bottom: 0;
+      height: 500px;
+      transform: rotate(180deg);
+    }
+
+    .wave {
+      width: 100%;
+      height: 100%;
+    }
+
+    .wave-path {
+      fill: rgba(255, 255, 255, 0.1);
+    }
+
+    .wave-path-2 {
+      fill: rgba(255, 255, 255, 0.05);
+    }
+
+    /* Floating orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), rgba(255,255,255,0.05));
+      filter: blur(1px);
+    }
+
+    .orb-1 {
+      width: 200px;
+      height: 200px;
+      top: 15%;
+      left: -50px;
+    }
+
+    .orb-2 {
+      width: 150px;
+      height: 150px;
+      top: 25%;
+      right: 30px;
+    }
+
+    .orb-3 {
+      width: 120px;
+      height: 120px;
+      bottom: 30%;
+      left: 60px;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      z-index: 10;
+    }
+
+    /* Safe zones */
+    .safe-zone-top {
+      height: 14%;
+      min-height: 268px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .safe-zone-bottom {
+      height: 14%;
+      min-height: 268px;
+    }
+
+    .brand-logo {
+      height: 48px;
+      opacity: 0.95;
+      filter: brightness(0) invert(1);
+    }
+
+    .content-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 60px;
+    }
+
+    .product-section {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .product-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .product-image {
+      max-width: 680px;
+      max-height: 700px;
+      object-fit: contain;
+      filter: drop-shadow(0 40px 80px rgba(0,0,0,0.3));
+      position: relative;
+      z-index: 2;
+    }
+
+    .text-section {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .headline {
+      font-size: 72px;
+      font-weight: 800;
+      color: var(--text-light);
+      line-height: 1.2;
+      margin-bottom: 20px;
+      letter-spacing: -0.02em;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+
+    .sub-headline {
+      font-size: 36px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.5;
+    }
+
+    .cta-section {
+      padding: 30px 60px 60px;
+      text-align: center;
+    }
+
+    .cta-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 32px 80px;
+      background: rgba(255,255,255,0.95);
+      color: var(--wave-color-1);
+      font-size: 36px;
+      font-weight: 700;
+      border-radius: 60px;
+      text-decoration: none;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      transition: transform 0.3s ease;
+    }
+
+    .cta-arrow {
+      font-size: 32px;
+    }
+
+    /* Shimmer effect */
+    .shimmer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 800px;
+      height: 800px;
+      transform: translate(-50%, -50%);
+      background: conic-gradient(from 0deg, transparent, rgba(255,255,255,0.1), transparent 30%);
+      border-radius: 50%;
+      animation: shimmer 8s linear infinite;
+    }
+
+    @keyframes shimmer {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="background"></div>
+
+  <!-- Decorative orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Wave Top -->
+  <div class="wave-container wave-top">
+    <svg class="wave" viewBox="0 0 1080 400" preserveAspectRatio="none">
+      <path class="wave-path" d="M0,200 C200,100 400,300 540,200 C680,100 880,250 1080,150 L1080,0 L0,0 Z"/>
+      <path class="wave-path-2" d="M0,250 C300,150 500,350 700,200 C900,50 1000,200 1080,180 L1080,0 L0,0 Z"/>
+    </svg>
+  </div>
+
+  <!-- Wave Bottom -->
+  <div class="wave-container wave-bottom">
+    <svg class="wave" viewBox="0 0 1080 500" preserveAspectRatio="none">
+      <path class="wave-path" d="M0,300 C180,200 360,400 540,280 C720,160 900,350 1080,250 L1080,0 L0,0 Z"/>
+      <path class="wave-path-2" d="M0,350 C250,250 450,450 650,300 C850,150 980,280 1080,220 L1080,0 L0,0 Z"/>
+    </svg>
+  </div>
+
+  <div class="container">
+    <div class="safe-zone-top">
+      {% if brandLogo %}
+      <img src="{{ brandLogo }}" alt="Brand" class="brand-logo">
+      {% endif %}
+    </div>
+
+    <div class="content-area">
+      <div class="product-section">
+        <div class="shimmer"></div>
+        <div class="product-wrapper">
+          <div class="product-glow"></div>
+          <img src="{{ productImage }}" alt="Product" class="product-image">
+        </div>
+      </div>
+
+      <div class="text-section">
+        <h1 class="headline">{{ headline | default('새로운 시작') }}</h1>
+        {% if subHeadline %}
+        <p class="sub-headline">{{ subHeadline }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <a href="#" class="cta-button">
+        {{ cta | default('자세히 보기') }}
+        <span class="cta-arrow">→</span>
+      </a>
+    </div>
+
+    <div class="safe-zone-bottom"></div>
+  </div>
+</body>
+</html>

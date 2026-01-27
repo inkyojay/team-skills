@@ -1,0 +1,219 @@
+{
+  "meta": {
+    "date": "2026-01-13",
+    "client": "코니",
+    "status": "FINAL",
+    "projectCode": "코니_DNA_2026.json"
+  },
+  "summary": {
+    "mainTitle": "부모로서의 삶을\n더 쉽고 멋지게",
+    "subTitle": "실용성과 스타일을 모두 잡은 육아 브랜드",
+    "description": "코니는 아기띠로 시작해 신생아부터 유아동까지 전 연령의 육아 제품을 선보이는 라이프스타일 브랜드입니다. '부모도 멋질 수 있다'는 철학 아래, 실용성과 디자인을 모두 갖춘 제품으로 현대 부모들의 삶을 더 가볍고 세련되게 만들어갑니다.",
+    "insights": [
+      {
+        "label": "아기띠 시그니처",
+        "icon": "trending"
+      },
+      {
+        "label": "미니멀 디자인",
+        "icon": "shield"
+      },
+      {
+        "label": "진정성 스토리",
+        "icon": "chart"
+      }
+    ]
+  },
+  "identity": {
+    "mission": "육아가 더 이상 스타일을 포기하는 일이 되지 않도록, 쉽고 멋진 부모의 삶을 만든다",
+    "vision": "전 세계 부모들이 사랑하는 글로벌 육아 라이프스타일 브랜드가 된다",
+    "values": [
+      "실용성 (Practicality)",
+      "디자인 (Design)",
+      "진정성 (Authenticity)",
+      "품질 (Quality)"
+    ],
+    "archetype": {
+      "name": "Creator (창조자)",
+      "description": "기존의 투박한 육아용품에 만족하지 않고, 부모의 라이프스타일까지 고려한 새로운 제품을 창조하는 혁신가"
+    },
+    "coreTraits": [
+      "세련된 (Stylish)",
+      "실용적인 (Practical)",
+      "진정성 있는 (Authentic)"
+    ]
+  },
+  "personality": {
+    "radarData": [
+      {
+        "subject": "진실성 (Sincerity)",
+        "A": 80,
+        "fullMark": 100
+      },
+      {
+        "subject": "흥미로움 (Excitement)",
+        "A": 60,
+        "fullMark": 100
+      },
+      {
+        "subject": "능력 (Competence)",
+        "A": 85,
+        "fullMark": 100
+      },
+      {
+        "subject": "세련됨 (Sophistication)",
+        "A": 90,
+        "fullMark": 100
+      },
+      {
+        "subject": "강인함 (Ruggedness)",
+        "A": 30,
+        "fullMark": 100
+      }
+    ],
+    "highlight": {
+      "title": "Sophistication (세련됨)",
+      "score": 90
+    }
+  },
+  "tone": {
+    "spectrum": [
+      {
+        "label": "형식성 (Formality)",
+        "left": "캐주얼",
+        "right": "공식적",
+        "value": 35
+      },
+      {
+        "label": "감정성 (Emotion)",
+        "left": "이성적",
+        "right": "감성적",
+        "value": 55
+      },
+      {
+        "label": "에너지 (Energy)",
+        "left": "차분한",
+        "right": "역동적",
+        "value": 45
+      },
+      {
+        "label": "접근성 (Accessibility)",
+        "left": "권위적",
+        "right": "친근한",
+        "value": 75
+      }
+    ],
+    "guidelines": {
+      "dos": [
+        "부모의 입장에서 공감하며 솔직하게 이야기하세요",
+        "제품 개발 비하인드 스토리를 진정성 있게 공유하세요",
+        "실용적인 정보와 함께 세련된 라이프스타일을 제안하세요"
+      ],
+      "donts": [
+        "과장되거나 자극적인 마케팅 문구 사용",
+        "육아의 어려움만 강조하는 부정적인 톤",
+        "싸구려 느낌의 할인 중심 커뮤니케이션"
+      ]
+    }
+  },
+  "visuals": {
+    "colors": [
+      {
+        "role": "Primary",
+        "name": "Konny Black",
+        "hex": "#000000",
+        "desc": "미니멀, 세련됨, 프리미엄",
+        "textColor": "text-white"
+      },
+      {
+        "role": "Secondary",
+        "name": "Soft Beige",
+        "hex": "#EEE9E0",
+        "desc": "따뜻함, 자연스러움, 편안함",
+        "textColor": "text-gray-800"
+      },
+      {
+        "role": "Accent",
+        "name": "Sky Blue",
+        "hex": "#E0ECF3",
+        "desc": "신선함, 청결함, 신뢰",
+        "textColor": "text-gray-800"
+      }
+    ],
+    "styleGuide": [
+      {
+        "title": "Photography",
+        "description": "자연스러운 라이프스타일 포토. 실제 부모와 아이의 일상을 담은 진정성 있는 이미지. 밝고 깔끔한 배경."
+      },
+      {
+        "title": "Typography",
+        "description": "미니멀한 산세리프 폰트. 블랙 컬러 위주의 깔끔한 타이포그래피. 여백을 충분히 활용."
+      },
+      {
+        "title": "Iconography",
+        "description": "심플하고 가는 선의 모던 아이콘. 불필요한 장식 배제. 기능 중심의 직관적 디자인."
+      }
+    ]
+  },
+  "persona": {
+    "name": "김지은",
+    "role": "34세, 10개월 아기 엄마, 마케팅 매니저",
+    "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMjA3fDB8MXxzZWFyY2h8Mnx8YXNpYW4lMjB3b21hbiUyMHByb2Zlc3Npb25hbHxlbnwwfHx8fDE3MDkzNDA0NzZ8MA&ixlib=rb-4.0.3&q=80&w=400",
+    "quote": "엄마가 됐다고 촌스러워질 순 없잖아요",
+    "description": "출산 전 패션과 라이프스타일에 관심이 많았고, 아이를 낳은 후에도 그 감각을 유지하고 싶어함. 실용적이면서도 예쁜 육아용품을 찾는 데 시간을 아끼지 않음. SNS에서 육아 일상을 공유하며, 센스 있는 아이템 추천에 관심이 많음.",
+    "goals": [
+      "실용적이면서 예쁜 육아템 찾기",
+      "육아와 커리어 양립",
+      "아이와 함께하는 세련된 라이프스타일"
+    ],
+    "painPoints": [
+      "촌스러운 육아용품 디자인",
+      "비싸기만 하고 실용적이지 않은 제품",
+      "아이 키우면서 자기 스타일 잃어가는 느낌"
+    ],
+    "tags": [
+      "워킹맘",
+      "라이프스타일",
+      "미니멀리스트",
+      "인스타그래머"
+    ]
+  },
+  "strategy": {
+    "strengths": [
+      "코니 아기띠의 높은 브랜드 인지도",
+      "일관된 미니멀 디자인 아이덴티티",
+      "비하인드 스토리를 통한 진정성 마케팅"
+    ],
+    "opportunities": [
+      "릴랙싱웨어 등 부모 제품 라인 확장",
+      "글로벌 시장 확대 (WORLD SHIPPING)",
+      "커뮤니티 기반 제품 개발 ('제품 제안하기' 활용)"
+    ],
+    "watchOut": [
+      "아기띠 외 제품 인지도 확대 필요",
+      "경쟁 브랜드의 미니멀 디자인 추격",
+      "시즌별 재고 관리 (일시품절 이슈)"
+    ]
+  },
+  "moodboard": {
+    "keywords": [
+      "미니멀",
+      "세련됨",
+      "라이프스타일",
+      "모던",
+      "블랙앤화이트",
+      "아기띠",
+      "부모",
+      "실용성",
+      "진정성",
+      "프리미엄"
+    ],
+    "images": [
+      "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      "https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      "https://images.unsplash.com/photo-1505944270255-72b8c68c6a70?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      "https://images.unsplash.com/photo-1489533119213-66a5cd877091?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80",
+      "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&w=1080&q=80"
+    ]
+  }
+}

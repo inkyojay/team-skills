@@ -7,6 +7,10 @@ export const ugcAdConfig: UgcReviewConfig = {
   },
   highlightColor: "#FFE53B",
   transitionDurationFrames: 4,
+  narrationSrc: "audio/narration.mp3",
+  narrationDelay: 2,
+  bgmSrc: "audio/bgm.mp3",
+  bgmVolume: 0.25,
   searchOverlay: {
     platform: "naver",
     searchQuery: "스와들업 졸업 슬리핑백",
@@ -23,8 +27,6 @@ export const ugcAdConfig: UgcReviewConfig = {
         highlightWords: ["걷어차는"],
       },
       captionDelay: 2,
-      narrationSrc: "audio/scene1.mp3",
-      narrationDelay: 2,
     },
     {
       // scene2.mp3: 2.47초
@@ -37,8 +39,6 @@ export const ugcAdConfig: UgcReviewConfig = {
         highlightWords: ["스와들업 졸업"],
       },
       captionDelay: 2,
-      narrationSrc: "audio/scene2.mp3",
-      narrationDelay: 2,
     },
     {
       // scene3.mp3: 3.53초
@@ -51,8 +51,6 @@ export const ugcAdConfig: UgcReviewConfig = {
         highlightWords: ["썬데이허그", "슬리핑백"],
       },
       captionDelay: 2,
-      narrationSrc: "audio/scene3.mp3",
-      narrationDelay: 2,
     },
     {
       // scene4.mp3: 2.82초
@@ -65,8 +63,6 @@ export const ugcAdConfig: UgcReviewConfig = {
         highlightWords: ["대나무 실키"],
       },
       captionDelay: 2,
-      narrationSrc: "audio/scene4.mp3",
-      narrationDelay: 2,
     },
     {
       // scene5.mp3: 3.89초
@@ -79,8 +75,6 @@ export const ugcAdConfig: UgcReviewConfig = {
         highlightWords: ["투웨이 지퍼"],
       },
       captionDelay: 2,
-      narrationSrc: "audio/scene5.mp3",
-      narrationDelay: 2,
     },
     {
       // scene6.mp3: 2.82초
@@ -93,8 +87,6 @@ export const ugcAdConfig: UgcReviewConfig = {
         highlightWords: ["꿀잠", "썬데이허그"],
       },
       captionDelay: 2,
-      narrationSrc: "audio/scene6.mp3",
-      narrationDelay: 2,
     },
   ],
 };

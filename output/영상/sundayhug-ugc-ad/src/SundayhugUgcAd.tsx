@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Sequence, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, Sequence, staticFile, useVideoConfig } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 
@@ -100,19 +100,17 @@ export const SundayhugUgcAd: React.FC<{ config: UgcReviewConfig }> = ({
         })}
       </TransitionSeries>
 
-      {config.scenes.map((scene, i) => {
-        if (!scene.narrationSrc) return null;
-        const delay = scene.narrationDelay ?? 5;
-        return (
-          <Sequence
-            key={`narration-${i}`}
-            from={sceneStarts[i] + delay}
-            layout="none"
-          >
-            <Narration src={scene.narrationSrc} />
-          </Sequence>
-        );
-      })}
+      {/* BGM */}
+      {config.bgmSrc && (
+        <Audio src={staticFile(config.bgmSrc)} volume={config.bgmVolume ?? 0.3} />
+      )}
+
+      {/* 나레이션 */}
+      {config.narrationSrc && (
+        <Sequence from={config.narrationDelay ?? 5} layout="none">
+          <Narration src={config.narrationSrc} />
+        </Sequence>
+      )}
     </AbsoluteFill>
   );
 };

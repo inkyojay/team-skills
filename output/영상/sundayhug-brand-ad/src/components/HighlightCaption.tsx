@@ -5,18 +5,30 @@ export const HighlightCaption: React.FC<{
   text: string;
   highlightWords?: string[];
   brandColor?: string;
-}> = ({ text, highlightWords = [], brandColor = "#A8C5A0" }) => {
+}> = ({ text, highlightWords = [] }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const progress = spring({
+  // 텍스트 전체 페이드인
+  const textProgress = spring({
     frame,
     fps,
     config: { damping: 14, stiffness: 160 },
   });
 
-  const opacity = interpolate(progress, [0, 1], [0, 1]);
-  const translateY = interpolate(progress, [0, 1], [20, 0]);
+  const opacity = interpolate(textProgress, [0, 1], [0, 1]);
+  const translateY = interpolate(textProgress, [0, 1], [20, 0]);
+
+  // 하이라이트 팝 애니메이션 (텍스트 등장 후 5프레임 뒤에 빵!)
+  const highlightDelay = 5;
+  const popProgress = spring({
+    frame: Math.max(0, frame - highlightDelay),
+    fps,
+    config: { damping: 8, stiffness: 200, mass: 0.6 },
+  });
+
+  const highlightScale = interpolate(popProgress, [0, 1], [0.5, 1]);
+  const highlightOpacity = interpolate(popProgress, [0, 1], [0, 1]);
 
   const renderText = () => {
     if (highlightWords.length === 0) return text;
@@ -29,10 +41,15 @@ export const HighlightCaption: React.FC<{
         <span
           key={i}
           style={{
-            background: brandColor,
-            padding: "4px 12px",
-            borderRadius: 8,
-            color: "#fff",
+            display: "inline-block",
+            background: "#FFD700",
+            padding: "8px 18px",
+            borderRadius: 12,
+            color: "#000",
+            fontWeight: 900,
+            transform: `scale(${highlightScale})`,
+            opacity: highlightOpacity,
+            textShadow: "none",
           }}
         >
           {part}
@@ -59,16 +76,16 @@ export const HighlightCaption: React.FC<{
     >
       <p
         style={{
-          fontSize: 48,
-          fontWeight: 700,
+          fontSize: 64,
+          fontWeight: 800,
           color: "#fff",
           fontFamily: "Pretendard, system-ui, -apple-system, sans-serif",
           textAlign: "center",
           lineHeight: 1.5,
           margin: 0,
           textShadow: [
-            "0 3px 10px rgba(0,0,0,0.8)",
-            "0 1px 3px rgba(0,0,0,0.9)",
+            "0 4px 12px rgba(0,0,0,0.9)",
+            "0 2px 4px rgba(0,0,0,0.95)",
           ].join(", "),
           letterSpacing: -0.5,
         }}

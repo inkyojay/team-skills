@@ -10,6 +10,10 @@ export const brandAdConfig: BrandedShowcaseConfig = {
     productName: "꿀잠 슬리핑백",
   },
   transitionDurationFrames: 6,
+  narrationSrc: "audio/narration.mp3",
+  narrationDelay: 3,
+  bgmSrc: "audio/bgm.mp3",
+  bgmVolume: 0.25,
   scenes: [
     {
       type: "intro",
@@ -21,8 +25,6 @@ export const brandAdConfig: BrandedShowcaseConfig = {
         highlightWords: ["안전한 수면"],
       },
       captionDelay: 5,
-      narrationSrc: "audio/scene1.mp3",
-      narrationDelay: 3,
     },
     {
       type: "feature",
@@ -34,8 +36,6 @@ export const brandAdConfig: BrandedShowcaseConfig = {
         highlightWords: ["얼굴을 가리지 않아"],
       },
       captionDelay: 5,
-      narrationSrc: "audio/scene2.mp3",
-      narrationDelay: 3,
     },
     {
       type: "feature",
@@ -47,8 +47,6 @@ export const brandAdConfig: BrandedShowcaseConfig = {
         highlightWords: ["실키 밤부소재"],
       },
       captionDelay: 5,
-      narrationSrc: "audio/scene3.mp3",
-      narrationDelay: 3,
     },
     {
       type: "feature",
@@ -60,8 +58,6 @@ export const brandAdConfig: BrandedShowcaseConfig = {
         highlightWords: ["12시간", "꿀잠"],
       },
       captionDelay: 5,
-      narrationSrc: "audio/scene4.mp3",
-      narrationDelay: 3,
     },
     {
       type: "cta",
@@ -73,8 +69,6 @@ export const brandAdConfig: BrandedShowcaseConfig = {
         highlightWords: ["5세까지", "썬데이허그"],
       },
       captionDelay: 5,
-      narrationSrc: "audio/scene5.mp3",
-      narrationDelay: 3,
     },
   ],
 };

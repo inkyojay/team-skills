@@ -28,4 +28,8 @@ export interface UgcReviewConfig {
   searchOverlay?: SearchScreenOverlay;
   highlightColor?: string;
   transitionDurationFrames?: number;
+  narrationSrc?: string;
+  narrationDelay?: number;
+  bgmSrc?: string;
+  bgmVolume?: number;
 }

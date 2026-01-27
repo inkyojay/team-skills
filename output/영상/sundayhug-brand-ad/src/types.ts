@@ -28,4 +28,8 @@ export interface BrandedShowcaseConfig {
   };
   header: BrandHeaderConfig;
   transitionDurationFrames?: number;
+  narrationSrc?: string;
+  narrationDelay?: number;
+  bgmSrc?: string;
+  bgmVolume?: number;
 }

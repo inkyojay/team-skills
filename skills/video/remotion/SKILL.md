@@ -46,10 +46,31 @@ Read individual rule files for detailed explanations and code examples:
 
 ## Templates
 
-Ready-to-use Remotion templates for common use cases:
+Ready-to-use Remotion templates for common use cases.
+전체 목록은 [templates/template-registry.md](templates/template-registry.md) 참조.
 
 - [templates/meta-reels-ad](templates/meta-reels-ad/) - Meta(Instagram/Facebook) Reels 광고 영상 템플릿 (9:16, 1080x1920)
   - Config 기반 멀티씬 구조: `AdConfig`로 씬, 브랜드, 별점 등 설정
   - TTS 나레이션 워크플로우: `scripts/generate-tts.sh` (Google Cloud TTS) + `scripts/trim-audio.sh` (FFmpeg 무음 제거)
   - 나레이션 외부 배치 패턴: TransitionSeries 바깥에 절대 프레임으로 Audio 배치하여 씬 전환 시 겹침 방지
   - 프로젝트 스캐폴딩: `scaffolding/` 폴더의 템플릿으로 빠르게 새 프로젝트 생성
+
+- [templates/ugc-review](templates/ugc-review/) - UGC 리뷰형 광고 (30~45초)
+  - 셀카 훅 → 네이버 검색 → 제품 시연 → 기능 소개 → CTA 흐름
+  - 캐주얼 나레이션, 흰/노랑 볼드 자막, 키워드 하이라이트
+  - 씬 타입별 전용 컴포넌트: SelfieHook, SearchScreen, DemoClip
+
+- [templates/comparison](templates/comparison/) - 비교 추천형 광고 (45~60초)
+  - 문제 제시 → 제품 비교 그리드 → 솔루션 시연 → 차별화 → CTA 흐름
+  - 둥근 필(pill) 스타일 자막, 정보 전달형 톤
+  - 2~4개 제품 비교 그리드 레이아웃, 추천 제품 하이라이트
+
+- [templates/branded-showcase](templates/branded-showcase/) - 브랜드 공식형 광고 (30~45초)
+  - 고정 헤더(로고+제품명+썸네일) + 하단 콘텐츠 순환 구조
+  - 전문 나레이션, 컬러 하이라이트 자막 (키워드에 브랜드 컬러 배경)
+  - 일관된 브랜드 아이덴티티 유지
+
+- [templates/review-banner](templates/review-banner/) - 리뷰 배너형 광고 (5~10초)
+  - 정적 컴포지트 레이아웃: 리뷰 카드(별점+말풍선) + 제품 배너
+  - 짧은 피드 광고, 리타겟팅에 최적화
+  - 순차 등장 애니메이션 + Ken Burns 배경 효과

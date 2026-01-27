@@ -12,3 +12,16 @@ CLAUDE.local.md
 # 로컬 테스트
 *.log
 *.tmp
+
+# Node
+node_modules/
+
+# IDE / AI tool configs
+.claude/
+.cursor/
+.gemini/
+.opencode/
+
+# Python
+__pycache__/
+*.pyc

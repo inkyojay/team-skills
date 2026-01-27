@@ -1,6 +1,7 @@
 # Meta Reels 광고 템플릿 (Remotion)
 
-Remotion을 사용한 세로형 릴스/스토리 광고 영상 템플릿입니다.
+Config 기반 멀티씬 세로형 릴스/스토리 광고 영상 템플릿입니다.
+TTS 나레이션 + 비디오 클립 + 자막을 조합하여 15초 광고를 생성합니다.
 
 ## 규격
 
@@ -11,116 +12,156 @@ Remotion을 사용한 세로형 릴스/스토리 광고 영상 템플릿입니�
 | FPS | 30 |
 | 권장 길이 | 6~15초 |
 
-## 구성 요소
+## 아키텍처
 
-템플릿에 포함된 오버레이 요소:
+```
+AdConfig (types.ts)
+  ├── scenes[] → TransitionSeries (비디오 + 자막)
+  ├── brand    → BrandLogo 컴포넌트
+  └── rating   → RatingBadge 컴포넌트
 
-1. **브랜드 로고** (상단) - 0.3초부터 페이드인
-2. **제품명** (상단 중앙) - 1초부터 페이드인
-3. **특징 태그** (중앙) - 2초부터 순차 페이드인
-4. **가격** (하단) - 3초부터 스프링 애니메이션
-5. **CTA 버튼** (하단) - 4초부터 스프링 + 펄스 애니메이션
-6. **별점/리뷰** (최하단) - 5초부터 페이드인
-
-## 사용법
-
-### 1. 프로젝트 생성
-
-```bash
-npx create-video@latest my-ad --blank
-cd my-ad
-npm install
+나레이션은 TransitionSeries 바깥에 절대 프레임으로 배치
+(씬 전환 시 오디오 겹침 방지)
 ```
 
-### 2. 템플릿 복사
+### 핵심 패턴: 나레이션 외부 배치
 
-`MetaReelsAd.tsx` 파일을 프로젝트의 `src/` 폴더에 복사합니다.
-
-### 3. Root.tsx 설정
+TransitionSeries 내부에 Audio를 넣으면 씬 전환 시 오디오가 겹칩니다.
+나레이션을 TransitionSeries **바깥**에 절대 프레임으로 배치하여 해결합니다:
 
 ```tsx
-import "./index.css";
-import { Composition } from "remotion";
-import { MetaReelsAd } from "./MetaReelsAd";
-
-export const RemotionRoot: React.FC = () => {
-  return (
-    <Composition
-      id="MetaReelsAd"
-      component={MetaReelsAd}
-      durationInFrames={30 * 15}  // 15초
-      fps={30}
-      width={1080}
-      height={1920}
-      defaultProps={{
-        videoSrc: "video.mp4",
-      }}
-    />
-  );
-};
+<AbsoluteFill>
+  <TransitionSeries>{/* 비디오 + 자막만 */}</TransitionSeries>
+  {/* 나레이션: 절대 타이밍 */}
+  <Sequence from={sceneStarts[i] + delay}>
+    <Narration src="audio/scene1.mp3" />
+  </Sequence>
+</AbsoluteFill>
 ```
 
-### 4. 영상 파일 추가
-
-`public/` 폴더에 배경 영상 파일을 추가합니다.
-
-### 5. 미리보기
-
-```bash
-npm run dev
-```
-
-브라우저에서 http://localhost:3000 접속
-
-### 6. 렌더링
-
-```bash
-npx remotion render MetaReelsAd out/ad.mp4
-```
-
-## 커스터마이징
-
-### Props
-
-| Prop | 타입 | 설명 |
-|------|------|------|
-| `videoSrc` | string | 배경 영상 파일명 (public 폴더 기준) |
-
-### 텍스트 수정
-
-컴포넌트 내 다음 항목들을 수정하세요:
-
-- **브랜드명**: `SUNDAY HUG`
-- **제품명**: `꿀잠 슬리핑백`
-- **서브타이틀**: `실키 밤부`
-- **특징 태그**: `["부드러운 촉감", "통기성 우수", "6가지 컬러"]`
-- **가격**: `54,900원`
-- **CTA**: `지금 구매하기`
-- **별점**: `4.9 (227개 리뷰)`
-
-### 색상 수정
-
-주요 색상 변수:
-- 브랜드 컬러: `#5a7d65` (그린)
-- CTA 그라데이션: `#7c9885` → `#5a7d65`
-- 텍스트: `#fff` (흰색), `#2d2d2d` (어두운 회색)
-
-### 타이밍 조절
-
-각 `<Sequence from={프레임}>` 값을 조절하여 등장 타이밍 변경:
-- 30fps 기준: 30프레임 = 1초
-- 예: `from={60}` = 2초 후 등장
+`utils/timing.ts`의 `calculateSceneStarts()`가 TransitionSeries 오버랩을 고려하여 각 씬의 절대 시작 프레임을 자동 계산합니다.
 
 ## 파일 구조
 
 ```
-remotion/templates/meta-reels-ad/
-├── MetaReelsAd.tsx    # 메인 컴포넌트
-└── README.md          # 이 문서
+meta-reels-ad/
+├── MetaReelsAd.tsx          # 메인 컴포넌트 (config → 멀티씬 렌더링)
+├── types.ts                 # AdConfig, SceneConfig 타입
+├── components/
+│   ├── Caption.tsx          # 흰색 볼드 자막 (spring 애니메이션)
+│   ├── BrandLogo.tsx        # 브랜드 로고 뱃지 (파라미터화)
+│   ├── RatingBadge.tsx      # 별점 뱃지 (파라미터화)
+│   ├── VideoClip.tsx        # 비디오 + 그라데이션 래퍼
+│   └── Narration.tsx        # Audio 래퍼
+├── utils/
+│   └── timing.ts            # 씬 시작 프레임 계산 유틸
+├── scaffolding/             # 프로젝트 스캐폴딩 템플릿
+│   ├── package.json.template
+│   ├── tsconfig.json.template
+│   ├── Root.tsx.template
+│   └── index.ts.template
+├── scripts/
+│   ├── generate-tts.sh      # Google Cloud TTS 생성
+│   └── trim-audio.sh        # FFmpeg 오디오 트리밍
+└── README.md                # 이 문서
 ```
 
-## 관련 스킬
+## 사용법
 
-- [meta-ads](../../meta-ads/) - 정적 이미지 광고
-- [reels-editor](../../reels-editor/) - FFmpeg 기반 릴스 편집
-- [remotion rules](../rules/) - Remotion 베스트 프랙티스
+### 1. 프로젝트 스캐폴딩
+
+```bash
+npx create-video@latest my-ad --blank
+cd my-ad
+npm install @remotion/transitions
+```
+
+`scaffolding/` 폴더의 템플릿 파일들을 참고하여 프로젝트를 구성합니다.
+`{{BRAND_NAME}}`, `{{BRAND_COLOR}}`, `{{COMPOSITION_ID}}` 등의 플레이스홀더를 교체하세요.
+
+### 2. AdConfig 정의
+
+`types.ts`의 `AdConfig` 인터페이스에 맞게 광고 설정을 작성합니다:
+
+```tsx
+import type { AdConfig } from "./types";
+
+const myAdConfig: AdConfig = {
+  brand: { name: "MY BRAND", color: "#5a7d65" },
+  rating: { score: "4.9", reviewCount: "227개 리뷰" },
+  transitionDurationFrames: 8,
+  scenes: [
+    {
+      videoSrc: "hook.mp4",
+      durationSeconds: 3,
+      caption: { line1: "후킹 카피", line2: "서브 카피" },
+      narrationSrc: "audio/scene1.mp3",
+      showBrandLogo: true,
+    },
+    {
+      videoSrc: "problem.mp4",
+      durationSeconds: 2,
+      caption: { line1: "문제 제기" },
+      narrationSrc: "audio/scene2.mp3",
+    },
+    // ... 추가 씬
+  ],
+};
+```
+
+### 3. TTS 나레이션 생성
+
+```bash
+# Google Cloud TTS로 나레이션 생성
+./scripts/generate-tts.sh "후킹 카피 텍스트" public/audio/scene1.mp3
+
+# 앞뒤 무음 제거
+./scripts/trim-audio.sh public/audio/scene1.mp3
+```
+
+### 4. 비디오 소스 준비
+
+`public/` 폴더에 각 씬의 비디오 파일을 추가합니다.
+- 9:16 세로 비디오 권장
+- `videoStartFrom`으로 시작 지점 조절 가능 (초 단위)
+
+### 5. 미리보기 & 렌더링
+
+```bash
+# 미리보기
+npm run dev
+
+# 렌더링
+npx remotion render MyAd out/ad.mp4
+```
+
+## SceneConfig 옵션
+
+| 필드 | 타입 | 기본값 | 설명 |
+|------|------|--------|------|
+| `videoSrc` | string | (필수) | 비디오 파일명 |
+| `videoStartFrom` | number | 0 | 비디오 시작 지점 (초) |
+| `durationSeconds` | number | (필수) | 씬 길이 (초) |
+| `caption` | object | (필수) | `{ line1, line2?, emoji? }` |
+| `narrationSrc` | string | - | 나레이션 오디오 파일명 |
+| `narrationDelay` | number | 5 | 나레이션 시작 딜레이 (프레임) |
+| `captionDelay` | number | 5 | 자막 등장 딜레이 (프레임) |
+| `showBrandLogo` | boolean | false | 브랜드 로고 표시 |
+| `showRatingBadge` | boolean | false | 별점 뱃지 표시 |
+| `ratingBadgeDelay` | number | 40 | 별점 뱃지 딜레이 (프레임) |
+
+## 15초 광고 구성 예시
+
+| 씬 | 시간 | 역할 | 예시 |
+|----|------|------|------|
+| 1 | 0-3초 | 후킹 | "이불 밖으로 나오는 아이" |
+| 2 | 3-5초 | 문제 제기 | "매번 걱정되시죠?" |
+| 3 | 5-9초 | 솔루션 | "슬리핑백이 답이에요" |
+| 4 | 9-12초 | 소재/혜택 | "실키밤부 원단이라 부드러워요" |
+| 5 | 12-15초 | CTA | "꿀잠 슬리핑백 ✨" + 별점 |
+
+## 관련 리소스
+
+- [Remotion 베스트 프랙티스](../../rules/) - 규칙 파일 모음
+- TTS: [Google Cloud Text-to-Speech](https://cloud.google.com/text-to-speech)
+- 오디오 편집: [FFmpeg](https://ffmpeg.org/)

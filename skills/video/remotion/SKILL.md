@@ -49,3 +49,7 @@ Read individual rule files for detailed explanations and code examples:
 Ready-to-use Remotion templates for common use cases:
 
 - [templates/meta-reels-ad](templates/meta-reels-ad/) - Meta(Instagram/Facebook) Reels 광고 영상 템플릿 (9:16, 1080x1920)
+  - Config 기반 멀티씬 구조: `AdConfig`로 씬, 브랜드, 별점 등 설정
+  - TTS 나레이션 워크플로우: `scripts/generate-tts.sh` (Google Cloud TTS) + `scripts/trim-audio.sh` (FFmpeg 무음 제거)
+  - 나레이션 외부 배치 패턴: TransitionSeries 바깥에 절대 프레임으로 Audio 배치하여 씬 전환 시 겹침 방지
+  - 프로젝트 스캐폴딩: `scaffolding/` 폴더의 템플릿으로 빠르게 새 프로젝트 생성

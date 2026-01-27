@@ -41,7 +41,7 @@ export const ugcAdConfig: UgcReviewConfig = {
     {
       type: "demo-clip",
       videoSrc: "videos/demo-product.mp4",
-      videoStartFrom: 5,
+      videoStartFrom: 10,
       durationSeconds: 4,
       caption: {
         text: "스와들 스트랩 찾았다!",
@@ -63,7 +63,7 @@ export const ugcAdConfig: UgcReviewConfig = {
     {
       type: "feature",
       videoSrc: "videos/feature-demo.mp4",
-      videoStartFrom: 15,
+      videoStartFrom: 20,
       durationSeconds: 4,
       caption: {
         text: "착탈 간편해서 기저귀 교체도 쉬워",
@@ -74,7 +74,7 @@ export const ugcAdConfig: UgcReviewConfig = {
     {
       type: "cta",
       videoSrc: "videos/cta-sleeping.mp4",
-      videoStartFrom: 15,
+      videoStartFrom: 14,
       durationSeconds: 3.5,
       caption: {
         text: "모로반사 걱정 끝, 썬데이허그",

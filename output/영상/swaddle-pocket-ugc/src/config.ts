@@ -30,7 +30,7 @@ export const ugcAdConfig: UgcReviewConfig = {
     {
       type: "search-screen",
       videoSrc: "videos/search-screen.mp4",
-      videoStartFrom: 3,
+      videoStartFrom: 2,
       durationSeconds: 3,
       caption: {
         text: "신생아 스와들 뭐가 좋을까?",
@@ -74,7 +74,7 @@ export const ugcAdConfig: UgcReviewConfig = {
     {
       type: "cta",
       videoSrc: "videos/cta-sleeping.mp4",
-      videoStartFrom: 25,
+      videoStartFrom: 5,
       durationSeconds: 3.5,
       caption: {
         text: "모로반사 걱정 끝, 썬데이허그",

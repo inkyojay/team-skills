@@ -40,7 +40,7 @@ export const brandAdConfig: BrandedShowcaseConfig = {
     {
       type: "feature",
       videoSrc: "videos/feature-material.mp4",
-      videoStartFrom: 10,
+      videoStartFrom: 12,
       durationSeconds: 4,
       caption: {
         text: "엘라스틴 소재로 부드럽게",
@@ -51,7 +51,7 @@ export const brandAdConfig: BrandedShowcaseConfig = {
     {
       type: "feature",
       videoSrc: "videos/feature-easy.mp4",
-      videoStartFrom: 20,
+      videoStartFrom: 3,
       durationSeconds: 4,
       caption: {
         text: "쏙 넣기만 하면 끝, 초간편",
@@ -62,7 +62,7 @@ export const brandAdConfig: BrandedShowcaseConfig = {
     {
       type: "cta",
       videoSrc: "videos/cta-brand.mp4",
-      videoStartFrom: 3,
+      videoStartFrom: 20,
       durationSeconds: 4,
       caption: {
         text: "편안한 수면의 시작, 썬데이허그",

@@ -29,7 +29,7 @@ export const brandAdConfig: BrandedShowcaseConfig = {
     {
       type: "feature",
       videoSrc: "videos/feature-moro.mp4",
-      videoStartFrom: 5,
+      videoStartFrom: 3,
       durationSeconds: 4,
       caption: {
         text: "스트랩으로 모로반사 안심",
@@ -40,7 +40,7 @@ export const brandAdConfig: BrandedShowcaseConfig = {
     {
       type: "feature",
       videoSrc: "videos/feature-velcro.mp4",
-      videoStartFrom: 5,
+      videoStartFrom: 8,
       durationSeconds: 4,
       caption: {
         text: "무소음 벨크로로 조용하게",
@@ -51,7 +51,7 @@ export const brandAdConfig: BrandedShowcaseConfig = {
     {
       type: "feature",
       videoSrc: "videos/feature-easy.mp4",
-      videoStartFrom: 10,
+      videoStartFrom: 15,
       durationSeconds: 4,
       caption: {
         text: "간편한 착탈, 기저귀 교체도 쉽게",
@@ -62,7 +62,7 @@ export const brandAdConfig: BrandedShowcaseConfig = {
     {
       type: "cta",
       videoSrc: "videos/cta-brand.mp4",
-      videoStartFrom: 12,
+      videoStartFrom: 14,
       durationSeconds: 4,
       caption: {
         text: "편안한 수면의 시작, 썬데이허그",

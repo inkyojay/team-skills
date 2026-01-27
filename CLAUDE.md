@@ -13,6 +13,13 @@ team-skills/
 │   ├── brand/                  # 브랜드 관리
 │   ├── marketing/              # 마케팅 전략
 │   └── tools/                  # 유틸리티 도구
+├── output/                     # 모든 결과물 (작업 유형별)
+│   ├── 광고카피/               # 광고 카피 문서
+│   ├── 영상/                   # 영상 소재
+│   ├── 리포트/                 # 분석 리포트
+│   ├── 상세페이지/             # 상세페이지 HTML
+│   ├── 카드뉴스/               # 카드뉴스 이미지
+│   └── 기타/                   # 기타 결과물
 ├── agents/                     # AI 에이전트
 ├── commands/                   # 슬래시 커맨드
 ├── scripts/                    # 유틸리티 스크립트
@@ -85,13 +92,27 @@ python3 scripts/generate-catalog.py
 1. `agents/` 폴더에 `.md` 파일 생성
 2. 문서 업데이트 실행
 
+## 결과물 저장 규칙
+
+**모든 스킬과 에이전트의 결과물은 반드시 `output/` 폴더에 저장합니다.**
+
+| 작업 유형 | 저장 경로 | 예시 |
+|----------|----------|------|
+| 광고 카피 | `output/광고카피/` | `output/광고카피/swaddle-strap-copy.md` |
+| 영상 소재 | `output/영상/` | `output/영상/reels-sleeping-bag.mp4` |
+| 분석 리포트 | `output/리포트/` | `output/리포트/competitor-analysis.md` |
+| 상세페이지 | `output/상세페이지/` | `output/상세페이지/product-landing.html` |
+| 카드뉴스 | `output/카드뉴스/` | `output/카드뉴스/sleeping-bag-tips/` |
+| 기타 | `output/기타/` | `output/기타/brand-guide.pdf` |
+
+> 개별 스킬 폴더 내에 output을 만들지 마세요. 항상 프로젝트 루트의 `output/`을 사용하세요.
+
 ## 카테고리 목록
 
 | 카테고리 | 폴더 | 용도 |
 |----------|------|------|
 | 콘텐츠 제작 | `content-creation/` | 상세페이지, 카드뉴스 |
 | 영상 제작 | `video/` | 릴스 편집, Remotion |
-| 광고 | `advertising/` | 메타 광고 |
 | 브랜드 | `brand/` | 브랜드 분석, 제품 분석 |
 | 마케팅 | `marketing/` | CRO, 카피, 전략 |
 | 도구 | `tools/` | 유틸리티, 스킬 생성 |

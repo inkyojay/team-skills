@@ -25,3 +25,8 @@ node_modules/
 # Python
 __pycache__/
 *.pyc
+
+# 영상/오디오 바이너리 (Remotion public assets)
+*.mp4
+*.mp3
+*.wav

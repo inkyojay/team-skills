@@ -52,4 +52,12 @@ export interface UgcReviewConfig {
   highlightColor?: string;
   /** 씬 전환 트랜지션 길이 (프레임 단위, 기본 4) - UGC는 빠른 컷 */
   transitionDurationFrames?: number;
+  /** 통합 나레이션 오디오 (전체 영상에 하나의 스토리로 재생, 씬별 narrationSrc보다 우선) */
+  narrationSrc?: string;
+  /** 통합 나레이션 시작 딜레이 (프레임 단위, 기본 5) */
+  narrationDelay?: number;
+  /** 배경 음악 오디오 파일명 (public/ 기준) */
+  bgmSrc?: string;
+  /** 배경 음악 볼륨 (0~1, 기본 0.3) */
+  bgmVolume?: number;
 }

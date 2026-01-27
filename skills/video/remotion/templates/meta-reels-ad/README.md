@@ -111,8 +111,35 @@ const myAdConfig: AdConfig = {
 
 ### 3. TTS 나레이션 생성
 
+**방법 A: 통합 나레이션 (권장)**
+
+화면 텍스트와 별도로, 영상 전체를 하나의 스토리처럼 풀어주는 나레이션을 생성합니다.
+화면 자막은 핵심 키워드 위주로, 나레이션은 자연스러운 이야기 흐름으로 구성하면 효과적입니다.
+
 ```bash
-# Google Cloud TTS로 나레이션 생성
+# 하나의 스토리 나레이션 생성
+./scripts/generate-tts.sh "우리 아기가 밤새 안전하게 잘 수 있도록, 꿀잠 슬리핑백이 함께해요." public/audio/narration.mp3 e5f6fb1a53d0add87afb4f happy 1.1
+```
+
+Config에 통합 나레이션 + BGM 설정:
+```ts
+const myAdConfig: AdConfig = {
+  narrationSrc: "audio/narration.mp3",
+  narrationDelay: 3,
+  bgmSrc: "audio/bgm.mp3",
+  bgmVolume: 0.25,
+  scenes: [
+    // 씬별 narrationSrc 없이 사용
+  ],
+};
+```
+
+**방법 B: 씬별 나레이션**
+
+각 씬에 개별 나레이션을 넣는 기존 방식입니다.
+
+```bash
+# Supertone TTS로 씬별 나레이션 생성
 ./scripts/generate-tts.sh "후킹 카피 텍스트" public/audio/scene1.mp3
 
 # 앞뒤 무음 제거
@@ -143,12 +170,21 @@ npx remotion render MyAd out/ad.mp4
 | `videoStartFrom` | number | 0 | 비디오 시작 지점 (초) |
 | `durationSeconds` | number | (필수) | 씬 길이 (초) |
 | `caption` | object | (필수) | `{ line1, line2?, emoji? }` |
-| `narrationSrc` | string | - | 나레이션 오디오 파일명 |
-| `narrationDelay` | number | 5 | 나레이션 시작 딜레이 (프레임) |
+| `narrationSrc` | string | - | 씬별 나레이션 오디오 파일명 |
+| `narrationDelay` | number | 5 | 씬별 나레이션 시작 딜레이 (프레임) |
 | `captionDelay` | number | 5 | 자막 등장 딜레이 (프레임) |
 | `showBrandLogo` | boolean | false | 브랜드 로고 표시 |
 | `showRatingBadge` | boolean | false | 별점 뱃지 표시 |
 | `ratingBadgeDelay` | number | 40 | 별점 뱃지 딜레이 (프레임) |
+
+## AdConfig 옵션
+
+| 필드 | 타입 | 기본값 | 설명 |
+|------|------|--------|------|
+| `narrationSrc` | string | - | 통합 나레이션 오디오 (씬별 narrationSrc보다 우선) |
+| `narrationDelay` | number | 5 | 통합 나레이션 시작 딜레이 (프레임) |
+| `bgmSrc` | string | - | 배경 음악 오디오 파일명 |
+| `bgmVolume` | number | 0.3 | 배경 음악 볼륨 (0~1) |
 
 ## 15초 광고 구성 예시
 
@@ -163,5 +199,5 @@ npx remotion render MyAd out/ad.mp4
 ## 관련 리소스
 
 - [Remotion 베스트 프랙티스](../../rules/) - 규칙 파일 모음
-- TTS: [Google Cloud Text-to-Speech](https://cloud.google.com/text-to-speech)
+- TTS: [Supertone API](https://docs.supertoneapi.com) (한국어 여성 Agatha 추천)
 - 오디오 편집: [FFmpeg](https://ffmpeg.org/)

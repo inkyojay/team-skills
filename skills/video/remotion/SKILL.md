@@ -51,8 +51,9 @@ Ready-to-use Remotion templates for common use cases.
 
 - [templates/meta-reels-ad](templates/meta-reels-ad/) - Meta(Instagram/Facebook) Reels 광고 영상 템플릿 (9:16, 1080x1920)
   - Config 기반 멀티씬 구조: `AdConfig`로 씬, 브랜드, 별점 등 설정
-  - TTS 나레이션 워크플로우: `scripts/generate-tts.sh` (Google Cloud TTS) + `scripts/trim-audio.sh` (FFmpeg 무음 제거)
-  - 나레이션 외부 배치 패턴: TransitionSeries 바깥에 절대 프레임으로 Audio 배치하여 씬 전환 시 겹침 방지
+  - TTS 나레이션: `scripts/generate-tts.sh` (Supertone TTS) + `scripts/trim-audio.sh` (FFmpeg 무음 제거)
+  - **나레이션 2가지 모드**: 통합 나레이션 (`config.narrationSrc` — 영상 전체에 스토리 1개) 또는 씬별 나레이션 (`scene.narrationSrc`)
+  - BGM 지원: `config.bgmSrc`로 배경 음악 추가, 볼륨 조절 가능
   - 프로젝트 스캐폴딩: `scaffolding/` 폴더의 템플릿으로 빠르게 새 프로젝트 생성
 
 - [templates/ugc-review](templates/ugc-review/) - UGC 리뷰형 광고 (30~45초)

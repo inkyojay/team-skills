@@ -1,5 +1,5 @@
 import React from "react";
-import { AbsoluteFill, Sequence, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, Sequence, staticFile, useVideoConfig } from "remotion";
 import { TransitionSeries, linearTiming } from "@remotion/transitions";
 import { fade } from "@remotion/transitions/fade";
 
@@ -105,20 +105,33 @@ export const MetaReelsAd: React.FC<{ config: AdConfig }> = ({ config }) => {
         })}
       </TransitionSeries>
 
-      {/* ─── 나레이션: TransitionSeries 바깥에서 절대 타이밍 ─── */}
-      {config.scenes.map((scene, i) => {
-        if (!scene.narrationSrc) return null;
-        const delay = scene.narrationDelay ?? 5;
-        return (
-          <Sequence
-            key={`narration-${i}`}
-            from={sceneStarts[i] + delay}
-            layout="none"
-          >
-            <Narration src={scene.narrationSrc} />
-          </Sequence>
-        );
-      })}
+      {/* ─── BGM ─── */}
+      {config.bgmSrc && (
+        <Audio src={staticFile(config.bgmSrc)} volume={config.bgmVolume ?? 0.3} />
+      )}
+
+      {/* ─── 나레이션 ─── */}
+      {config.narrationSrc ? (
+        /* 통합 나레이션: 하나의 스토리를 영상 전체에 재생 */
+        <Sequence from={config.narrationDelay ?? 5} layout="none">
+          <Narration src={config.narrationSrc} />
+        </Sequence>
+      ) : (
+        /* 씬별 나레이션: 각 씬에 개별 오디오 배치 (하위 호환) */
+        config.scenes.map((scene, i) => {
+          if (!scene.narrationSrc) return null;
+          const delay = scene.narrationDelay ?? 5;
+          return (
+            <Sequence
+              key={`narration-${i}`}
+              from={sceneStarts[i] + delay}
+              layout="none"
+            >
+              <Narration src={scene.narrationSrc} />
+            </Sequence>
+          );
+        })
+      )}
     </AbsoluteFill>
   );
 };

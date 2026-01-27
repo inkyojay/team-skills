@@ -15,7 +15,7 @@ permissionMode: acceptEdits
 
 ## 스크립트 위치
 
-모든 스크립트는 `/Users/inkyo/skills/reels-editor/scripts/` 디렉토리에 있습니다:
+모든 스크립트는 `reels-editor/scripts/` 디렉토리에 있습니다:
 
 - `generate_reels.py` - 통합 생성 스크립트
 - `analyze_video.py` - AI 영상 분석 (Gemini Vision)
@@ -32,7 +32,7 @@ permissionMode: acceptEdits
 
 ```
 영상 파일 경로를 알려주세요.
-예: /Users/inkyo/videos/product.mp4
+예: ~/videos/product.mp4
 ```
 
 ### 2단계: 편집 모드 선택
@@ -45,10 +45,10 @@ AskUserQuestion으로 편집 모드를 선택합니다:
 ### 3단계: 자동 모드 실행 (선택 시)
 
 ```bash
-python /Users/inkyo/skills/reels-editor/scripts/generate_reels.py \
+python reels-editor/scripts/generate_reels.py \
   --video [영상경로] \
   --mode auto \
-  --output /Users/inkyo/skills/reels-editor/output/
+  --output reels-editor/output/
 ```
 
 AI 분석 결과를 사용자에게 보여주고 수정 여부를 확인합니다:
@@ -64,13 +64,13 @@ AI 분석 결과를 사용자에게 보여주고 수정 여부를 확인합니�
 - CTA 텍스트
 
 ```bash
-python /Users/inkyo/skills/reels-editor/scripts/generate_reels.py \
+python reels-editor/scripts/generate_reels.py \
   --video [영상경로] \
   --mode manual \
   --clips "[구간]" \
   --headline "[헤드라인]" \
   --cta "[CTA]" \
-  --output /Users/inkyo/skills/reels-editor/output/
+  --output reels-editor/output/
 ```
 
 ### 5단계: 결과 확인
@@ -85,7 +85,7 @@ python /Users/inkyo/skills/reels-editor/scripts/generate_reels.py \
 ### 9:16 변환만 필요한 경우
 
 ```bash
-python /Users/inkyo/skills/reels-editor/scripts/resize_video.py \
+python reels-editor/scripts/resize_video.py \
   --video [입력] \
   --output [출력]
 ```
@@ -94,14 +94,14 @@ python /Users/inkyo/skills/reels-editor/scripts/resize_video.py \
 
 ```bash
 # 단일 구간
-python /Users/inkyo/skills/reels-editor/scripts/trim_video.py \
+python reels-editor/scripts/trim_video.py \
   --video [입력] \
   --start [시작초] \
   --end [종료초] \
   --output [출력]
 
 # 여러 구간 병합
-python /Users/inkyo/skills/reels-editor/scripts/trim_video.py \
+python reels-editor/scripts/trim_video.py \
   --video [입력] \
   --clips "5-20,45-60" \
   --output [출력]
@@ -110,7 +110,7 @@ python /Users/inkyo/skills/reels-editor/scripts/trim_video.py \
 ### 오버레이만 필요한 경우
 
 ```bash
-python /Users/inkyo/skills/reels-editor/scripts/add_overlay.py \
+python reels-editor/scripts/add_overlay.py \
   --video [입력] \
   --headline "[헤드라인]" \
   --cta "[CTA]" \
@@ -120,7 +120,7 @@ python /Users/inkyo/skills/reels-editor/scripts/add_overlay.py \
 ### AI 분석만 필요한 경우
 
 ```bash
-python /Users/inkyo/skills/reels-editor/scripts/analyze_video.py \
+python reels-editor/scripts/analyze_video.py \
   --video [입력] \
   --output analysis.json \
   --context "[제품/서비스 설명]"
@@ -173,7 +173,7 @@ export GEMINI_API_KEY="your-api-key"
 
 ## 출력 디렉토리
 
-기본 출력 경로: `/Users/inkyo/skills/reels-editor/output/`
+기본 출력 경로: `reels-editor/output/`
 
 생성되는 파일:
 - `reels_YYYYMMDD_HHMMSS.mp4` - 최종 영상

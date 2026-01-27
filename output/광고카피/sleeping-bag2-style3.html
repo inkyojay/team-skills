@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+  :root {
+    --text-dark: #2c2520;
+    --text-mid: #6b5d52;
+    --text-light: #a09080;
+    --bg-cream: #f7f4f0;
+    --accent-pink: #e8a0b4;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1350px;
+    overflow: hidden;
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg-cream);
+  }
+
+  .ad-container {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 상단 60% - 이미지 영역 */
+  .image-area {
+    width: 100%;
+    height: 780px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    display: block;
+  }
+
+  .badge {
+    position: absolute;
+    top: 50px;
+    left: 60px;
+    background: var(--accent-pink);
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 8px 24px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    z-index: 3;
+  }
+
+  /* 하단 40% - 정보 패널 */
+  .info-panel {
+    width: 100%;
+    flex: 1;
+    background: var(--bg-cream);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 80px;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .headline {
+    font-size: 44px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.45;
+    letter-spacing: -1.5px;
+  }
+
+  .subhead {
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+
+  .features {
+    display: flex;
+    gap: 32px;
+    margin-top: 8px;
+  }
+
+  .feature-item {
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--text-light);
+    letter-spacing: -0.3px;
+    position: relative;
+  }
+
+  .feature-item + .feature-item::before {
+    content: '·';
+    position: absolute;
+    left: -20px;
+    color: var(--text-light);
+  }
+
+  .brand-name {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--text-light);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body>
+  <div class="ad-container">
+    <div class="image-area">
+      <img class="product-image" src="/Users/inkyo/Downloads/슬리핑백 2 (사진)/hi_seowo_o_1758420925_3726227258194716237_65366928480.jpg" alt="product">
+      <div class="badge">New Color</div>
+    </div>
+
+    <div class="info-panel">
+      <div class="headline">아이의 첫 슬리핑백</div>
+      <div class="subhead">감싸는 듯한 편안함, 2가지 컬러</div>
+      <div class="features">
+        <div class="feature-item">양방향 지퍼</div>
+        <div class="feature-item">사계절 원단</div>
+        <div class="feature-item">넉넉한 품</div>
+      </div>
+      <div class="brand-name">Sunday Hug</div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --bg-warm: #f2ede7;
+    --text-dark: #2c2520;
+    --text-mid: #6b5d52;
+    --text-light: #999;
+    --card-bg: rgba(255, 255, 255, 0.92);
+    --accent-pink: #e8a0b4;
+    --star-color: #f5c518;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1350px;
+    overflow: hidden;
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg-warm);
+  }
+
+  .ad-container {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+  }
+
+  .product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(242, 237, 231, 0.25);
+    z-index: 1;
+  }
+
+  .brand-name {
+    position: absolute;
+    top: 60px;
+    left: 70px;
+    z-index: 3;
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--text-mid);
+    letter-spacing: 1px;
+  }
+
+  .reviews {
+    position: absolute;
+    top: 240px;
+    right: 50px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 520px;
+  }
+
+  .review-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 24px 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .review-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .stars {
+    color: var(--star-color);
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
+  .reviewer {
+    font-size: 18px;
+    color: var(--text-light);
+  }
+
+  .review-text {
+    font-size: 23px;
+    font-weight: 400;
+    color: var(--text-dark);
+    line-height: 1.5;
+  }
+
+  .review-text strong {
+    font-weight: 700;
+  }
+
+  .bottom-area {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    z-index: 3;
+    padding: 50px 70px 60px;
+    background: linear-gradient(
+      0deg,
+      rgba(242, 237, 231, 0.96) 0%,
+      rgba(242, 237, 231, 0.92) 55%,
+      rgba(242, 237, 231, 0) 100%
+    );
+  }
+
+  .bottom-subhead {
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--text-mid);
+    margin-bottom: 8px;
+  }
+
+  .bottom-headline {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.35;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+  }
+
+  .bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cta-text {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-mid);
+    background: rgba(255,255,255,0.7);
+    padding: 10px 28px;
+    border-radius: 8px;
+  }
+
+  .discount-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--accent-pink);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .discount-label {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 1px;
+  }
+
+  .discount-value {
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1;
+  }
+</style>
+</head>
+<body>
+  <div class="ad-container">
+    <img class="product-image" src="/Users/inkyo/Downloads/슬리핑백 2 (사진)/ahyoon.0912_1762788182_3762862464120800381_70255128435.jpg" alt="product">
+    <div class="overlay"></div>
+
+    <div class="brand-name">Konny</div>
+
+    <div class="reviews">
+      <div class="review-card">
+        <div class="review-top">
+          <span class="stars">★★★★★</span>
+          <span class="reviewer">@hj***</span>
+        </div>
+        <div class="review-text">이불 걷어차는 아기한테 <strong>진짜 필수템</strong>이에요!</div>
+      </div>
+      <div class="review-card">
+        <div class="review-top">
+          <span class="stars">★★★★★</span>
+          <span class="reviewer">@bu***</span>
+        </div>
+        <div class="review-text">뒤집어도 안 벗겨져서 <strong>밤에 안 깨고 잘 자요</strong></div>
+      </div>
+      <div class="review-card">
+        <div class="review-top">
+          <span class="stars">★★★★★</span>
+          <span class="reviewer">@p_p***</span>
+        </div>
+        <div class="review-text">모달 소재라 <strong>사계절 내내 쓰기 좋아요</strong></div>
+      </div>
+    </div>
+
+    <div class="bottom-area">
+      <div class="bottom-subhead">코니 슬리핑백</div>
+      <div class="bottom-headline">엄마들이 인정한<br>진짜 슬리핑백</div>
+      <div class="bottom-row">
+        <span class="cta-text">코니 슬리핑백 최대 혜택</span>
+        <div class="discount-circle">
+          <span class="discount-label">UP TO</span>
+          <span class="discount-value">40%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

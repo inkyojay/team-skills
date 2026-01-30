@@ -1,0 +1,1940 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Skills 가이드</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+        :root {
+            --primary: #A38068;
+            --primary-light: #c4a68a;
+            --bg: #f5f5f7;
+            --card-bg: #ffffff;
+            --text: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --border: #e5e5e7;
+            --sidebar-width: 260px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* 레이아웃 */
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* 사이드바 */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .sidebar-header p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .sidebar-stats {
+            display: flex;
+            gap: 16px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-nav {
+            padding: 12px 0;
+        }
+
+        .nav-section-title {
+            padding: 12px 20px 8px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.15s;
+            font-size: 0.9rem;
+        }
+
+        .nav-item:hover {
+            background: var(--bg);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 1.1rem;
+        }
+
+        .nav-text {
+            flex: 1;
+        }
+
+        .nav-count {
+            font-size: 0.75rem;
+            background: var(--bg);
+            padding: 2px 8px;
+            border-radius: 10px;
+            color: var(--text-secondary);
+        }
+
+        .nav-item.active .nav-count {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        /* 메인 콘텐츠 */
+        .main {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 32px 40px;
+            max-width: 1200px;
+        }
+
+        /* 사용법 박스 */
+        .usage-box {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 28px 32px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+        }
+
+        .usage-box h2 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .usage-box p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+        }
+
+        .usage-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .usage-chip {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        /* 카테고리 섹션 */
+        .category-section {
+            margin-bottom: 48px;
+            scroll-margin-top: 20px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .cat-icon {
+            font-size: 1.5rem;
+        }
+
+        .category-header h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .cat-count {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: var(--border);
+            padding: 4px 10px;
+            border-radius: 12px;
+        }
+
+        .category-examples {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .examples-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .example-chip {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        /* 스킬 그리드 */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .skill-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .skill-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .skill-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .skill-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .has-template {
+            font-size: 0.65rem;
+            background: var(--primary);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .skill-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .skill-triggers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .trigger-tag {
+            font-size: 0.7rem;
+            background: var(--bg);
+            padding: 3px 8px;
+            border-radius: 6px;
+            color: var(--text-secondary);
+        }
+
+        /* 특별 섹션 */
+        .special-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .special-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 카드뉴스 템플릿 */
+        .card-templates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .template-card {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        .template-card:hover {
+            border-color: var(--tpl-color);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .template-svg {
+            padding: 16px;
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .template-svg svg {
+            width: 100%;
+            max-width: 160px;
+            height: auto;
+        }
+
+        .video-tpl .template-svg {
+            padding: 12px;
+        }
+
+        .video-svg svg {
+            max-width: 200px;
+        }
+
+        .template-info {
+            padding: 12px;
+        }
+
+        .template-info h4 {
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .template-info p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .template-info code {
+            font-size: 0.7rem;
+            background: var(--bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--primary);
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .template-vars {
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            font-family: 'Monaco', monospace;
+        }
+
+        .tpl-duration {
+            font-size: 0.7rem;
+            background: #9C27B020;
+            color: #9C27B0;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* 테이블 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 12px;
+            background: var(--bg);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tpl-name, .agent-name {
+            font-weight: 600;
+            font-family: 'Monaco', monospace;
+            font-size: 0.85rem;
+        }
+
+        .tpl-name { color: #9C27B0; }
+        .agent-name { color: var(--primary); }
+        .tpl-duration { color: var(--text-secondary); white-space: nowrap; }
+
+        /* 푸터 */
+        .footer {
+            text-align: center;
+            padding: 32px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        /* 반응형 */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <!-- 사이드바 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>Team Skills</h1>
+                <p>AI 마케팅 자동화 도구</p>
+            </div>
+
+            <div class="sidebar-stats">
+                <div class="stat">
+                    <div class="stat-num">55</div>
+                    <div class="stat-label">스킬</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">11</div>
+                    <div class="stat-label">에이전트</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-num">6</div>
+                    <div class="stat-label">템플릿</div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-title">카테고리</div>
+                
+            <a href="#cat-content-creation" class="nav-item" data-category="content-creation">
+                <span class="nav-icon">📝</span>
+                <span class="nav-text">콘텐츠 제작</span>
+                <span class="nav-count">2</span>
+            </a>
+            <a href="#cat-video" class="nav-item" data-category="video">
+                <span class="nav-icon">🎬</span>
+                <span class="nav-text">영상 제작</span>
+                <span class="nav-count">2</span>
+            </a>
+            <a href="#cat-advertising" class="nav-item" data-category="advertising">
+                <span class="nav-icon">📢</span>
+                <span class="nav-text">광고</span>
+                <span class="nav-count">3</span>
+            </a>
+            <a href="#cat-brand" class="nav-item" data-category="brand">
+                <span class="nav-icon">🏷️</span>
+                <span class="nav-text">브랜드 관리</span>
+                <span class="nav-count">5</span>
+            </a>
+            <a href="#cat-marketing" class="nav-item" data-category="marketing">
+                <span class="nav-icon">📊</span>
+                <span class="nav-text">마케팅 전략</span>
+                <span class="nav-count">33</span>
+            </a>
+            <a href="#cat-tools" class="nav-item" data-category="tools">
+                <span class="nav-icon">🔧</span>
+                <span class="nav-text">유틸리티</span>
+                <span class="nav-count">10</span>
+            </a>
+
+                <div class="nav-section-title" style="margin-top: 16px;">리소스</div>
+                <a href="#card-templates" class="nav-item">
+                    <span class="nav-icon">🎴</span>
+                    <span class="nav-text">카드뉴스 템플릿</span>
+                    <span class="nav-count">6</span>
+                </a>
+                <a href="#meta-ad-templates" class="nav-item">
+                    <span class="nav-icon">📷</span>
+                    <span class="nav-text">메타 광고 템플릿</span>
+                    <span class="nav-count">11</span>
+                </a>
+                <a href="#video-templates" class="nav-item">
+                    <span class="nav-icon">🎬</span>
+                    <span class="nav-text">영상 템플릿</span>
+                    <span class="nav-count">5</span>
+                </a>
+                <a href="#live-banner-templates" class="nav-item">
+                    <span class="nav-icon">📺</span>
+                    <span class="nav-text">라이브 배너</span>
+                    <span class="nav-count">8</span>
+                </a>
+                <a href="#smartstore-banner-templates" class="nav-item">
+                    <span class="nav-icon">🏪</span>
+                    <span class="nav-text">스마트스토어</span>
+                    <span class="nav-count">4</span>
+                </a>
+                <a href="#agents" class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    <span class="nav-text">에이전트</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- 메인 콘텐츠 -->
+        <main class="main">
+            <div class="usage-box">
+                <h2>사용 방법</h2>
+                <p>슬래시 명령어가 아닙니다. 자연어로 요청하세요!</p>
+                <div class="usage-examples">
+                    <span class="usage-chip">"상세페이지 만들어줘"</span>
+                    <span class="usage-chip">"메타 광고 기획해줘"</span>
+                    <span class="usage-chip">"브랜드 분석해줘"</span>
+                    <span class="usage-chip">"카드뉴스 제작해줘"</span>
+                </div>
+            </div>
+
+            <!-- 카테고리별 스킬 -->
+            
+        <section class="category-section" id="cat-content-creation">
+            <div class="category-header">
+                <span class="cat-icon">📝</span>
+                <h2>콘텐츠 제작</h2>
+                <span class="cat-count">2개</span>
+            </div>
+            <div class="category-examples">
+                <span class="examples-label">이렇게 말해보세요:</span>
+                <span class="example-chip">상세페이지 만들어줘</span><span class="example-chip">카드뉴스 제작해줘</span><span class="example-chip">제품 소개 페이지</span>
+            </div>
+            <div class="skills-grid">
+                
+            <div class="skill-card" data-skill="card-news">
+                <div class="skill-header">
+                    <span class="skill-name">card-news-creator</span>
+                    <span class='has-template'>템플릿</span>
+                </div>
+                <p class="skill-desc">유튜브, 웹페이지, PDF 등 다양한 소스에서 콘텐츠를 추출하여 인스타그램 스타일 카드뉴스로 변환. 나노바나...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="page-builder">
+                <div class="skill-header">
+                    <span class="skill-name">상세페이지 제작</span>
+                    
+                </div>
+                <p class="skill-desc">-</p>
+                
+            </div>
+            </div>
+        </section>
+        <section class="category-section" id="cat-video">
+            <div class="category-header">
+                <span class="cat-icon">🎬</span>
+                <h2>영상 제작</h2>
+                <span class="cat-count">2개</span>
+            </div>
+            <div class="category-examples">
+                <span class="examples-label">이렇게 말해보세요:</span>
+                <span class="example-chip">릴스 영상 편집해줘</span><span class="example-chip">Remotion으로 영상 만들어줘</span>
+            </div>
+            <div class="skills-grid">
+                
+            <div class="skill-card" data-skill="reels-editor">
+                <div class="skill-header">
+                    <span class="skill-name">릴스 편집</span>
+                    
+                </div>
+                <p class="skill-desc">-</p>
+                
+            </div>
+            <div class="skill-card" data-skill="remotion">
+                <div class="skill-header">
+                    <span class="skill-name">remotion-best-practices</span>
+                    
+                </div>
+                <p class="skill-desc">Best practices for Remotion - Video creation in React</p>
+                
+            </div>
+            </div>
+        </section>
+        <section class="category-section" id="cat-tools">
+            <div class="category-header">
+                <span class="cat-icon">🔧</span>
+                <h2>유틸리티</h2>
+                <span class="cat-count">10개</span>
+            </div>
+            <div class="category-examples">
+                <span class="examples-label">이렇게 말해보세요:</span>
+                <span class="example-chip">HTML을 이미지로 변환</span><span class="example-chip">유튜브 자막 추출</span>
+            </div>
+            <div class="skills-grid">
+                
+            <div class="skill-card" data-skill="capture-sections">
+                <div class="skill-header">
+                    <span class="skill-name">섹션 캡처</span>
+                    
+                </div>
+                <p class="skill-desc">HTML 상세페이지를 섹션별 고해상도 이미지로 캡처합니다. "섹션 캡처", "HTML 이미지로", "스크린샷...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="hook-creator">
+                <div class="skill-header">
+                    <span class="skill-name">훅 생성</span>
+                    
+                </div>
+                <p class="skill-desc">Create and configure Claude Code hooks for customizing agent...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="html-section-capture">
+                <div class="skill-header">
+                    <span class="skill-name">HTML 섹션 캡처</span>
+                    
+                </div>
+                <p class="skill-desc">HTML 상세페이지 파일을 섹션별로 구분하여 고해상도 이미지로 변환하는 skill. 사용자가 (1) HTML...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="html2img">
+                <div class="skill-header">
+                    <span class="skill-name">HTML → 이미지</span>
+                    
+                </div>
+                <p class="skill-desc">HTML 파일 전체를 고해상도 이미지로 변환합니다. "HTML 이미지로", "스크린샷", "고해상도 캡처" ...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="inline-css">
+                <div class="skill-header">
+                    <span class="skill-name">CSS 인라인</span>
+                    
+                </div>
+                <p class="skill-desc">HTML 파일의 CSS 클래스를 인라인 스타일로 변환합니다. "CSS 인라인 변환", "인라인 스타일로 만들...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="skill-creator">
+                <div class="skill-header">
+                    <span class="skill-name">스킬 생성</span>
+                    
+                </div>
+                <p class="skill-desc">Guide for creating effective skills. This skill should be us...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="slash-command-creator">
+                <div class="skill-header">
+                    <span class="skill-name">슬래시 커맨드</span>
+                    
+                </div>
+                <p class="skill-desc">Guide for creating Claude Code slash commands. Use when the ...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="subagent-creator">
+                <div class="skill-header">
+                    <span class="skill-name">서브에이전트</span>
+                    
+                </div>
+                <p class="skill-desc">Create specialized Claude Code sub-agents with custom system...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="youtube-collector">
+                <div class="skill-header">
+                    <span class="skill-name">유튜브 수집</span>
+                    
+                </div>
+                <p class="skill-desc">유튜브 채널을 등록하고 새 컨텐츠를 수집하여 자막 기반 요약을 생성하는 skill. 사용자가 (1) 유튜브 ...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="youtube-transcribe-skill">
+                <div class="skill-header">
+                    <span class="skill-name">유튜브 자막 추출</span>
+                    
+                </div>
+                <p class="skill-desc">Extract subtitles/transcripts from YouTube videos. Triggers:...</p>
+                
+            </div>
+            </div>
+        </section>
+        <section class="category-section" id="cat-brand">
+            <div class="category-header">
+                <span class="cat-icon">🏷️</span>
+                <h2>브랜드 관리</h2>
+                <span class="cat-count">5개</span>
+            </div>
+            <div class="category-examples">
+                <span class="examples-label">이렇게 말해보세요:</span>
+                <span class="example-chip">브랜드 분석해줘</span><span class="example-chip">제품 분석 리포트</span>
+            </div>
+            <div class="skills-grid">
+                
+            <div class="skill-card" data-skill="brand-dna">
+                <div class="skill-header">
+                    <span class="skill-name">brand-dna-extractor</span>
+                    
+                </div>
+                <p class="skill-desc">웹사이트 URL에서 브랜드 DNA를 추출하고 인터랙티브 웹 리포트를 생성하는 스킬. 사용자가 "브랜드 분석"...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="brand-logo">
+                <div class="skill-header">
+                    <span class="skill-name">로고 검색</span>
+                    
+                </div>
+                <p class="skill-desc">브랜드 로고를 검색하고 다운로드 링크를 제공합니다. "로고 찾아줘", "브랜드 로고", "로고 검색" 요청 ...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="brand-setup">
+                <div class="skill-header">
+                    <span class="skill-name">브랜드 설정</span>
+                    
+                </div>
+                <p class="skill-desc">새 브랜드 초기 설정을 도와주는 마법사입니다. "브랜드 설정", "새 브랜드 추가", "브랜드 초기화" 요청...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="brand-updater">
+                <div class="skill-header">
+                    <span class="skill-name">브랜드 업데이트</span>
+                    
+                </div>
+                <p class="skill-desc">브랜드 정보를 업데이트하고 동기화합니다. "브랜드 수정", "정보 업데이트", "제품 추가" 요청 시 사용.</p>
+                
+            </div>
+            <div class="skill-card" data-skill="product-analyzer">
+                <div class="skill-header">
+                    <span class="skill-name">제품 분석</span>
+                    
+                </div>
+                <p class="skill-desc">스마트스토어 상세페이지 URL에서 제품 이미지를 분석하여 강점/단점 리포트를 생성하는 스킬. 사용자가 "제품...</p>
+                
+            </div>
+            </div>
+        </section>
+        <section class="category-section" id="cat-advertising">
+            <div class="category-header">
+                <span class="cat-icon">📢</span>
+                <h2>광고</h2>
+                <span class="cat-count">3개</span>
+            </div>
+            <div class="category-examples">
+                <span class="examples-label">이렇게 말해보세요:</span>
+                <span class="example-chip">메타 광고 기획해줘</span><span class="example-chip">광고 카피 써줘</span>
+            </div>
+            <div class="skills-grid">
+                
+            <div class="skill-card" data-skill="live-banner">
+                <div class="skill-header">
+                    <span class="skill-name">live-banner</span>
+                    <span class='has-template'>템플릿</span>
+                </div>
+                <p class="skill-desc">쇼핑라이브 배너 제작. 네이버/카카오 쇼핑라이브용 배너 템플릿으로 혜택 배너, 라이브 메인, 이벤트 배너 등...</p>
+                <div class="skill-triggers"><span class="trigger-tag">라이브 배너</span><span class="trigger-tag">쇼핑라이브 배너</span></div>
+            </div>
+            <div class="skill-card" data-skill="meta-ad-image">
+                <div class="skill-header">
+                    <span class="skill-name">메타 광고 이미지</span>
+                    <span class='has-template'>템플릿</span>
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">메타 광고 이미지</span><span class="trigger-tag">인스타 광고 만들어줘</span></div>
+            </div>
+            <div class="skill-card" data-skill="smartstore-banner">
+                <div class="skill-header">
+                    <span class="skill-name">smartstore-banner</span>
+                    <span class='has-template'>템플릿</span>
+                </div>
+                <p class="skill-desc">스마트스토어 배너 제작. 네이버 스마트스토어용 PC/모바일 배너 템플릿으로 메인배너, 프로모션배너, 쿠폰배너...</p>
+                <div class="skill-triggers"><span class="trigger-tag">스마트스토어 배너</span><span class="trigger-tag">스스 배너</span></div>
+            </div>
+            </div>
+        </section>
+        <section class="category-section" id="cat-marketing">
+            <div class="category-header">
+                <span class="cat-icon">📊</span>
+                <h2>마케팅 전략</h2>
+                <span class="cat-count">33개</span>
+            </div>
+            <div class="category-examples">
+                <span class="examples-label">이렇게 말해보세요:</span>
+                <span class="example-chip">랜딩페이지 CRO 분석</span><span class="example-chip">가격 전략 세워줘</span><span class="example-chip">이메일 시퀀스</span>
+            </div>
+            <div class="skills-grid">
+                
+            <div class="skill-card" data-skill="social-media-designer">
+                <div class="skill-header">
+                    <span class="skill-name">Social Media Designer</span>
+                    
+                </div>
+                <p class="skill-desc">Create platform-optimized social media graphics</p>
+                <div class="skill-triggers"><span class="trigger-tag">social media design</span><span class="trigger-tag">social graphics</span></div>
+            </div>
+            <div class="skill-card" data-skill="ab-test">
+                <div class="skill-header">
+                    <span class="skill-name">A/B 테스트 분석</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">A/B 테스트</span><span class="trigger-tag">실험 설계</span></div>
+            </div>
+            <div class="skill-card" data-skill="ab-test-setup">
+                <div class="skill-header">
+                    <span class="skill-name">A/B 테스트 설계</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to plan, design, or implement an A/B tes...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="analytics-tracking">
+                <div class="skill-header">
+                    <span class="skill-name">애널리틱스 추적 설정</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">분석 설정</span><span class="trigger-tag">GA4</span></div>
+            </div>
+            <div class="skill-card" data-skill="canvas-design">
+                <div class="skill-header">
+                    <span class="skill-name">디자인 시각물</span>
+                    
+                </div>
+                <p class="skill-desc">Create beautiful visual art in .png and .pdf documents using...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="competitor-alternatives">
+                <div class="skill-header">
+                    <span class="skill-name">경쟁사 비교 페이지</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to create competitor comparison or alter...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="competitor-analysis">
+                <div class="skill-header">
+                    <span class="skill-name">경쟁사 분석</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">경쟁사 분석</span><span class="trigger-tag">벤치마킹</span></div>
+            </div>
+            <div class="skill-card" data-skill="content-strategy">
+                <div class="skill-header">
+                    <span class="skill-name">콘텐츠 전략</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to plan a content strategy, decide what ...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="copy-editing">
+                <div class="skill-header">
+                    <span class="skill-name">카피 편집</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to edit, review, or improve existing mar...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="copywriting">
+                <div class="skill-header">
+                    <span class="skill-name">마케팅 카피라이팅</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to write, rewrite, or improve marketing ...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="csv-analyzer">
+                <div class="skill-header">
+                    <span class="skill-name">CSV 분석</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">데이터 분석</span><span class="trigger-tag">CSV 분석</span></div>
+            </div>
+            <div class="skill-card" data-skill="data-report">
+                <div class="skill-header">
+                    <span class="skill-name">데이터 리포트</span>
+                    
+                </div>
+                <p class="skill-desc">마케팅 데이터를 분석하고 인사이트 리포트를 생성합니다. "데이터 분석", "리포트 생성", "성과 분석" 요...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="email-sequence">
+                <div class="skill-header">
+                    <span class="skill-name">이메일 시퀀스</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">이메일 시퀀스</span><span class="trigger-tag">드립 캠페인</span></div>
+            </div>
+            <div class="skill-card" data-skill="form-cro">
+                <div class="skill-header">
+                    <span class="skill-name">폼 최적화</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to optimize any form that is NOT signup/...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="free-tool-strategy">
+                <div class="skill-header">
+                    <span class="skill-name">무료 툴 마케팅</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to plan, evaluate, or build a free tool ...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="launch-strategy">
+                <div class="skill-header">
+                    <span class="skill-name">런칭 전략</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">출시 전략</span><span class="trigger-tag">런칭</span></div>
+            </div>
+            <div class="skill-card" data-skill="marketing-ideas">
+                <div class="skill-header">
+                    <span class="skill-name">마케팅 아이디어 140개</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">마케팅 아이디어</span><span class="trigger-tag">프로모션 아이디어</span></div>
+            </div>
+            <div class="skill-card" data-skill="marketing-psychology">
+                <div class="skill-header">
+                    <span class="skill-name">마케팅 심리학</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to apply psychological principles, menta...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="onboarding-cro">
+                <div class="skill-header">
+                    <span class="skill-name">온보딩 최적화</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to optimize post-signup onboarding, user...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="page-cro">
+                <div class="skill-header">
+                    <span class="skill-name">페이지 CRO</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to optimize, improve, or increase conver...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="paid-ads">
+                <div class="skill-header">
+                    <span class="skill-name">유료 광고 캠페인</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants help with paid advertising campaigns on ...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="paywall-upgrade-cro">
+                <div class="skill-header">
+                    <span class="skill-name">페이월 최적화</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to create or optimize in-app paywalls, u...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="popup-cro">
+                <div class="skill-header">
+                    <span class="skill-name">팝업 최적화</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to create or optimize popups, modals, ov...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="pricing-strategy">
+                <div class="skill-header">
+                    <span class="skill-name">가격 전략</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">가격 책정</span><span class="trigger-tag">프라이싱</span></div>
+            </div>
+            <div class="skill-card" data-skill="product-marketing-context">
+                <div class="skill-header">
+                    <span class="skill-name">제품 마케팅 컨텍스트</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to create or update their product market...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="programmatic-seo">
+                <div class="skill-header">
+                    <span class="skill-name">프로그래매틱 SEO</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to create SEO-driven pages at scale usin...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="referral-program">
+                <div class="skill-header">
+                    <span class="skill-name">추천 프로그램</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">추천 프로그램</span><span class="trigger-tag">리퍼럴</span></div>
+            </div>
+            <div class="skill-card" data-skill="review-management">
+                <div class="skill-header">
+                    <span class="skill-name">리뷰 관리</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">리뷰 관리</span><span class="trigger-tag">후기 요청</span></div>
+            </div>
+            <div class="skill-card" data-skill="schema-markup">
+                <div class="skill-header">
+                    <span class="skill-name">스키마 마크업</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to add, fix, or optimize schema markup a...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="seo-audit">
+                <div class="skill-header">
+                    <span class="skill-name">SEO 감사</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">SEO 분석</span><span class="trigger-tag">검색 최적화</span></div>
+            </div>
+            <div class="skill-card" data-skill="signup-flow-cro">
+                <div class="skill-header">
+                    <span class="skill-name">회원가입 최적화</span>
+                    
+                </div>
+                <p class="skill-desc">When the user wants to optimize signup, registration, accoun...</p>
+                
+            </div>
+            <div class="skill-card" data-skill="social-content">
+                <div class="skill-header">
+                    <span class="skill-name">소셜 콘텐츠</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">인스타 포스팅</span><span class="trigger-tag">SNS 콘텐츠</span></div>
+            </div>
+            <div class="skill-card" data-skill="video-script">
+                <div class="skill-header">
+                    <span class="skill-name">영상 스크립트</span>
+                    
+                </div>
+                <p class="skill-desc">|</p>
+                <div class="skill-triggers"><span class="trigger-tag">영상 스크립트</span><span class="trigger-tag">릴스 대본</span></div>
+            </div>
+            </div>
+        </section>
+
+            <!-- 카드뉴스 템플릿 -->
+            <section class="special-section" id="card-templates">
+                <h3>🎴 카드뉴스 템플릿 (6개)</h3>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">
+                    인스타그램 카드뉴스용 HTML 템플릿입니다. 1080×1350 (4:5) 비율로 렌더링됩니다.
+                </p>
+                <div class="card-templates-grid">
+                    
+        <div class="template-card" style="--tpl-color: #F2CC8F">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#F2CC8F20" stroke="#F2CC8F" stroke-width="1"/>
+            <text x="40" y="15" text-anchor="middle" font-size="6" fill="#999">BRAND</text>
+            <text x="40" y="45" text-anchor="middle" font-size="5" fill="#F2CC8F">전체 배경 이미지</text>
+            <rect x="12" y="65" width="56" height="25" rx="3" fill="white" fill-opacity="0.9"/>
+            <text x="40" y="80" text-anchor="middle" font-size="6" fill="#333">강조 메시지</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>전체 배경</h4>
+                <p>강조 메시지, 이미지 배경</p>
+                <code>sunday_hug_full.html</code>
+                <div class="template-vars">BRAND_NAME, BACKGROUND_IMAGE, BODY</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #81B29A">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#f5f0e8" stroke="#81B29A" stroke-width="1"/>
+            <text x="40" y="15" text-anchor="middle" font-size="6" fill="#999">BRAND</text>
+            <rect x="5" y="5" width="70" height="50" rx="4" fill="#81B29A20"/>
+            <text x="40" y="35" text-anchor="middle" font-size="5" fill="#81B29A">배경 이미지 (65%)</text>
+            <rect x="10" y="60" width="60" height="30" rx="2" fill="white"/>
+            <text x="40" y="72" text-anchor="middle" font-size="6" font-weight="bold" fill="#81B29A">헤딩</text>
+            <text x="40" y="82" text-anchor="middle" font-size="5" fill="#666">본문 텍스트</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>콘텐츠</h4>
+                <p>본문 전달, 이미지+텍스트</p>
+                <code>sunday_hug_content.html</code>
+                <div class="template-vars">BRAND_NAME, BACKGROUND_IMAGE, HEADING, BODY</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #E07A5F">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="url(#grad-summary)" stroke="#E07A5F" stroke-width="1"/>
+            <defs><linearGradient id="grad-summary" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#E07A5F;stop-opacity:0.9"/>
+                <stop offset="100%" style="stop-color:#E07A5F;stop-opacity:0.7"/>
+            </linearGradient></defs>
+            <text x="40" y="15" text-anchor="middle" font-size="6" fill="white" fill-opacity="0.7">BRAND</text>
+            <text x="40" y="35" text-anchor="middle" font-size="7" font-weight="bold" fill="white">요약 타이틀</text>
+            <text x="15" y="52" font-size="5" fill="white">✓ 포인트 1</text>
+            <text x="15" y="64" font-size="5" fill="white">✓ 포인트 2</text>
+            <text x="15" y="76" font-size="5" fill="white">✓ 포인트 3</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>요약</h4>
+                <p>핵심 포인트 정리</p>
+                <code>sunday_hug_summary.html</code>
+                <div class="template-vars">BRAND_NAME, BACKGROUND_IMAGE, TITLE, POINTS</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #3D405B">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#FFF9F0" stroke="#3D405B" stroke-width="1"/>
+            <text x="40" y="15" text-anchor="middle" font-size="6" fill="#999">BRAND</text>
+            <text x="40" y="28" text-anchor="middle" font-size="7" font-weight="bold" fill="#333">타이틀</text>
+            <g transform="translate(12, 35)">
+                <circle cx="8" cy="8" r="6" fill="#3D405B20"/>
+                <text x="8" y="11" text-anchor="middle" font-size="6">📌</text>
+                <text x="20" y="10" font-size="5" fill="#444">항목 1</text>
+            </g>
+            <g transform="translate(12, 52)">
+                <circle cx="8" cy="8" r="6" fill="#3D405B20"/>
+                <text x="8" y="11" text-anchor="middle" font-size="6">📌</text>
+                <text x="20" y="10" font-size="5" fill="#444">항목 2</text>
+            </g>
+            <g transform="translate(12, 69)">
+                <circle cx="8" cy="8" r="6" fill="#3D405B20"/>
+                <text x="8" y="11" text-anchor="middle" font-size="6">📌</text>
+                <text x="20" y="10" font-size="5" fill="#444">항목 3</text>
+            </g>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>정보형</h4>
+                <p>리스트, 항목 정리</p>
+                <code>sunday_hug_info.html</code>
+                <div class="template-vars">BRAND_NAME, TITLE, ICON_1~3, TEXT_1~3</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #E07A5F">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#f5f0e8" stroke="#E07A5F" stroke-width="1"/>
+            <text x="40" y="18" text-anchor="middle" font-size="6" fill="#999">BRAND</text>
+            <rect x="10" y="25" width="50" height="30" rx="2" fill="#E07A5F20" stroke="#E07A5F" stroke-dasharray="2"/>
+            <text x="35" y="43" text-anchor="middle" font-size="5" fill="#E07A5F">이미지</text>
+            <text x="40" y="68" text-anchor="middle" font-size="5" fill="#666">에피소드</text>
+            <text x="40" y="78" text-anchor="middle" font-size="7" font-weight="bold" fill="#333">타이틀</text>
+            <text x="40" y="88" text-anchor="middle" font-size="5" fill="#666">서브타이틀</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>커버</h4>
+                <p>주제 소개, 첫 페이지</p>
+                <code>sunday_hug_cover.html</code>
+                <div class="template-vars">BRAND_NAME, BACKGROUND_IMAGE, EPISODE, TITLE...</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #A38068">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#f5f0e8" stroke="#A38068" stroke-width="1"/>
+            <text x="40" y="15" text-anchor="middle" font-size="6" fill="#999">BRAND</text>
+            <rect x="35" y="20" width="35" height="45" rx="2" fill="#A3806815" stroke="#A38068" stroke-dasharray="2"/>
+            <text x="52" y="45" text-anchor="middle" font-size="5" fill="#A38068">제품</text>
+            <text x="52" y="52" text-anchor="middle" font-size="5" fill="#A38068">이미지</text>
+            <g transform="translate(10, 30)">
+                <text x="0" y="0" font-size="4" fill="#E8A85C">🎀</text>
+                <text x="0" y="12" font-size="6" font-weight="bold" fill="#6B5B4F">제품명</text>
+                <text x="0" y="22" font-size="4" fill="#8B7B6B">부제목</text>
+                <text x="0" y="32" font-size="5" fill="#E8A85C">₩ 가격</text>
+            </g>
+            <text x="40" y="78" text-anchor="middle" font-size="4" fill="#666">감성 카피 1</text>
+            <text x="40" y="86" text-anchor="middle" font-size="4" fill="#666">감성 카피 2</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>제품 쇼케이스</h4>
+                <p>제품 사진 + 정보</p>
+                <code>sunday_hug_product.html</code>
+                <div class="template-vars">BRAND_NAME, BACKGROUND_IMAGE, PRODUCT_NAME, PRICE...</div>
+            </div>
+        </div>
+                </div>
+            </section>
+
+            <!-- 메타 광고 이미지 템플릿 -->
+            <section class="special-section" id="meta-ad-templates">
+                <h3>📷 메타 광고 이미지 템플릿 (11개)</h3>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">
+                    Meta (Facebook/Instagram) 피드 광고용 이미지 템플릿입니다. 1080×1350 (4:5) 비율.
+                </p>
+                <div class="card-templates-grid">
+                    
+        <div class="template-card" style="--tpl-color: #E74C3C">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#faf8f5" stroke="#E74C3C" stroke-width="1"/>
+            <circle cx="18" cy="18" r="8" fill="white" stroke="#ddd"/>
+            <text x="18" y="21" text-anchor="middle" font-size="8">👤</text>
+            <text x="30" y="20" font-size="5" fill="white" style="text-shadow:0 1px 2px rgba(0,0,0,.5)">username</text>
+            <text x="68" y="18" text-anchor="middle" font-size="10" fill="#e84d3d">♥</text>
+            <rect x="5" y="5" width="70" height="60" rx="4" fill="#E74C3C20"/>
+            <text x="40" y="40" text-anchor="middle" font-size="5" fill="#E74C3C">UGC 이미지</text>
+            <rect x="5" y="65" width="70" height="30" rx="0 0 4 4" fill="linear-gradient(transparent, rgba(0,0,0,0.6))"/>
+            <text x="12" y="80" font-size="5" font-weight="bold" fill="white">"인용 텍스트"</text>
+            <text x="12" y="90" font-size="4" fill="#aaa">#해시태그</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>UGC 네이티브</h4>
+                <p>사용자 후기 스타일, SNS 느낌</p>
+                <code>ugc-native.html</code>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #9B59B6">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#9B59B615" stroke="#9B59B6" stroke-width="1"/>
+            <text x="40" y="35" text-anchor="middle" font-size="5" fill="#9B59B6">라이프스타일 이미지</text>
+            <rect x="10" y="60" width="60" height="30" rx="3" fill="white" fill-opacity="0.95"/>
+            <text x="40" y="72" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">헤드라인</text>
+            <text x="40" y="82" text-anchor="middle" font-size="4" fill="#666">서브카피</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>라이프스타일</h4>
+                <p>감성 이미지 + 카피</p>
+                <code>lifestyle.html</code>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #2C3E50">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#fafafa" stroke="#2C3E50" stroke-width="1"/>
+            <rect x="20" y="15" width="40" height="50" rx="3" fill="#2C3E5015" stroke="#2C3E50" stroke-dasharray="2"/>
+            <text x="40" y="45" text-anchor="middle" font-size="5" fill="#2C3E50">제품</text>
+            <text x="40" y="75" text-anchor="middle" font-size="6" font-weight="bold" fill="#333">제품명</text>
+            <text x="40" y="85" text-anchor="middle" font-size="5" fill="#2C3E50">₩ 가격</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>미니멀 제품</h4>
+                <p>깔끔한 제품 중심</p>
+                <code>minimal-product.html</code>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #3498DB">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#fefefe" stroke="#3498DB" stroke-width="1"/>
+            <rect x="8" y="25" width="30" height="40" rx="2" fill="#fee" stroke="#e74c3c"/>
+            <text x="23" y="48" text-anchor="middle" font-size="5" fill="#c0392b">기존 방식</text>
+            <text x="23" y="58" text-anchor="middle" font-size="8">✗</text>
+            <rect x="42" y="25" width="30" height="40" rx="2" fill="#efe" stroke="#27ae60"/>
+            <text x="57" y="48" text-anchor="middle" font-size="5" fill="#27ae60">우리 제품</text>
+            <text x="57" y="58" text-anchor="middle" font-size="8">✓</text>
+            <text x="40" y="18" text-anchor="middle" font-size="6" font-weight="bold" fill="#333">VS</text>
+            <text x="40" y="82" text-anchor="middle" font-size="5" fill="#666">CTA 버튼</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>비교형</h4>
+                <p>기존 vs 우리 제품 비교</p>
+                <code>us-vs-them.html</code>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #F39C12">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#fff9f0" stroke="#F39C12" stroke-width="1"/>
+            <text x="40" y="18" text-anchor="middle" font-size="5" fill="#999">⭐⭐⭐⭐⭐</text>
+            <text x="40" y="28" text-anchor="middle" font-size="6" font-weight="bold" fill="#333">"리뷰 인용"</text>
+            <rect x="15" y="35" width="50" height="35" rx="3" fill="#F39C1220" stroke="#F39C12" stroke-dasharray="2"/>
+            <text x="40" y="55" text-anchor="middle" font-size="5" fill="#F39C12">제품 이미지</text>
+            <text x="40" y="82" text-anchor="middle" font-size="5" fill="#333">제품명</text>
+            <text x="40" y="90" text-anchor="middle" font-size="5" fill="#F39C12">₩ 가격</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>소셜 프루프</h4>
+                <p>리뷰/별점 강조</p>
+                <code>social-proof.html</code>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #E67E22">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#E67E2215" stroke="#E67E22" stroke-width="1"/>
+            <text x="40" y="35" text-anchor="middle" font-size="5" fill="#E67E22">라이프스타일 이미지</text>
+            <rect x="10" y="60" width="60" height="30" rx="3" fill="white" fill-opacity="0.95"/>
+            <text x="40" y="72" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">헤드라인</text>
+            <text x="40" y="82" text-anchor="middle" font-size="4" fill="#666">서브카피</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>스트레스 테스트</h4>
+                <p>문제 상황 제시</p>
+                <code>stress-test.html</code>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #8E44AD">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#8E44AD15" stroke="#8E44AD" stroke-width="1"/>
+            <text x="40" y="35" text-anchor="middle" font-size="5" fill="#8E44AD">라이프스타일 이미지</text>
+            <rect x="10" y="60" width="60" height="30" rx="3" fill="white" fill-opacity="0.95"/>
+            <text x="40" y="72" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">헤드라인</text>
+            <text x="40" y="82" text-anchor="middle" font-size="4" fill="#666">서브카피</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>신제품</h4>
+                <p>NEW 뱃지 + 제품 소개</p>
+                <code>new-product.html</code>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #D35400">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#D3540015" stroke="#D35400" stroke-width="1"/>
+            <text x="40" y="35" text-anchor="middle" font-size="5" fill="#D35400">라이프스타일 이미지</text>
+            <rect x="10" y="60" width="60" height="30" rx="3" fill="white" fill-opacity="0.95"/>
+            <text x="40" y="72" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">헤드라인</text>
+            <text x="40" y="82" text-anchor="middle" font-size="4" fill="#666">서브카피</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>이벤트</h4>
+                <p>기간 한정 이벤트</p>
+                <code>event.html</code>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #E74C3C">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#fff" stroke="#E74C3C" stroke-width="1"/>
+            <rect x="10" y="10" width="60" height="40" rx="3" fill="#E74C3C20"/>
+            <text x="40" y="35" text-anchor="middle" font-size="5" fill="#E74C3C">제품 이미지</text>
+            <text x="40" y="60" text-anchor="middle" font-size="7" font-weight="bold" fill="#e74c3c">30% OFF</text>
+            <text x="40" y="72" text-anchor="middle" font-size="5" fill="#333">제품명</text>
+            <rect x="20" y="78" width="40" height="12" rx="6" fill="#E74C3C"/>
+            <text x="40" y="87" text-anchor="middle" font-size="5" fill="white">구매하기</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>직접 오퍼</h4>
+                <p>할인/프로모션 강조</p>
+                <code>direct-offer.html</code>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #1ABC9C">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#1ABC9C15" stroke="#1ABC9C" stroke-width="1"/>
+            <text x="40" y="35" text-anchor="middle" font-size="5" fill="#1ABC9C">라이프스타일 이미지</text>
+            <rect x="10" y="60" width="60" height="30" rx="3" fill="white" fill-opacity="0.95"/>
+            <text x="40" y="72" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">헤드라인</text>
+            <text x="40" y="82" text-anchor="middle" font-size="4" fill="#666">서브카피</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>타겟 콜아웃</h4>
+                <p>특정 타겟 호출</p>
+                <code>audience-callout.html</code>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #C0392B">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="90" rx="4" fill="#C0392B15" stroke="#C0392B" stroke-width="1"/>
+            <text x="40" y="35" text-anchor="middle" font-size="5" fill="#C0392B">라이프스타일 이미지</text>
+            <rect x="10" y="60" width="60" height="30" rx="3" fill="white" fill-opacity="0.95"/>
+            <text x="40" y="72" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">헤드라인</text>
+            <text x="40" y="82" text-anchor="middle" font-size="4" fill="#666">서브카피</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>프로모션</h4>
+                <p>이벤트/할인 배너</p>
+                <code>promotion.html</code>
+            </div>
+        </div>
+                </div>
+            </section>
+
+            <!-- 영상 템플릿 -->
+            <section class="special-section" id="video-templates">
+                <h3>🎬 영상 템플릿 (5개)</h3>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">
+                    Remotion 기반 영상 광고 템플릿입니다. 릴스/스토리(9:16) 또는 피드(4:5) 비율.
+                </p>
+                <div class="card-templates-grid video-templates-grid">
+                    
+        <div class="template-card video-tpl" style="--tpl-color: #9C27B0">
+            <div class="template-svg video-svg">
+                <svg viewBox="0 0 80 55" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="35" rx="4" fill="#f5f5f5" stroke="#9C27B0" stroke-width="1"/>
+            <text x="40" y="18" text-anchor="middle" font-size="5" fill="#999">고정 헤더</text>
+            <rect x="10" y="22" width="15" height="10" rx="1" fill="#9C27B030"/>
+            <rect x="28" y="22" width="25" height="10" rx="1" fill="#9C27B050"/>
+            <rect x="56" y="22" width="12" height="10" rx="1" fill="#9C27B030"/>
+            <text x="40" y="50" text-anchor="middle" font-size="5" fill="#666">↓ 콘텐츠 순환 ↓</text>
+            <rect x="8" y="55" width="18" height="8" rx="1" fill="#9C27B0" fill-opacity="0.3"/>
+            <rect x="28" y="55" width="18" height="8" rx="1" fill="#9C27B0" fill-opacity="0.5"/>
+            <rect x="48" y="55" width="18" height="8" rx="1" fill="#9C27B0" fill-opacity="0.7"/>
+            <text x="17" y="61" text-anchor="middle" font-size="4" fill="#666">씬1</text>
+            <text x="37" y="61" text-anchor="middle" font-size="4" fill="#666">씬2</text>
+            <text x="57" y="61" text-anchor="middle" font-size="4" fill="#666">씬3</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>브랜드 공식형 광고 템플릿</h4>
+                <p>고정 헤더(로고+제품명+썸네일) + 하단 콘텐츠 순환 구조의 전문적 브랜드 공식 광고 템플릿입니다.</p>
+                <span class="tpl-duration">30~45초</span>
+            </div>
+        </div>
+        <div class="template-card video-tpl" style="--tpl-color: #9C27B0">
+            <div class="template-svg video-svg">
+                <svg viewBox="0 0 80 55" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="35" rx="4" fill="#f5f5f5" stroke="#9C27B0" stroke-width="1"/>
+            <text x="40" y="15" text-anchor="middle" font-size="5" font-weight="bold" fill="#9C27B0">비교 광고</text>
+            <rect x="10" y="20" width="25" height="12" rx="1" fill="#fee" stroke="#e74c3c"/>
+            <text x="22" y="28" text-anchor="middle" font-size="4" fill="#c0392b">문제</text>
+            <rect x="45" y="20" width="25" height="12" rx="1" fill="#efe" stroke="#27ae60"/>
+            <text x="57" y="28" text-anchor="middle" font-size="4" fill="#27ae60">솔루션</text>
+            <text x="40" y="48" text-anchor="middle" font-size="4" fill="#666">문제 → 비교 → 시연 → 차별화 → CTA</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>비교 추천형 광고 템플릿</h4>
+                <p>문제 제시 → 제품 비교 → 솔루션 시연 → 차별화 → CTA 흐름의 정보 전달형 비교 광고 템플릿입니다.</p>
+                <span class="tpl-duration">45~60초</span>
+            </div>
+        </div>
+        <div class="template-card video-tpl" style="--tpl-color: #9C27B0">
+            <div class="template-svg video-svg">
+                <svg viewBox="0 0 80 55" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="35" rx="4" fill="#f5f5f5" stroke="#9C27B0" stroke-width="1"/>
+            <text x="40" y="15" text-anchor="middle" font-size="5" font-weight="bold" fill="#9C27B0">릴스/스토리</text>
+            <text x="40" y="25" text-anchor="middle" font-size="4" fill="#666">9:16 세로형</text>
+            <g transform="translate(15, 28)">
+                <rect width="10" height="6" rx="1" fill="#9C27B050"/>
+            </g>
+            <g transform="translate(27, 28)">
+                <rect width="10" height="6" rx="1" fill="#9C27B060"/>
+            </g>
+            <g transform="translate(39, 28)">
+                <rect width="10" height="6" rx="1" fill="#9C27B070"/>
+            </g>
+            <g transform="translate(51, 28)">
+                <rect width="10" height="6" rx="1" fill="#9C27B080"/>
+            </g>
+            <text x="40" y="48" text-anchor="middle" font-size="4" fill="#666">멀티씬 Config 기반</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>Meta Reels 광고 템플릿 (Remotion)</h4>
+                <p>Config 기반 멀티씬 세로형 릴스/스토리 광고 영상 템플릿입니다.</p>
+                <span class="tpl-duration">6~15초</span>
+            </div>
+        </div>
+        <div class="template-card video-tpl" style="--tpl-color: #9C27B0">
+            <div class="template-svg video-svg">
+                <svg viewBox="0 0 80 55" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="35" rx="4" fill="#f5f5f5" stroke="#9C27B0" stroke-width="1"/>
+            <text x="40" y="15" text-anchor="middle" font-size="5" font-weight="bold" fill="#9C27B0">리뷰 배너</text>
+            <rect x="10" y="20" width="30" height="12" rx="1" fill="#fff9e6" stroke="#f1c40f"/>
+            <text x="25" y="28" text-anchor="middle" font-size="4">⭐ 리뷰</text>
+            <rect x="42" y="20" width="25" height="12" rx="1" fill="#9C27B030"/>
+            <text x="54" y="28" text-anchor="middle" font-size="4">제품</text>
+            <text x="40" y="48" text-anchor="middle" font-size="4" fill="#666">정적 컴포지트, 5~10초</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>리뷰 배너형 광고 템플릿</h4>
+                <p>정적 컴포지트 레이아웃의 짧은 피드 광고 템플릿입니다. 리뷰 카드 + 제품 배너로 소셜 프루프를 강조합니다.</p>
+                <span class="tpl-duration">5~10초</span>
+            </div>
+        </div>
+        <div class="template-card video-tpl" style="--tpl-color: #9C27B0">
+            <div class="template-svg video-svg">
+                <svg viewBox="0 0 80 55" xmlns="http://www.w3.org/2000/svg">
+            <rect x="5" y="5" width="70" height="35" rx="4" fill="#f5f5f5" stroke="#9C27B0" stroke-width="1"/>
+            <text x="40" y="15" text-anchor="middle" font-size="5" font-weight="bold" fill="#9C27B0">UGC 스타일</text>
+            <g transform="translate(8, 20)">
+                <rect width="12" height="12" rx="1" fill="#fee"/>
+                <text x="6" y="9" text-anchor="middle" font-size="4">훅</text>
+            </g>
+            <g transform="translate(22, 20)">
+                <rect width="12" height="12" rx="1" fill="#eef"/>
+                <text x="6" y="9" text-anchor="middle" font-size="4">검색</text>
+            </g>
+            <g transform="translate(36, 20)">
+                <rect width="12" height="12" rx="1" fill="#efe"/>
+                <text x="6" y="9" text-anchor="middle" font-size="4">시연</text>
+            </g>
+            <g transform="translate(50, 20)">
+                <rect width="12" height="12" rx="1" fill="#ffe"/>
+                <text x="6" y="9" text-anchor="middle" font-size="4">기능</text>
+            </g>
+            <text x="40" y="48" text-anchor="middle" font-size="4" fill="#666">셀카 훅 → 검색 → 제품 시연 → CTA</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>UGC 리뷰형 광고 템플릿</h4>
+                <p>셀카 훅 → 검색 화면 → 제품 시연 → 기능 소개 → CTA 흐름의 캐주얼 UGC 스타일 광고 템플릿입니다.</p>
+                <span class="tpl-duration">30~45초</span>
+            </div>
+        </div>
+                </div>
+            </section>
+
+            <!-- 라이브 배너 템플릿 -->
+            <section class="special-section" id="live-banner-templates">
+                <h3>📺 라이브 배너 템플릿 (8개)</h3>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">
+                    네이버/카카오 쇼핑라이브용 배너 템플릿입니다. 혜택 안내, 메인 화면, 이벤트 배너 등.
+                </p>
+                <div class="card-templates-grid">
+                    
+        <div class="template-card" style="--tpl-color: #FF9500">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="2" width="50" height="90" rx="3" fill="#F8F4F0" stroke="#FF9500" stroke-width="1"/>
+            <text x="40" y="10" text-anchor="middle" font-size="3" fill="#A38068">REVIEW</text>
+            <text x="40" y="18" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">실제 고객 후기</text>
+            <rect x="18" y="24" width="44" height="20" rx="2" fill="white"/>
+            <text x="21" y="30" font-size="3" fill="#FF9500">⭐⭐⭐⭐⭐</text>
+            <text x="21" y="36" font-size="2" fill="#333">리뷰 텍스트...</text>
+            <rect x="50" y="28" width="10" height="12" rx="1" fill="#eee"/>
+            <rect x="18" y="48" width="44" height="20" rx="2" fill="white"/>
+            <text x="21" y="54" font-size="3" fill="#FF9500">⭐⭐⭐⭐⭐</text>
+            <text x="21" y="60" font-size="2" fill="#333">리뷰 텍스트...</text>
+            <rect x="21" y="62" width="8" height="5" rx="1" fill="#eee"/>
+            <rect x="31" y="62" width="8" height="5" rx="1" fill="#eee"/>
+            <rect x="18" y="72" width="44" height="18" rx="2" fill="white"/>
+            <text x="21" y="78" font-size="3" fill="#FF9500">⭐⭐⭐⭐⭐</text>
+            <text x="21" y="84" font-size="2" fill="#333">리뷰 텍스트...</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>고객 후기</h4>
+                <p>720×1280 리뷰 모음</p>
+                <code>customer-review.html</code>
+                <div class="template-vars">720×1280</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #E74C3C">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="2" width="50" height="90" rx="3" fill="#F8F4F0" stroke="#E74C3C" stroke-width="1"/>
+            <text x="40" y="10" text-anchor="middle" font-size="3" fill="#A38068">LIVE ONLY</text>
+            <text x="40" y="18" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">라이브 단독가</text>
+            <rect x="32" y="22" width="16" height="8" rx="2" fill="#E74C3C"/>
+            <text x="40" y="28" text-anchor="middle" font-size="5" fill="white" font-weight="bold">45%</text>
+            <rect x="22" y="34" width="36" height="24" rx="2" fill="white"/>
+            <text x="40" y="48" text-anchor="middle" font-size="4" fill="#999">제품 이미지</text>
+            <rect x="20" y="62" width="40" height="20" rx="2" fill="white"/>
+            <text x="24" y="68" font-size="2" fill="#999">판매가</text>
+            <text x="56" y="68" text-anchor="end" font-size="2" fill="#999" text-decoration="line-through">249,000</text>
+            <text x="24" y="74" font-size="2" fill="#E74C3C">라이브특가</text>
+            <text x="56" y="74" text-anchor="end" font-size="2" fill="#E74C3C">-5,000</text>
+            <rect x="20" y="84" width="40" height="6" rx="1" fill="#333"/>
+            <text x="40" y="89" text-anchor="middle" font-size="3" fill="white" font-weight="bold">136,800원</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>라이브 단독가</h4>
+                <p>720×1280 가격표 세로형</p>
+                <code>live-only-price.html</code>
+                <div class="template-vars">720×1280</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #A38068">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="2" width="50" height="90" rx="3" fill="#F8F4F0" stroke="#A38068" stroke-width="1"/>
+            <text x="20" y="10" font-size="3" fill="#999">BRAND</text>
+            <rect x="50" y="6" width="12" height="5" rx="1" fill="#A38068"/>
+            <text x="56" y="10" text-anchor="middle" font-size="3" fill="white">LIVE</text>
+            <text x="40" y="22" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">메인 타이틀</text>
+            <g transform="translate(18, 30)">
+                <rect width="14" height="12" rx="2" fill="#A3806820"/>
+                <text x="22" y="5" font-size="3" font-weight="bold" fill="#333">모드 1</text>
+                <text x="22" y="10" font-size="2" fill="#666">설명...</text>
+            </g>
+            <g transform="translate(18, 48)">
+                <rect width="14" height="12" rx="2" fill="#A3806820"/>
+                <text x="22" y="5" font-size="3" font-weight="bold" fill="#333">모드 2</text>
+                <text x="22" y="10" font-size="2" fill="#666">설명...</text>
+            </g>
+            <g transform="translate(18, 66)">
+                <rect width="14" height="12" rx="2" fill="#A3806820"/>
+                <text x="22" y="5" font-size="3" font-weight="bold" fill="#333">모드 3</text>
+                <text x="22" y="10" font-size="2" fill="#666">설명...</text>
+            </g>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>라이브 메인</h4>
+                <p>720×1280 세로형, 메인 화면</p>
+                <code>live-main-banner.html</code>
+                <div class="template-vars">720×1280</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #E74C3C">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="2" width="50" height="70" rx="3" fill="#E74C3C" stroke="#E74C3C" stroke-width="1"/>
+            <text x="20" y="10" font-size="3" fill="white" fill-opacity="0.8">BRAND</text>
+            <rect x="30" y="15" width="20" height="6" rx="3" fill="white" fill-opacity="0.2"/>
+            <text x="40" y="19" text-anchor="middle" font-size="3" fill="white">LIVE 날짜</text>
+            <text x="40" y="30" text-anchor="middle" font-size="4" fill="white">제품명</text>
+            <text x="40" y="42" text-anchor="middle" font-size="8" font-weight="bold" fill="white">159,000원</text>
+            <rect x="32" y="50" width="16" height="18" rx="2" fill="white"/>
+            <text x="40" y="60" text-anchor="middle" font-size="3" fill="#E74C3C">미리보기</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>이벤트 배너</h4>
+                <p>720×900 세로형, 라이브 예고</p>
+                <code>event-banner.html</code>
+                <div class="template-vars">720×900</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #C0392B">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="10" width="50" height="50" rx="3" fill="#C0392B" stroke="#C0392B" stroke-width="1"/>
+            <text x="20" y="18" font-size="3" fill="white" fill-opacity="0.8">BRAND</text>
+            <rect x="48" y="14" width="12" height="5" rx="1" fill="white" fill-opacity="0.2"/>
+            <text x="54" y="18" text-anchor="middle" font-size="3" fill="white">LIVE</text>
+            <text x="40" y="38" text-anchor="middle" font-size="6" font-weight="bold" fill="white">이벤트</text>
+            <text x="40" y="46" text-anchor="middle" font-size="6" font-weight="bold" fill="white">타이틀</text>
+            <rect x="28" y="52" width="24" height="6" rx="3" fill="white"/>
+            <text x="40" y="57" text-anchor="middle" font-size="3" fill="#C0392B" font-weight="bold">CTA 버튼</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>프로모션 배너</h4>
+                <p>720×720 정사각형, 이벤트 홍보</p>
+                <code>promo-banner.html</code>
+                <div class="template-vars">720×720</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #4A90A4">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="2" width="50" height="90" rx="3" fill="#F8F4F0" stroke="#4A90A4" stroke-width="1"/>
+            <text x="40" y="10" text-anchor="middle" font-size="3" fill="#A38068">LIVE ONLY</text>
+            <text x="40" y="18" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">하루 특가</text>
+            <rect x="18" y="24" width="22" height="28" rx="2" fill="white"/>
+            <rect x="20" y="26" width="8" height="4" rx="1" fill="#4A90A4"/>
+            <text x="24" y="29" text-anchor="middle" font-size="2" fill="white">50%</text>
+            <rect x="22" y="32" width="16" height="12" rx="1" fill="#eee"/>
+            <text x="30" y="48" text-anchor="middle" font-size="2" fill="#333">29,900</text>
+            <rect x="42" y="24" width="22" height="28" rx="2" fill="white"/>
+            <rect x="44" y="26" width="8" height="4" rx="1" fill="#4A90A4"/>
+            <text x="48" y="29" text-anchor="middle" font-size="2" fill="white">47%</text>
+            <rect x="46" y="32" width="16" height="12" rx="1" fill="#eee"/>
+            <text x="54" y="48" text-anchor="middle" font-size="2" fill="#333">19,000</text>
+            <rect x="18" y="56" width="46" height="14" rx="2" fill="white"/>
+            <rect x="22" y="59" width="14" height="8" rx="1" fill="#eee"/>
+            <text x="45" y="66" font-size="2" fill="#333">50,000원</text>
+            <rect x="18" y="74" width="22" height="14" rx="2" fill="white"/>
+            <rect x="42" y="74" width="22" height="14" rx="2" fill="white"/>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>하루특가 그리드</h4>
+                <p>720×1280 다중 제품 특가</p>
+                <code>daily-deal-grid.html</code>
+                <div class="template-vars">720×1280</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #E74C3C">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="15" width="76" height="25" rx="3" fill="#F5F0E8" stroke="#E74C3C" stroke-width="1"/>
+            <rect x="6" y="19" width="18" height="6" rx="3" fill="#E74C3C"/>
+            <text x="15" y="24" text-anchor="middle" font-size="4" fill="white" font-weight="bold">혜택 N</text>
+            <text x="6" y="32" font-size="4" fill="#333">제품명</text>
+            <text x="6" y="37" font-size="3" fill="#666">설명 텍스트</text>
+            <rect x="58" y="18" width="18" height="20" rx="2" fill="#E74C3C20" stroke="#E74C3C" stroke-dasharray="1"/>
+            <text x="67" y="30" text-anchor="middle" font-size="3" fill="#E74C3C">제품</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>혜택 배너</h4>
+                <p>750×250 가로형, 혜택 안내</p>
+                <code>benefit-banner.html</code>
+                <div class="template-vars">750×250</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #4A90A4">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="15" width="76" height="25" rx="3" fill="#F5F0E8" stroke="#4A90A4" stroke-width="1"/>
+            <rect x="6" y="18" width="22" height="6" rx="3" fill="#4A90A4"/>
+            <text x="17" y="23" text-anchor="middle" font-size="3" fill="white" font-weight="bold">구매고객대상</text>
+            <text x="6" y="31" font-size="4" fill="#333">제품명</text>
+            <text x="6" y="36" font-size="3" fill="#4A90A4" font-weight="bold">증정</text>
+            <rect x="56" y="18" width="18" height="18" rx="2" fill="#4A90A420" stroke="#4A90A4" stroke-dasharray="1"/>
+            <text x="65" y="28" text-anchor="middle" font-size="3" fill="#4A90A4">제품</text>
+            <rect x="68" y="30" width="8" height="5" rx="2" fill="#4A90A4"/>
+            <text x="72" y="34" text-anchor="middle" font-size="3" fill="white">20</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>혜택 뱃지 배너</h4>
+                <p>750×250 방송중 증정 안내</p>
+                <code>benefit-badge-banner.html</code>
+                <div class="template-vars">750×250</div>
+            </div>
+        </div>
+                </div>
+            </section>
+
+            <!-- 스마트스토어 배너 템플릿 -->
+            <section class="special-section" id="smartstore-banner-templates">
+                <h3>🏪 스마트스토어 배너 템플릿 (4개)</h3>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 20px;">
+                    네이버 스마트스토어용 PC/모바일 배너 템플릿입니다. 메인배너, 쿠폰배너 등.
+                </p>
+                <div class="card-templates-grid">
+                    
+        <div class="template-card" style="--tpl-color: #F5C518">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="15" y="5" width="50" height="60" rx="2" fill="#C9C4A8" stroke="#F5C518" stroke-width="1"/>
+            <text x="40" y="16" text-anchor="middle" font-size="4" font-weight="bold" fill="#333">매일 00시!</text>
+            <text x="40" y="23" text-anchor="middle" font-size="3" fill="#333">선착순 쿠폰 3종!</text>
+            <rect x="20" y="30" width="14" height="10" rx="1" fill="#F5C518"/>
+            <text x="27" y="37" text-anchor="middle" font-size="3" fill="#333">10%</text>
+            <rect x="38" y="30" width="14" height="10" rx="1" fill="#F5C518"/>
+            <text x="45" y="37" text-anchor="middle" font-size="3" fill="#333">10%</text>
+            <rect x="26" y="45" width="20" height="12" rx="1" fill="#F5C518"/>
+            <text x="36" y="53" text-anchor="middle" font-size="3" fill="#333">10%</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>MO 쿠폰배너</h4>
+                <p>750×900 모바일 쿠폰</p>
+                <code>coupon-banner-mo.html</code>
+                <div class="template-vars">750×900</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #C9C4A8">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="5" width="40" height="70" rx="2" fill="#C9C4A8" stroke="#C9C4A8" stroke-width="1"/>
+            <circle cx="28" cy="12" r="3" fill="#F5E050"/>
+            <circle cx="52" cy="18" r="4" fill="none" stroke="#7FB3D5" stroke-width="1"/>
+            <polygon points="26,22 30,28 22,28" fill="#E8A85C"/>
+            <text x="40" y="38" text-anchor="middle" font-size="3" fill="#666">1/12~1/18</text>
+            <text x="40" y="44" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">KIDS</text>
+            <text x="40" y="50" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">WEEK</text>
+            <circle cx="30" cy="60" r="4" fill="none" stroke="#7FB3D5" stroke-width="1"/>
+            <circle cx="52" cy="68" r="3" fill="#F5E050"/>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>MO 프로모션</h4>
+                <p>750×1334 모바일 전체화면</p>
+                <code>mo-promo-banner.html</code>
+                <div class="template-vars">750×1334</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #C9C4A8">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="20" width="76" height="25" rx="2" fill="#C9C4A8" stroke="#C9C4A8" stroke-width="1"/>
+            <circle cx="12" cy="26" r="4" fill="#F5E050"/>
+            <circle cx="68" cy="28" r="5" fill="none" stroke="#7FB3D5" stroke-width="1"/>
+            <text x="40" y="30" text-anchor="middle" font-size="3" fill="#666">EVENT DATE</text>
+            <text x="40" y="36" text-anchor="middle" font-size="5" font-weight="bold" fill="#333">KIDS WEEK</text>
+            <rect x="15" y="38" width="8" height="6" rx="1" fill="#eee"/>
+            <rect x="25" y="38" width="8" height="6" rx="1" fill="#eee"/>
+            <rect x="35" y="36" width="10" height="8" rx="1" fill="#ddd"/>
+            <rect x="47" y="38" width="8" height="6" rx="1" fill="#eee"/>
+            <rect x="57" y="38" width="8" height="6" rx="1" fill="#eee"/>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>PC 메인배너</h4>
+                <p>1920×640 스토어 상단</p>
+                <code>pc-main-banner.html</code>
+                <div class="template-vars">1920×640</div>
+            </div>
+        </div>
+        <div class="template-card" style="--tpl-color: #F5C518">
+            <div class="template-svg">
+                <svg viewBox="0 0 80 75" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="15" width="76" height="30" rx="2" fill="#C9C4A8" stroke="#F5C518" stroke-width="1"/>
+            <text x="12" y="26" font-size="4" font-weight="bold" fill="#333">매일 00시!</text>
+            <text x="12" y="32" font-size="3" fill="#333">선착순 쿠폰</text>
+            <rect x="45" y="18" width="16" height="8" rx="1" fill="#F5C518"/>
+            <text x="53" y="24" text-anchor="middle" font-size="3" fill="#333">COUPON</text>
+            <rect x="50" y="28" width="16" height="8" rx="1" fill="#F5C518" transform="rotate(3 58 32)"/>
+            <text x="58" y="34" text-anchor="middle" font-size="3" fill="#333">10%</text>
+            <rect x="55" y="37" width="16" height="8" rx="1" fill="#F5C518" transform="rotate(-2 63 41)"/>
+            <text x="63" y="43" text-anchor="middle" font-size="3" fill="#333">10%</text>
+        </svg>
+            </div>
+            <div class="template-info">
+                <h4>PC 쿠폰배너</h4>
+                <p>1920×500 쿠폰 안내</p>
+                <code>coupon-banner-pc.html</code>
+                <div class="template-vars">1920×500</div>
+            </div>
+        </div>
+                </div>
+            </section>
+
+            <!-- 에이전트 -->
+            <section class="special-section" id="agents">
+                <h3>🤖 에이전트 (11개)</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>에이전트</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr>
+            <td class="agent-name">Brand Logo Finder</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="agent-name">Instagram Reels 영상 편집 에이전트</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="agent-name">Meta 광고 영상 제작 에이전트</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="agent-name">[브랜드명] 경쟁사 분석 리포트</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="agent-name">[브랜드명] 브랜드 가이드</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="agent-name">메타 광고 이미지 제작 에이전트</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="agent-name">시장 조사 리포트: [조사 주제]</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="agent-name">콘텐츠 품질 리뷰 리포트</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="agent-name">현재 디렉토리의 데이터 파일 검색</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="agent-name">활성 브랜드 확인</td>
+            <td>-</td>
+        </tr>
+        <tr>
+            <td class="agent-name">활성 브랜드 확인</td>
+            <td>-</td>
+        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <footer class="footer">
+                자동 생성됨 · 2026-01-30 13:28
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        // 네비게이션 활성화
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = document.querySelectorAll('section[id]');
+
+        function updateActiveNav() {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                if (scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === '#' + current) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+        updateActiveNav();
+    </script>
+</body>
+</html>

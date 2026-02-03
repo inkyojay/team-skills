@@ -1,11 +1,1009 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=docs/guide/index.html">
-    <title>Redirecting...</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마케팅 스킬팩 가이드</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #A38068;
+    --primary-light: #c4a68a;
+    --bg: #0f0f1a;
+    --card: #1a1a2e;
+    --sidebar: #16213e;
+    --border: rgba(255,255,255,0.1);
+    --text: #eee;
+    --muted: #888;
+  }
+  body {
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .container { display: flex; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 260px;
+    background: var(--sidebar);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    z-index: 100;
+  }
+  .sidebar-header {
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sidebar-header h1 {
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }
+  .sidebar-header p {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+  .sidebar input {
+    width: calc(100% - 32px);
+    margin: 16px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    font-size: 0.85rem;
+  }
+  .sidebar input::placeholder { color: var(--muted); }
+  .sidebar input:focus { outline: none; border-color: var(--primary); }
+  .nav-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--muted);
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }
+  .nav-item:hover { background: rgba(163,128,104,0.1); color: var(--text); }
+  .nav-item.active { border-left-color: var(--primary); color: var(--primary); background: rgba(163,128,104,0.15); }
+  .badge {
+    font-size: 0.7rem;
+    background: rgba(255,255,255,0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+  .stats-box {
+    margin: 20px 16px;
+    padding: 16px;
+    background: rgba(163,128,104,0.1);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+  }
+  .stat-num { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
+  .stat-label { font-size: 0.7rem; color: var(--muted); }
+
+  /* Main */
+  .main { margin-left: 260px; padding: 32px; flex: 1; max-width: 900px; }
+  .header { margin-bottom: 32px; }
+  .header h2 { font-size: 1.5rem; margin-bottom: 8px; }
+  .header p { color: var(--muted); font-size: 0.9rem; }
+
+  /* Usage box */
+  .usage-box-main {
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+  }
+  .usage-box-main h3 { font-size: 0.95rem; margin-bottom: 12px; }
+  .usage-box-main .examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .usage-box-main .example {
+    background: rgba(255,255,255,0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+  }
+
+  /* Sections */
+  .section { margin-bottom: 40px; }
+  .section-title {
+    font-size: 1rem;
+    color: var(--text);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }
+  .example-box {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .example-tag {
+    background: rgba(163,128,104,0.2);
+    color: var(--primary-light);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+  }
+  .skill-list { display: flex; flex-direction: column; gap: 10px; }
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+  .skill-card:hover { border-color: var(--primary); }
+  .skill-header {
+    padding: 14px 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .skill-header h3 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Monaco', 'Consolas', monospace;
+    color: var(--primary-light);
+  }
+  .skill-header .arrow { color: var(--muted); transition: transform 0.2s; font-size: 0.7rem; }
+  .skill-card.open .arrow { transform: rotate(180deg); }
+  .skill-desc {
+    padding: 0 18px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .skill-card.open .skill-desc { max-height: 500px; padding: 0 18px 16px; }
+  .skill-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .tag {
+    background: rgba(163,128,104,0.25);
+    color: var(--primary-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+  }
+  .usage {
+    background: rgba(255,255,255,0.05);
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 0.8rem;
+  }
+  .hidden { display: none !important; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 0.75rem;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .sidebar { width: 100%; height: auto; position: relative; }
+    .main { margin-left: 0; padding: 20px; }
+    .container { flex-direction: column; }
+  }
+</style>
 </head>
 <body>
-    <p>가이드로 이동 중... <a href="docs/guide/index.html">클릭하여 이동</a></p>
+<div class="container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>마케팅 스킬팩</h1>
+      <p>AI 마케팅 자동화 도구 모음</p>
+    </div>
+    <input type="text" id="search" placeholder="스킬 검색...">
+    <div class="stats-box">
+      <div><div class="stat-num">144</div><div class="stat-label">스킬</div></div>
+      <div><div class="stat-num">11</div><div class="stat-label">에이전트</div></div>
+      <div><div class="stat-num">5</div><div class="stat-label">템플릿</div></div>
+    </div>
+    <nav>
+      <div class="nav-item active" data-cat="all"><span>전체</span><span class="badge">144</span></div>
+      <div class="nav-item" data-cat="design"><span>UI/UX 디자인</span><span class="badge">35</span></div>
+      <div class="nav-item" data-cat="content-creation"><span>콘텐츠 제작</span><span class="badge">2</span></div>
+      <div class="nav-item" data-cat="video"><span>영상 제작</span><span class="badge">2</span></div>
+      <div class="nav-item" data-cat="tools"><span>유틸리티 도구</span><span class="badge">26</span></div>
+      <div class="nav-item" data-cat="frontend"><span>프론트엔드</span><span class="badge">13</span></div>
+      <div class="nav-item" data-cat="brand"><span>브랜드 관리</span><span class="badge">19</span></div>
+      <div class="nav-item" data-cat="advertising"><span>광고</span><span class="badge">4</span></div>
+      <div class="nav-item" data-cat="marketing"><span>마케팅 전략</span><span class="badge">39</span></div>
+      <div class="nav-item" data-cat="documents"><span>문서 도구</span><span class="badge">4</span></div>
+      <div class="nav-item" data-cat="templates"><span>영상 템플릿</span><span class="badge">5</span></div>
+      <div class="nav-item" data-cat="agents"><span>에이전트</span><span class="badge">11</span></div>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <h2>설치된 스킬 목록</h2>
+      <p>각 스킬을 클릭하면 상세 설명을 볼 수 있습니다</p>
+    </div>
+
+    <div class="usage-box-main">
+      <h3>💡 사용 방법</h3>
+      <div class="examples">
+        <span class="example">"상세페이지 만들어줘"</span>
+        <span class="example">"메타 광고 기획해줘"</span>
+        <span class="example">"랜딩페이지 CRO 분석"</span>
+        <span class="example">"이메일 시퀀스 작성"</span>
+      </div>
+    </div>
+
+
+    <section class="section" data-cat="design">
+      <h3 class="section-title" style="border-color: #E91E63">🎨 UI/UX 디자인 (35)</h3>
+      <div class="example-box"><span class="example-tag">디자인 시스템 만들어줘</span><span class="example-tag">컬러 팔레트 추천</span><span class="example-tag">UI 컴포넌트 리뷰</span></div>
+      <div class="skill-list">
+        <div class="skill-card" data-name="Brand Identity Builder" data-cat="design">
+          <div class="skill-header"><h3>Brand Identity Builder</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Build complete brand identity systems and guidelines<div class="skill-tags"><span class="tag">build brand identity</span><span class="tag">brand guidelines</span><span class="tag">brand system</span></div></div>
+        </div>
+        <div class="skill-card" data-name="Brand Voice Coach" data-cat="design">
+          <div class="skill-header"><h3>Brand Voice Coach</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Maintain consistent brand voice across all marketing communications<div class="skill-tags"><span class="tag">brand voice</span><span class="tag">tone of voice</span><span class="tag">brand consistency</span></div></div>
+        </div>
+        <div class="skill-card" data-name="Carousel Designer" data-cat="design">
+          <div class="skill-header"><h3>Carousel Designer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Design educational carousel posts for Instagram and LinkedIn that inform and eng...<div class="skill-tags"><span class="tag">carousel post</span><span class="tag">design carousel</span><span class="tag">carousel content</span></div></div>
+        </div>
+        <div class="skill-card" data-name="Color Palette Generator" data-cat="design">
+          <div class="skill-header"><h3>Color Palette Generator</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Create beautiful, accessible color schemes for any project<div class="skill-tags"><span class="tag">create color palette</span><span class="tag">generate colors</span><span class="tag">color scheme</span></div></div>
+        </div>
+        <div class="skill-card" data-name="Design System Architect" data-cat="design">
+          <div class="skill-header"><h3>Design System Architect</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Build scalable, maintainable design systems that unify product experiences. Use ...</div>
+        </div>
+        <div class="skill-card" data-name="Icon Designer" data-cat="design">
+          <div class="skill-header"><h3>Icon Designer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Create cohesive icon sets and design systems<div class="skill-tags"><span class="tag">design icons</span><span class="tag">create icon set</span><span class="tag">icon system</span></div></div>
+        </div>
+        <div class="skill-card" data-name="Infographic Designer" data-cat="design">
+          <div class="skill-header"><h3>Infographic Designer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Create engaging data visualizations and infographics<div class="skill-tags"><span class="tag">create infographic</span><span class="tag">design infographic</span><span class="tag">data visualization</span></div></div>
+        </div>
+        <div class="skill-card" data-name="Layout Designer" data-cat="design">
+          <div class="skill-header"><h3>Layout Designer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert page layout and grid system design<div class="skill-tags"><span class="tag">layout design</span><span class="tag">page layout</span><span class="tag">grid system</span></div></div>
+        </div>
+        <div class="skill-card" data-name="Logo Ideator" data-cat="design">
+          <div class="skill-header"><h3>Logo Ideator</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Generate creative logo concepts and design directions<div class="skill-tags"><span class="tag">logo ideas</span><span class="tag">design logo</span><span class="tag">logo concepts</span></div></div>
+        </div>
+        <div class="skill-card" data-name="Pitch Deck Builder" data-cat="design">
+          <div class="skill-header"><h3>Pitch Deck Builder</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Create compelling investor pitch decks that tell your story and secure funding<div class="skill-tags"><span class="tag">pitch deck</span><span class="tag">investor deck</span><span class="tag">create pitch</span></div></div>
+        </div>
+        <div class="skill-card" data-name="Slide Deck Designer" data-cat="design">
+          <div class="skill-header"><h3>Slide Deck Designer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Design effective presentation slide decks for PowerPoint, Keynote, and Google Sl...<div class="skill-tags"><span class="tag">slide deck</span><span class="tag">design presentation</span><span class="tag">create slides</span></div></div>
+        </div>
+        <div class="skill-card" data-name="Typography Advisor" data-cat="design">
+          <div class="skill-header"><h3>Typography Advisor</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert font pairing and typography system design<div class="skill-tags"><span class="tag">font pairing</span><span class="tag">typography</span><span class="tag">choose fonts</span></div></div>
+        </div>
+        <div class="skill-card" data-name="UX Designer" data-cat="design">
+          <div class="skill-header"><h3>UX Designer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Design user experiences and interfaces. Use when creating user journeys, wirefra...</div>
+        </div>
+        <div class="skill-card" data-name="Visual Designer" data-cat="design">
+          <div class="skill-header"><h3>Visual Designer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Design beautiful, consistent user interfaces with proper color theory, typograph...</div>
+        </div>
+        <div class="skill-card" data-name="accessibility-compliance" data-cat="design">
+          <div class="skill-header"><h3>accessibility-compliance</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Implement WCAG 2.2 compliant interfaces with mobile accessibility, inclusive des...</div>
+        </div>
+        <div class="skill-card" data-name="animation-designer" data-cat="design">
+          <div class="skill-header"><h3>animation-designer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert in web animations, transitions, and motion design using Framer Motion and...</div>
+        </div>
+        <div class="skill-card" data-name="color-theory" data-cat="design">
+          <div class="skill-header"><h3>color-theory</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">World-class color theory expertise combining the scientific precision of Josef A...</div>
+        </div>
+        <div class="skill-card" data-name="create-design-system-rules" data-cat="design">
+          <div class="skill-header"><h3>create-design-system-rules</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Generates custom design system rules for the user's codebase. Use when user says...</div>
+        </div>
+        <div class="skill-card" data-name="design-system-lead" data-cat="design">
+          <div class="skill-header"><h3>design-system-lead</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert design systems leadership covering component libraries, design tokens, do...</div>
+        </div>
+        <div class="skill-card" data-name="design-system-patterns" data-cat="design">
+          <div class="skill-header"><h3>design-system-patterns</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Build scalable design systems with design tokens, theming infrastructure, and co...</div>
+        </div>
+        <div class="skill-card" data-name="design-systems" data-cat="design">
+          <div class="skill-header"><h3>design-systems</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">World-class design systems architecture - tokens, components, documentation, and...</div>
+        </div>
+        <div class="skill-card" data-name="icon-design" data-cat="design">
+          <div class="skill-header"><h3>icon-design</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">The craft of designing icons that communicate instantly across cultures, context...</div>
+        </div>
+        <div class="skill-card" data-name="interaction-design" data-cat="design">
+          <div class="skill-header"><h3>interaction-design</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Design and implement microinteractions, motion design, transitions, and user fee...</div>
+        </div>
+        <div class="skill-card" data-name="landing-page-design" data-cat="design">
+          <div class="skill-header"><h3>landing-page-design</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">World-class landing page expertise combining conversion rate optimization scienc...</div>
+        </div>
+        <div class="skill-card" data-name="landing-page-designer" data-cat="design">
+          <div class="skill-header"><h3>landing-page-designer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Senior landing page designer specializing in high-converting pages for SaaS, app...</div>
+        </div>
+        <div class="skill-card" data-name="responsive-design" data-cat="design">
+          <div class="skill-header"><h3>responsive-design</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Implement modern responsive layouts using container queries, fluid typography, C...</div>
+        </div>
+        <div class="skill-card" data-name="typography" data-cat="design">
+          <div class="skill-header"><h3>typography</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">The art and science of arranging type to make written language legible, readable...</div>
+        </div>
+        <div class="skill-card" data-name="ui-builder" data-cat="design">
+          <div class="skill-header"><h3>ui-builder</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert guide for building beautiful, responsive UI with React, Tailwind CSS, Sha...</div>
+        </div>
+        <div class="skill-card" data-name="ui-design" data-cat="design">
+          <div class="skill-header"><h3>ui-design</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">World-class UI design expertise combining the precision of Jony Ive's Apple work...</div>
+        </div>
+        <div class="skill-card" data-name="ui-ux-pro-max" data-cat="design">
+          <div class="skill-header"><h3>ui-ux-pro-max</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">UI/UX design intelligence. 50 styles, 21 palettes, 50 font pairings, 20 charts, ...</div>
+        </div>
+        <div class="skill-card" data-name="ux-researcher" data-cat="design">
+          <div class="skill-header"><h3>ux-researcher</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert UX research covering user research methods, usability testing, data synth...</div>
+        </div>
+        <div class="skill-card" data-name="visual-design-foundations" data-cat="design">
+          <div class="skill-header"><h3>visual-design-foundations</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Apply typography, color theory, spacing systems, and iconography principles to c...</div>
+        </div>
+        <div class="skill-card" data-name="visual-identity-direction" data-cat="design">
+          <div class="skill-header"><h3>visual-identity-direction</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Provides visual identity direction and creative briefing frameworks including Al...</div>
+        </div>
+        <div class="skill-card" data-name="web-component-design" data-cat="design">
+          <div class="skill-header"><h3>web-component-design</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Master React, Vue, and Svelte component patterns including CSS-in-JS, compositio...</div>
+        </div>
+        <div class="skill-card" data-name="web-design-guidelines" data-cat="design">
+          <div class="skill-header"><h3>web-design-guidelines</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Review UI code for Web Interface Guidelines compliance. Use when asked to "revie...</div>
+        </div>
+      </div>
+    </section>
+    <section class="section" data-cat="content-creation">
+      <h3 class="section-title" style="border-color: #4CAF50">📝 콘텐츠 제작 (2)</h3>
+      <div class="example-box"><span class="example-tag">상세페이지 만들어줘</span><span class="example-tag">카드뉴스 제작해줘</span><span class="example-tag">제품 소개 페이지 작성</span></div>
+      <div class="skill-list">
+        <div class="skill-card" data-name="card-news-creator" data-cat="content-creation">
+          <div class="skill-header"><h3>card-news-creator</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">카드뉴스 제작 (인스타그램 스타일)</div>
+        </div>
+        <div class="skill-card" data-name="page-builder" data-cat="content-creation">
+          <div class="skill-header"><h3>page-builder</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">상세페이지 제작</div>
+        </div>
+      </div>
+    </section>
+    <section class="section" data-cat="video">
+      <h3 class="section-title" style="border-color: #9C27B0">🎬 영상 제작 (2)</h3>
+      <div class="example-box"><span class="example-tag">릴스 영상 편집해줘</span><span class="example-tag">Remotion으로 영상 만들어줘</span></div>
+      <div class="skill-list">
+        <div class="skill-card" data-name="reels-editor" data-cat="video">
+          <div class="skill-header"><h3>reels-editor</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">릴스 영상 편집 (9:16, 1080x1920)</div>
+        </div>
+        <div class="skill-card" data-name="remotion-best-practices" data-cat="video">
+          <div class="skill-header"><h3>remotion-best-practices</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Remotion 영상 제작 가이드</div>
+        </div>
+      </div>
+    </section>
+    <section class="section" data-cat="tools">
+      <h3 class="section-title" style="border-color: #607D8B">🔧 유틸리티 도구 (26)</h3>
+      <div class="example-box"><span class="example-tag">HTML을 이미지로 변환</span><span class="example-tag">이미지 생성해줘</span><span class="example-tag">인포그래픽 만들어줘</span></div>
+      <div class="skill-list">
+        <div class="skill-card" data-name="baoyu-article-illustrator" data-cat="tools">
+          <div class="skill-header"><h3>baoyu-article-illustrator</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Analyzes article structure, identifies positions requiring visual aids, generate...</div>
+        </div>
+        <div class="skill-card" data-name="baoyu-comic" data-cat="tools">
+          <div class="skill-header"><h3>baoyu-comic</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Knowledge comic creator supporting multiple art styles and tones. Creates origin...</div>
+        </div>
+        <div class="skill-card" data-name="baoyu-compress-image" data-cat="tools">
+          <div class="skill-header"><h3>baoyu-compress-image</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Compresses images to WebP (default) or PNG with automatic tool selection. Use wh...</div>
+        </div>
+        <div class="skill-card" data-name="baoyu-cover-image" data-cat="tools">
+          <div class="skill-header"><h3>baoyu-cover-image</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Generates article cover images with 5 dimensions (type, palette, rendering, text...</div>
+        </div>
+        <div class="skill-card" data-name="baoyu-format-markdown" data-cat="tools">
+          <div class="skill-header"><h3>baoyu-format-markdown</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Formats plain text or markdown files with frontmatter, titles, summaries, headin...</div>
+        </div>
+        <div class="skill-card" data-name="baoyu-image-gen" data-cat="tools">
+          <div class="skill-header"><h3>baoyu-image-gen</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">AI image generation with OpenAI, Google and DashScope APIs. Supports text-to-ima...</div>
+        </div>
+        <div class="skill-card" data-name="baoyu-infographic" data-cat="tools">
+          <div class="skill-header"><h3>baoyu-infographic</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Generates professional infographics with 20 layout types and 17 visual styles. A...</div>
+        </div>
+        <div class="skill-card" data-name="baoyu-markdown-to-html" data-cat="tools">
+          <div class="skill-header"><h3>baoyu-markdown-to-html</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Converts Markdown to styled HTML with WeChat-compatible themes. Supports code hi...</div>
+        </div>
+        <div class="skill-card" data-name="baoyu-slide-deck" data-cat="tools">
+          <div class="skill-header"><h3>baoyu-slide-deck</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Generates professional slide deck images from content. Creates outlines with sty...</div>
+        </div>
+        <div class="skill-card" data-name="baoyu-url-to-markdown" data-cat="tools">
+          <div class="skill-header"><h3>baoyu-url-to-markdown</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Fetch any URL and convert to markdown using Chrome CDP. Supports two modes - aut...</div>
+        </div>
+        <div class="skill-card" data-name="baoyu-xhs-images" data-cat="tools">
+          <div class="skill-header"><h3>baoyu-xhs-images</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Generates Xiaohongshu (Little Red Book) infographic series with 10 visual styles...</div>
+        </div>
+        <div class="skill-card" data-name="brainstorming" data-cat="tools">
+          <div class="skill-header"><h3>brainstorming</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">You MUST use this before any creative work - creating features, building compone...</div>
+        </div>
+        <div class="skill-card" data-name="capture-sections" data-cat="tools">
+          <div class="skill-header"><h3>capture-sections</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">HTML 섹션별 이미지 캡처</div>
+        </div>
+        <div class="skill-card" data-name="crafting-effective-readmes" data-cat="tools">
+          <div class="skill-header"><h3>crafting-effective-readmes</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Use when writing or improving README files. Not all READMEs are the same — provi...</div>
+        </div>
+        <div class="skill-card" data-name="firecrawl" data-cat="tools">
+          <div class="skill-header"><h3>firecrawl</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">|</div>
+        </div>
+        <div class="skill-card" data-name="hook-creator" data-cat="tools">
+          <div class="skill-header"><h3>hook-creator</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Claude Code 훅 생성</div>
+        </div>
+        <div class="skill-card" data-name="html-section-capture" data-cat="tools">
+          <div class="skill-header"><h3>html-section-capture</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">HTML 섹션별 이미지 변환</div>
+        </div>
+        <div class="skill-card" data-name="html2img" data-cat="tools">
+          <div class="skill-header"><h3>html2img</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">HTML을 이미지로 변환</div>
+        </div>
+        <div class="skill-card" data-name="inline-css" data-cat="tools">
+          <div class="skill-header"><h3>inline-css</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">CSS 인라인 변환</div>
+        </div>
+        <div class="skill-card" data-name="nano-banana-pro" data-cat="tools">
+          <div class="skill-header"><h3>nano-banana-pro</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Google Gemini 3 Pro Image API를 사용한 이미지 생성 및 편집. 텍스트로 이미지 생성, 기존 이미지 수정/편집 가능.<div class="skill-tags"><span class="tag">이미지 생성</span><span class="tag">이미지 만들어줘</span><span class="tag">이미지 편집</span></div></div>
+        </div>
+        <div class="skill-card" data-name="release-skills" data-cat="tools">
+          <div class="skill-header"><h3>release-skills</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Universal release workflow. Auto-detects version files and changelogs. Supports ...</div>
+        </div>
+        <div class="skill-card" data-name="skill-creator" data-cat="tools">
+          <div class="skill-header"><h3>skill-creator</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">스킬 생성 가이드</div>
+        </div>
+        <div class="skill-card" data-name="slash-command-creator" data-cat="tools">
+          <div class="skill-header"><h3>slash-command-creator</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">슬래시 커맨드 생성</div>
+        </div>
+        <div class="skill-card" data-name="subagent-creator" data-cat="tools">
+          <div class="skill-header"><h3>subagent-creator</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">서브에이전트 생성</div>
+        </div>
+        <div class="skill-card" data-name="youtube-collector" data-cat="tools">
+          <div class="skill-header"><h3>youtube-collector</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">유튜브 콘텐츠 수집</div>
+        </div>
+        <div class="skill-card" data-name="youtube-transcribe-skill" data-cat="tools">
+          <div class="skill-header"><h3>youtube-transcribe-skill</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">유튜브 자막 추출</div>
+        </div>
+      </div>
+    </section>
+    <section class="section" data-cat="frontend">
+      <h3 class="section-title" style="border-color: #00BCD4">💻 프론트엔드 (13)</h3>
+      <div class="example-box"><span class="example-tag">React 컴포넌트 만들어줘</span><span class="example-tag">Tailwind로 스타일링</span><span class="example-tag">반응형 레이아웃</span></div>
+      <div class="skill-list">
+        <div class="skill-card" data-name="Figma Developer" data-cat="frontend">
+          <div class="skill-header"><h3>Figma Developer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Extract components from Figma, convert designs to React components, sync design ...</div>
+        </div>
+        <div class="skill-card" data-name="Frontend Builder" data-cat="frontend">
+          <div class="skill-header"><h3>Frontend Builder</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Build modern React/Next.js frontends. Use when creating web applications, choosi...</div>
+        </div>
+        <div class="skill-card" data-name="frontend" data-cat="frontend">
+          <div class="skill-header"><h3>frontend</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">World-class frontend engineering - React philosophy, performance, accessibility,...</div>
+        </div>
+        <div class="skill-card" data-name="frontend-code-review" data-cat="frontend">
+          <div class="skill-header"><h3>frontend-code-review</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Trigger when the user requests a review of frontend files (e.g., `.tsx`, `.ts`, ...</div>
+        </div>
+        <div class="skill-card" data-name="frontend-design" data-cat="frontend">
+          <div class="skill-header"><h3>frontend-design</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Create distinctive, production-grade frontend interfaces with high design qualit...</div>
+        </div>
+        <div class="skill-card" data-name="react-native-design" data-cat="frontend">
+          <div class="skill-header"><h3>react-native-design</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Master React Native styling, navigation, and Reanimated animations for cross-pla...</div>
+        </div>
+        <div class="skill-card" data-name="react-patterns" data-cat="frontend">
+          <div class="skill-header"><h3>react-patterns</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert knowledge for React hooks, composition, and component patternsUse when "r...</div>
+        </div>
+        <div class="skill-card" data-name="react-state-management" data-cat="frontend">
+          <div class="skill-header"><h3>react-state-management</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Master modern React state management with Redux Toolkit, Zustand, Jotai, and Rea...</div>
+        </div>
+        <div class="skill-card" data-name="react:components" data-cat="frontend">
+          <div class="skill-header"><h3>react:components</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Converts Stitch designs into modular Vite and React components using system-leve...</div>
+        </div>
+        <div class="skill-card" data-name="tailwind-design-system" data-cat="frontend">
+          <div class="skill-header"><h3>tailwind-design-system</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Build scalable design systems with Tailwind CSS, design tokens, component librar...</div>
+        </div>
+        <div class="skill-card" data-name="tailwind-ui" data-cat="frontend">
+          <div class="skill-header"><h3>tailwind-ui</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert knowledge for Tailwind CSS styling and component patternsUse when "tailwi...</div>
+        </div>
+        <div class="skill-card" data-name="tailwind-v4-shadcn" data-cat="frontend">
+          <div class="skill-header"><h3>tailwind-v4-shadcn</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">|</div>
+        </div>
+        <div class="skill-card" data-name="vercel-react-best-practices" data-cat="frontend">
+          <div class="skill-header"><h3>vercel-react-best-practices</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">React and Next.js performance optimization guidelines from Vercel Engineering. T...</div>
+        </div>
+      </div>
+    </section>
+    <section class="section" data-cat="brand">
+      <h3 class="section-title" style="border-color: #2196F3">🏷️ 브랜드 관리 (19)</h3>
+      <div class="example-box"><span class="example-tag">브랜드 분석해줘</span><span class="example-tag">브랜드 아키타입 선정</span><span class="example-tag">브랜드 네이밍</span></div>
+      <div class="skill-list">
+        <div class="skill-card" data-name="ai-brand-kit" data-cat="brand">
+          <div class="skill-header"><h3>ai-brand-kit</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Build comprehensive AI-native brand asset systems that maintain consistency acro...</div>
+        </div>
+        <div class="skill-card" data-name="brand-archetype-selection" data-cat="brand">
+          <div class="skill-header"><h3>brand-archetype-selection</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Provides Jungian brand archetype frameworks, the 12 archetypes with profiles, th...</div>
+        </div>
+        <div class="skill-card" data-name="brand-color-psychology" data-cat="brand">
+          <div class="skill-header"><h3>brand-color-psychology</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Provides brand color psychology and strategic palette development frameworks inc...</div>
+        </div>
+        <div class="skill-card" data-name="brand-designer" data-cat="brand">
+          <div class="skill-header"><h3>brand-designer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert in brand identity, logo design, and visual brand systems</div>
+        </div>
+        <div class="skill-card" data-name="brand-dna-extractor" data-cat="brand">
+          <div class="skill-header"><h3>brand-dna-extractor</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">웹사이트 URL에서 브랜드 DNA를 추출하고 인터랙티브 웹 리포트를 생성하는 스킬. 사용자가 "브랜드 분석", "브랜드 DNA 추출", "무드보...</div>
+        </div>
+        <div class="skill-card" data-name="brand-guidelines" data-cat="brand">
+          <div class="skill-header"><h3>brand-guidelines</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Applies Anthropic's official brand colors and typography to any sort of artifact...</div>
+        </div>
+        <div class="skill-card" data-name="brand-logo" data-cat="brand">
+          <div class="skill-header"><h3>brand-logo</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">브랜드 로고를 검색하고 다운로드 링크를 제공합니다. "로고 찾아줘", "브랜드 로고", "로고 검색" 요청 시 사용.</div>
+        </div>
+        <div class="skill-card" data-name="brand-messaging-architecture" data-cat="brand">
+          <div class="skill-header"><h3>brand-messaging-architecture</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Provides brand messaging architecture, value proposition, and brand pillar devel...</div>
+        </div>
+        <div class="skill-card" data-name="brand-naming-strategies" data-cat="brand">
+          <div class="skill-header"><h3>brand-naming-strategies</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Provides brand naming frameworks, evaluation criteria, and templates for startup...</div>
+        </div>
+        <div class="skill-card" data-name="brand-positioning-theory" data-cat="brand">
+          <div class="skill-header"><h3>brand-positioning-theory</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Provides brand positioning frameworks, the 22 Immutable Laws of Marketing, ZAG m...</div>
+        </div>
+        <div class="skill-card" data-name="brand-setup" data-cat="brand">
+          <div class="skill-header"><h3>brand-setup</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">새 브랜드 초기 설정을 도와주는 마법사입니다. "브랜드 설정", "새 브랜드 추가", "브랜드 초기화" 요청 시 사용.</div>
+        </div>
+        <div class="skill-card" data-name="brand-storytelling" data-cat="brand">
+          <div class="skill-header"><h3>brand-storytelling</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">The art and science of narrative-driven brand communication. This skill transfor...</div>
+        </div>
+        <div class="skill-card" data-name="brand-strategist" data-cat="brand">
+          <div class="skill-header"><h3>brand-strategist</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert brand strategy covering brand positioning, identity development, brand ar...</div>
+        </div>
+        <div class="skill-card" data-name="brand-typography-systems" data-cat="brand">
+          <div class="skill-header"><h3>brand-typography-systems</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Provides brand typography selection and hierarchy development frameworks includi...</div>
+        </div>
+        <div class="skill-card" data-name="brand-updater" data-cat="brand">
+          <div class="skill-header"><h3>brand-updater</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">브랜드 정보를 업데이트하고 동기화합니다. "브랜드 수정", "정보 업데이트", "제품 추가" 요청 시 사용.</div>
+        </div>
+        <div class="skill-card" data-name="brand-values-development" data-cat="brand">
+          <div class="skill-header"><h3>brand-values-development</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Provides brand values frameworks, differentiation tests, discovery questions, an...</div>
+        </div>
+        <div class="skill-card" data-name="brand-voice-development" data-cat="brand">
+          <div class="skill-header"><h3>brand-voice-development</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Provides brand voice and verbal identity frameworks including Bloomstein's Brand...</div>
+        </div>
+        <div class="skill-card" data-name="branding" data-cat="brand">
+          <div class="skill-header"><h3>branding</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">The craft of creating and maintaining cohesive brand identity systems. Branding ...</div>
+        </div>
+        <div class="skill-card" data-name="product-analyzer" data-cat="brand">
+          <div class="skill-header"><h3>product-analyzer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">제품 분석 리포트</div>
+        </div>
+      </div>
+    </section>
+    <section class="section" data-cat="advertising">
+      <h3 class="section-title" style="border-color: #FF5722">📢 광고 (4)</h3>
+      <div class="example-box"><span class="example-tag">메타 광고 기획해줘</span><span class="example-tag">광고 카피 써줘</span><span class="example-tag">타겟 오디언스 분석</span></div>
+      <div class="skill-list">
+        <div class="skill-card" data-name="kakao-message" data-cat="advertising">
+          <div class="skill-header"><h3>kakao-message</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">카카오톡 메시지 배너 제작. 이미지형/캐러셀형/리스트형 등 다양한 카카오 비즈메시지용 배너 템플릿을 제공합니다. "카카오 메시지 배너", "카톡...<div class="skill-tags"><span class="tag">카카오 메시지 배너</span><span class="tag">카톡 배너</span><span class="tag">비즈메시지</span></div></div>
+        </div>
+        <div class="skill-card" data-name="live-banner" data-cat="advertising">
+          <div class="skill-header"><h3>live-banner</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">쇼핑라이브 배너 제작. 네이버/카카오 쇼핑라이브용 배너 템플릿으로 혜택 배너, 라이브 메인, 이벤트 배너 등을 제작합니다. "라이브 배너 만들어...<div class="skill-tags"><span class="tag">라이브 배너</span><span class="tag">쇼핑라이브 배너</span><span class="tag">혜택 배너</span></div></div>
+        </div>
+        <div class="skill-card" data-name="meta-ad-image" data-cat="advertising">
+          <div class="skill-header"><h3>meta-ad-image</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">|<div class="skill-tags"><span class="tag">메타 광고 이미지</span><span class="tag">인스타 광고 만들어줘</span><span class="tag">페이스북 광고 소재</span></div></div>
+        </div>
+        <div class="skill-card" data-name="smartstore-banner" data-cat="advertising">
+          <div class="skill-header"><h3>smartstore-banner</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">스마트스토어 배너 제작. 네이버 스마트스토어용 PC/모바일 배너 템플릿으로 메인배너, 프로모션배너, 쿠폰배너 등을 제작합니다. "스마트스토어 배...<div class="skill-tags"><span class="tag">스마트스토어 배너</span><span class="tag">스스 배너</span><span class="tag">쿠폰 배너</span></div></div>
+        </div>
+      </div>
+    </section>
+    <section class="section" data-cat="marketing">
+      <h3 class="section-title" style="border-color: #FF9800">📊 마케팅 전략 (39)</h3>
+      <div class="example-box"><span class="example-tag">랜딩페이지 CRO 분석</span><span class="example-tag">마케팅 카피 작성</span><span class="example-tag">가격 전략 세워줘</span><span class="example-tag">이메일 시퀀스 만들어줘</span></div>
+      <div class="skill-list">
+        <div class="skill-card" data-name="Social Media Designer" data-cat="marketing">
+          <div class="skill-header"><h3>Social Media Designer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Create platform-optimized social media graphics<div class="skill-tags"><span class="tag">social media design</span><span class="tag">social graphics</span><span class="tag">instagram post</span></div></div>
+        </div>
+        <div class="skill-card" data-name="ab-test" data-cat="marketing">
+          <div class="skill-header"><h3>ab-test</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">A/B 테스트 분석<div class="skill-tags"><span class="tag">A/B 테스트</span><span class="tag">실험 설계</span><span class="tag">전환율 테스트</span></div></div>
+        </div>
+        <div class="skill-card" data-name="ab-test-setup" data-cat="marketing">
+          <div class="skill-header"><h3>ab-test-setup</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">A/B 테스트 설계 및 실험 계획</div>
+        </div>
+        <div class="skill-card" data-name="analytics-tracking" data-cat="marketing">
+          <div class="skill-header"><h3>analytics-tracking</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">애널리틱스 추적 설정<div class="skill-tags"><span class="tag">분석 설정</span><span class="tag">GA4</span><span class="tag">이벤트 추적</span></div></div>
+        </div>
+        <div class="skill-card" data-name="canvas-design" data-cat="marketing">
+          <div class="skill-header"><h3>canvas-design</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">포스터/디자인 시각물 제작</div>
+        </div>
+        <div class="skill-card" data-name="competitor-alternatives" data-cat="marketing">
+          <div class="skill-header"><h3>competitor-alternatives</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">경쟁사 비교 페이지 제작 (vs 페이지, 대안 페이지)</div>
+        </div>
+        <div class="skill-card" data-name="competitor-analysis" data-cat="marketing">
+          <div class="skill-header"><h3>competitor-analysis</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">경쟁사 분석<div class="skill-tags"><span class="tag">경쟁사 분석</span><span class="tag">벤치마킹</span><span class="tag">시장 조사</span></div></div>
+        </div>
+        <div class="skill-card" data-name="content-strategist" data-cat="marketing">
+          <div class="skill-header"><h3>content-strategist</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert content strategy covering content planning, editorial calendars, brand vo...</div>
+        </div>
+        <div class="skill-card" data-name="content-strategy" data-cat="marketing">
+          <div class="skill-header"><h3>content-strategy</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">콘텐츠 전략 수립 및 주제 기획</div>
+        </div>
+        <div class="skill-card" data-name="copy-editing" data-cat="marketing">
+          <div class="skill-header"><h3>copy-editing</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">마케팅 카피 편집 및 개선</div>
+        </div>
+        <div class="skill-card" data-name="copywriting" data-cat="marketing">
+          <div class="skill-header"><h3>copywriting</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">마케팅 카피라이팅 (랜딩페이지, 홈페이지 등)</div>
+        </div>
+        <div class="skill-card" data-name="csv-analyzer" data-cat="marketing">
+          <div class="skill-header"><h3>csv-analyzer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">CSV 데이터 분석<div class="skill-tags"><span class="tag">데이터 분석</span><span class="tag">CSV 분석</span><span class="tag">매출 분석</span></div></div>
+        </div>
+        <div class="skill-card" data-name="data-report" data-cat="marketing">
+          <div class="skill-header"><h3>data-report</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">마케팅 데이터 분석 리포트</div>
+        </div>
+        <div class="skill-card" data-name="email-sequence" data-cat="marketing">
+          <div class="skill-header"><h3>email-sequence</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">이메일 시퀀스 작성<div class="skill-tags"><span class="tag">이메일 시퀀스</span><span class="tag">드립 캠페인</span><span class="tag">웰컴 이메일</span></div></div>
+        </div>
+        <div class="skill-card" data-name="form-cro" data-cat="marketing">
+          <div class="skill-header"><h3>form-cro</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">폼 최적화 (리드 캡처, 문의 폼 등)</div>
+        </div>
+        <div class="skill-card" data-name="free-tool-strategy" data-cat="marketing">
+          <div class="skill-header"><h3>free-tool-strategy</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">무료 툴 마케팅 전략</div>
+        </div>
+        <div class="skill-card" data-name="launch-strategy" data-cat="marketing">
+          <div class="skill-header"><h3>launch-strategy</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">런칭 전략 수립<div class="skill-tags"><span class="tag">출시 전략</span><span class="tag">런칭</span><span class="tag">신제품 출시</span></div></div>
+        </div>
+        <div class="skill-card" data-name="marketing" data-cat="marketing">
+          <div class="skill-header"><h3>marketing</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">World-class marketing expertise combining Seth Godin's permission marketing phil...</div>
+        </div>
+        <div class="skill-card" data-name="marketing-analyst" data-cat="marketing">
+          <div class="skill-header"><h3>marketing-analyst</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert marketing analytics covering campaign analysis, attribution modeling, mar...</div>
+        </div>
+        <div class="skill-card" data-name="marketing-ideas" data-cat="marketing">
+          <div class="skill-header"><h3>marketing-ideas</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">마케팅 아이디어 140개 전술<div class="skill-tags"><span class="tag">마케팅 아이디어</span><span class="tag">프로모션 아이디어</span><span class="tag">캠페인 아이디어</span></div></div>
+        </div>
+        <div class="skill-card" data-name="marketing-psychology" data-cat="marketing">
+          <div class="skill-header"><h3>marketing-psychology</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">마케팅 심리학 (70+ 멘탈 모델)</div>
+        </div>
+        <div class="skill-card" data-name="onboarding-cro" data-cat="marketing">
+          <div class="skill-header"><h3>onboarding-cro</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">온보딩 최적화 (활성화율 개선)</div>
+        </div>
+        <div class="skill-card" data-name="page-cro" data-cat="marketing">
+          <div class="skill-header"><h3>page-cro</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">페이지 전환율 최적화 (CRO)</div>
+        </div>
+        <div class="skill-card" data-name="paid-ads" data-cat="marketing">
+          <div class="skill-header"><h3>paid-ads</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">유료 광고 캠페인 (Google, Meta, LinkedIn 등)</div>
+        </div>
+        <div class="skill-card" data-name="paywall-upgrade-cro" data-cat="marketing">
+          <div class="skill-header"><h3>paywall-upgrade-cro</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">페이월/업그레이드 화면 최적화</div>
+        </div>
+        <div class="skill-card" data-name="popup-cro" data-cat="marketing">
+          <div class="skill-header"><h3>popup-cro</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">팝업/모달 최적화</div>
+        </div>
+        <div class="skill-card" data-name="pricing-strategy" data-cat="marketing">
+          <div class="skill-header"><h3>pricing-strategy</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">가격 전략 수립<div class="skill-tags"><span class="tag">가격 책정</span><span class="tag">프라이싱</span><span class="tag">할인 전략</span></div></div>
+        </div>
+        <div class="skill-card" data-name="product-marketing-context" data-cat="marketing">
+          <div class="skill-header"><h3>product-marketing-context</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">제품 마케팅 컨텍스트 문서 작성</div>
+        </div>
+        <div class="skill-card" data-name="programmatic-seo" data-cat="marketing">
+          <div class="skill-header"><h3>programmatic-seo</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">프로그래매틱 SEO (대량 페이지 생성)</div>
+        </div>
+        <div class="skill-card" data-name="referral-program" data-cat="marketing">
+          <div class="skill-header"><h3>referral-program</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">추천 프로그램 설계<div class="skill-tags"><span class="tag">추천 프로그램</span><span class="tag">리퍼럴</span><span class="tag">친구 초대</span></div></div>
+        </div>
+        <div class="skill-card" data-name="review-management" data-cat="marketing">
+          <div class="skill-header"><h3>review-management</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">리뷰 관리<div class="skill-tags"><span class="tag">리뷰 관리</span><span class="tag">후기 요청</span><span class="tag">리뷰 분석</span></div></div>
+        </div>
+        <div class="skill-card" data-name="schema-markup" data-cat="marketing">
+          <div class="skill-header"><h3>schema-markup</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">스키마 마크업 (구조화된 데이터)</div>
+        </div>
+        <div class="skill-card" data-name="seo" data-cat="marketing">
+          <div class="skill-header"><h3>seo</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Search engine optimization for startups. Covers technical SEO, content strategy,...</div>
+        </div>
+        <div class="skill-card" data-name="seo-audit" data-cat="marketing">
+          <div class="skill-header"><h3>seo-audit</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">SEO 감사 및 분석<div class="skill-tags"><span class="tag">SEO 분석</span><span class="tag">검색 최적화</span><span class="tag">사이트 감사</span></div></div>
+        </div>
+        <div class="skill-card" data-name="seo-specialist" data-cat="marketing">
+          <div class="skill-header"><h3>seo-specialist</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert SEO covering technical SEO, content optimization, link building, keyword ...</div>
+        </div>
+        <div class="skill-card" data-name="signup-flow-cro" data-cat="marketing">
+          <div class="skill-header"><h3>signup-flow-cro</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">회원가입 플로우 최적화</div>
+        </div>
+        <div class="skill-card" data-name="social-community" data-cat="marketing">
+          <div class="skill-header"><h3>social-community</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Expert in building community presence across social platforms - Twitter/X, Reddi...</div>
+        </div>
+        <div class="skill-card" data-name="social-content" data-cat="marketing">
+          <div class="skill-header"><h3>social-content</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">소셜 미디어 콘텐츠 제작<div class="skill-tags"><span class="tag">인스타 포스팅</span><span class="tag">SNS 콘텐츠</span><span class="tag">소셜 미디어</span></div></div>
+        </div>
+        <div class="skill-card" data-name="video-script" data-cat="marketing">
+          <div class="skill-header"><h3>video-script</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">영상 스크립트 작성<div class="skill-tags"><span class="tag">영상 스크립트</span><span class="tag">릴스 대본</span><span class="tag">광고 영상</span></div></div>
+        </div>
+      </div>
+    </section>
+    <section class="section" data-cat="documents">
+      <h3 class="section-title" style="border-color: #795548">📄 문서 도구 (4)</h3>
+      <div class="example-box"><span class="example-tag">PDF 생성해줘</span><span class="example-tag">엑셀 분석해줘</span><span class="example-tag">PPT 만들어줘</span></div>
+      <div class="skill-list">
+        <div class="skill-card" data-name="docx" data-cat="documents">
+          <div class="skill-header"><h3>docx</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Comprehensive document creation, editing, and analysis with support for tracked ...</div>
+        </div>
+        <div class="skill-card" data-name="pdf" data-cat="documents">
+          <div class="skill-header"><h3>pdf</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Comprehensive PDF manipulation toolkit for extracting text and tables, creating ...</div>
+        </div>
+        <div class="skill-card" data-name="pptx" data-cat="documents">
+          <div class="skill-header"><h3>pptx</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Presentation creation, editing, and analysis. When Claude needs to work with pre...</div>
+        </div>
+        <div class="skill-card" data-name="xlsx" data-cat="documents">
+          <div class="skill-header"><h3>xlsx</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Comprehensive spreadsheet creation, editing, and analysis with support for formu...</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-cat="templates">
+      <h3 class="section-title" style="border-color: #9C27B0">🎬 영상 템플릿 (5)</h3>
+      <div class="skill-list">
+        <div class="skill-card" data-name="branded-showcase" data-cat="templates">
+          <div class="skill-header"><h3>branded-showcase</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">고정 헤더(로고+제품명+썸네일) + 하단 콘텐츠 순환 구조의 전문적 브랜드 공식 광고 템플릿입니다.<div class="usage"><strong>권장 길이:</strong> 30~45초</div></div>
+        </div>
+        <div class="skill-card" data-name="comparison" data-cat="templates">
+          <div class="skill-header"><h3>comparison</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">문제 제시 → 제품 비교 → 솔루션 시연 → 차별화 → CTA 흐름의 정보 전달형 비교 광고 템플릿입니다.<div class="usage"><strong>권장 길이:</strong> 45~60초</div></div>
+        </div>
+        <div class="skill-card" data-name="meta-reels-ad" data-cat="templates">
+          <div class="skill-header"><h3>meta-reels-ad</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Config 기반 멀티씬 세로형 릴스/스토리 광고 영상 템플릿입니다.<div class="usage"><strong>권장 길이:</strong> 6~15초</div></div>
+        </div>
+        <div class="skill-card" data-name="review-banner" data-cat="templates">
+          <div class="skill-header"><h3>review-banner</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">정적 컴포지트 레이아웃의 짧은 피드 광고 템플릿입니다. 리뷰 카드 + 제품 배너로 소셜 프루프를 강조합니다.<div class="usage"><strong>권장 길이:</strong> 5~10초</div></div>
+        </div>
+        <div class="skill-card" data-name="ugc-review" data-cat="templates">
+          <div class="skill-header"><h3>ugc-review</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">셀카 훅 → 검색 화면 → 제품 시연 → 기능 소개 → CTA 흐름의 캐주얼 UGC 스타일 광고 템플릿입니다...<div class="usage"><strong>권장 길이:</strong> 30~45초</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" data-cat="agents">
+      <h3 class="section-title" style="border-color: #607D8B">🤖 에이전트 (11)</h3>
+      <div class="example-box"><span class="example-tag">"광고 만들어줘"</span><span class="example-tag">"릴스 편집해줘"</span><span class="example-tag">"브랜드 분석해줘"</span><span class="example-tag">"경쟁사 조사해줘"</span></div>
+      <div class="skill-list">
+        <div class="skill-card" data-name="brand-logo-finder" data-cat="agents">
+          <div class="skill-header"><h3>brand-logo-finder</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Finds brand logos using Brandfetch. Use when user asks for a brand's logo, brand assets, or brand id...<div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> WebFetch, WebSearch</div></div>
+        </div>
+        <div class="skill-card" data-name="brand-setup-wizard" data-cat="agents">
+          <div class="skill-header"><h3>brand-setup-wizard</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">새 브랜드 초기 설정 마법사. 브랜드 정보를 질문을 통해 수집하고 공유 레퍼런스 파일을 자동 생성. "브랜드 설정", "새 브랜드 추가", "brand setup" 요청 시 use...<div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> Read, Write, Bash, Glob</div></div>
+        </div>
+        <div class="skill-card" data-name="brand-updater" data-cat="agents">
+          <div class="skill-header"><h3>brand-updater</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">브랜드 정보 업데이트 에이전트. 기존 브랜드의 제품, 경쟁사, 캠페인 등 특정 정보를 수정. "브랜드 수정", "제품 추가", "경쟁사 업데이트", "brand update" 요청...<div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> Read, Write, Edit, Bash, Glob</div></div>
+        </div>
+        <div class="skill-card" data-name="competitor-analyzer" data-cat="agents">
+          <div class="skill-header"><h3>competitor-analyzer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">경쟁사 실시간 분석 전문가. 웹 검색으로 경쟁 브랜드의 제품, 가격, 마케팅, SNS, 리뷰 데이터를 수집하고 분석. "경쟁사 분석", "벤치마킹", "시장 조사", "[브랜드명]...<div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> Read, Grep, Glob, Bash, WebSearch, WebFetch</div></div>
+        </div>
+        <div class="skill-card" data-name="content-quality-reviewer" data-cat="agents">
+          <div class="skill-header"><h3>content-quality-reviewer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">콘텐츠 품질 검토 전문가. 생성된 마케팅 콘텐츠(상세페이지, 광고카피, SNS 등)의 품질을 검토하고 개선점 제안. "검토해줘", "피드백", "수정 필요한 부분", "품질 체크"...<div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> Read, Grep, Glob</div></div>
+        </div>
+        <div class="skill-card" data-name="data-report-analyzer" data-cat="agents">
+          <div class="skill-header"><h3>data-report-analyzer</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">데이터 파일 분석 및 리포트 생성 전문가. CSV, 엑셀, JSON 등 데이터 파일을 읽어 분석하고 인사이트 도출. "데이터 분석", "매출 분석", "성과 리포트", "파일 분석...<div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> Read, Grep, Glob, Bash, Write</div></div>
+        </div>
+        <div class="skill-card" data-name="market-researcher" data-cat="agents">
+          <div class="skill-header"><h3>market-researcher</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">시장 및 트렌드 조사 전문가. 베이비/육아 시장 트렌드, 소비자 인사이트, 신규 기회 영역을 웹 검색으로 조사. "시장 조사", "트렌드 분석", "소비자 인사이트", "기회 발굴...<div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> Read, Grep, Glob, Bash, WebSearch, WebFetch</div></div>
+        </div>
+        <div class="skill-card" data-name="meta-ad-creator" data-cat="agents">
+          <div class="skill-header"><h3>meta-ad-creator</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">메타(인스타/페북) 광고 이미지 자동 제작 에이전트.<div class="skill-tags" style="margin-top:8px"><span style="color:var(--muted);font-size:0.7rem;margin-right:6px">호출:</span><span class="tag">"광고 만들어줘"</span><span class="tag">"메타 광고 제작"</span><span class="tag">"인스타 광고 소재"</span></div><div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> read_file</div></div>
+        </div>
+        <div class="skill-card" data-name="meta-ads-agent" data-cat="agents">
+          <div class="skill-header"><h3>meta-ads-agent</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">Meta 광고 영상 제작 에이전트 - 템플릿 선택부터 Remotion 프로젝트 생성까지<div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> read_file</div></div>
+        </div>
+        <div class="skill-card" data-name="reels-editor-agent" data-cat="agents">
+          <div class="skill-header"><h3>reels-editor-agent</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">인스타그램 릴스 광고용 영상 편집 에이전트. 영상을 9:16 세로 형식으로 변환하고,<div class="skill-tags" style="margin-top:8px"><span style="color:var(--muted);font-size:0.7rem;margin-right:6px">호출:</span><span class="tag">"릴스 편집"</span><span class="tag">"릴스 광고"</span><span class="tag">"영상 편집"</span><span class="tag">"세로 영상"</span></div><div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> Read, Write, Glob, Grep, Bash, AskUserQuestion</div></div>
+        </div>
+        <div class="skill-card" data-name="sundayhug-marketing-hub" data-cat="agents">
+          <div class="skill-header"><h3>sundayhug-marketing-hub</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">썬데이허그 마케팅 업무 총괄 오케스트레이터. 마케팅 요청 분석, 적합한 스킬/에이전트 추천, 복합 워크플로우 설계 및 실행. "마케팅 도와줘", "어떤 스킬 써야해", "캠페인 전...<div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> Read, Grep, Glob, Bash, Task, WebSearch</div></div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      자동 생성됨 · 2026-02-03 17:18
+    </footer>
+  </main>
+</div>
+
+<script>
+// 카드 토글
+document.querySelectorAll('.skill-header').forEach(header => {
+  header.addEventListener('click', () => {
+    header.parentElement.classList.toggle('open');
+  });
+});
+
+// 검색
+document.getElementById('search').addEventListener('input', function() {
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('.skill-card').forEach(card => {
+    const name = card.dataset.name.toLowerCase();
+    const desc = card.querySelector('.skill-desc')?.textContent.toLowerCase() || '';
+    const match = name.includes(q) || desc.includes(q);
+    card.classList.toggle('hidden', !match);
+  });
+  document.querySelectorAll('.section').forEach(sec => {
+    const hasVisible = sec.querySelector('.skill-card:not(.hidden)');
+    sec.classList.toggle('hidden', !hasVisible);
+  });
+});
+
+// 카테고리 필터
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', function() {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    this.classList.add('active');
+    const cat = this.dataset.cat;
+    document.querySelectorAll('.section').forEach(sec => {
+      sec.classList.toggle('hidden', cat !== 'all' && sec.dataset.cat !== cat);
+    });
+    document.querySelectorAll('.skill-card').forEach(card => card.classList.remove('hidden'));
+    document.getElementById('search').value = '';
+  });
+});
+</script>
 </body>
 </html>

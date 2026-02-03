@@ -31,7 +31,10 @@ CATEGORY_NAMES = {
     "advertising": "광고",
     "brand": "브랜드 관리",
     "marketing": "마케팅 전략",
-    "tools": "유틸리티 도구"
+    "tools": "유틸리티 도구",
+    "design": "UI/UX 디자인",
+    "frontend": "프론트엔드",
+    "documents": "문서 도구"
 }
 
 CATEGORY_ICONS = {
@@ -40,7 +43,10 @@ CATEGORY_ICONS = {
     "advertising": "📢",
     "brand": "🏷️",
     "marketing": "📊",
-    "tools": "🔧"
+    "tools": "🔧",
+    "design": "🎨",
+    "frontend": "💻",
+    "documents": "📄"
 }
 
 CATEGORY_COLORS = {
@@ -49,7 +55,10 @@ CATEGORY_COLORS = {
     "advertising": "#FF5722",
     "brand": "#2196F3",
     "marketing": "#FF9800",
-    "tools": "#607D8B"
+    "tools": "#607D8B",
+    "design": "#E91E63",
+    "frontend": "#00BCD4",
+    "documents": "#795548"
 }
 
 # 스킬 한국어 번역 (영어 스킬용)
@@ -135,8 +144,8 @@ CATEGORY_EXAMPLES = {
     ],
     "brand": [
         "브랜드 분석해줘",
-        "제품 분석 리포트",
-        "경쟁사 조사"
+        "브랜드 아키타입 선정",
+        "브랜드 네이밍"
     ],
     "marketing": [
         "랜딩페이지 CRO 분석",
@@ -146,8 +155,23 @@ CATEGORY_EXAMPLES = {
     ],
     "tools": [
         "HTML을 이미지로 변환",
-        "스킬 만들어줘",
-        "유튜브 자막 추출"
+        "이미지 생성해줘",
+        "인포그래픽 만들어줘"
+    ],
+    "design": [
+        "디자인 시스템 만들어줘",
+        "컬러 팔레트 추천",
+        "UI 컴포넌트 리뷰"
+    ],
+    "frontend": [
+        "React 컴포넌트 만들어줘",
+        "Tailwind로 스타일링",
+        "반응형 레이아웃"
+    ],
+    "documents": [
+        "PDF 생성해줘",
+        "엑셀 분석해줘",
+        "PPT 만들어줘"
     ]
 }
 
@@ -217,7 +241,7 @@ def parse_skill_md(skill_path: Path) -> dict:
 
 
 def parse_agent_md(agent_path: Path) -> dict:
-    """에이전트 .md 파일 파싱"""
+    """에이전트 .md 파일 파싱 - frontmatter 지원"""
     if not agent_path.exists():
         return None
 
@@ -226,18 +250,80 @@ def parse_agent_md(agent_path: Path) -> dict:
     info = {
         "name": agent_path.stem.replace("-", " ").title(),
         "filename": agent_path.name,
-        "description": ""
+        "description": "",
+        "tools": [],
+        "triggers": []
     }
 
-    # 첫 번째 제목 추출
-    title_match = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
-    if title_match:
-        info["name"] = title_match.group(1).strip()
+    # YAML frontmatter 추출
+    frontmatter_match = re.match(r'^---\n(.*?)\n---', content, re.DOTALL)
+    if frontmatter_match:
+        frontmatter = frontmatter_match.group(1)
 
-    # 설명 추출
-    desc_match = re.search(r'^#.*?\n+(.+?)(?=\n\n|\n#|$)', content, re.DOTALL)
-    if desc_match:
-        info["description"] = desc_match.group(1).strip()[:80]
+        # name 추출
+        name_match = re.search(r'^name:\s*(.+)$', frontmatter, re.MULTILINE)
+        if name_match:
+            info["name"] = name_match.group(1).strip().strip('"\'')
+
+        # description 추출 (멀티라인 지원)
+        desc_match = re.search(r'^description:\s*[|>]\s*\n(.*?)(?=\n[a-z_]+:|\Z)', frontmatter, re.DOTALL | re.MULTILINE)
+        if desc_match:
+            desc_lines = desc_match.group(1).strip().split('\n')
+            # 첫 번째 의미있는 줄 사용
+            info["description"] = desc_lines[0].strip() if desc_lines else ""
+            # 트리거 문구 추출 (마지막 줄에 "~요청 시" 패턴이 있으면)
+            for line in desc_lines:
+                if '"' in line and '요청 시' in line:
+                    triggers = re.findall(r'"([^"]+)"', line)
+                    info["triggers"] = triggers[:4]
+                    break
+        else:
+            # 한 줄짜리 description
+            desc_match = re.search(r'^description:\s*["\']?([^\n]+)["\']?$', frontmatter, re.MULTILINE)
+            if desc_match:
+                desc = desc_match.group(1).strip().strip('"\'')
+                info["description"] = desc
+
+        # tools 추출
+        tools_match = re.search(r'^tools:\s*(.+)$', frontmatter, re.MULTILINE)
+        if tools_match:
+            tools_str = tools_match.group(1).strip()
+            if tools_str.startswith('['):
+                # YAML 리스트 형식
+                info["tools"] = [t.strip().strip('"\'') for t in tools_str.strip('[]').split(',') if t.strip() and t.strip() != '-']
+            elif tools_str.startswith('-'):
+                # YAML 블록 리스트 형식 (줄바꿈이 없어진 경우)
+                info["tools"] = [t.strip().strip('"\'') for t in tools_str.split('-') if t.strip()]
+            else:
+                # 쉼표/공백으로 구분된 형식
+                info["tools"] = [t.strip() for t in re.split(r'[,\s]+', tools_str) if t.strip() and t.strip() != '-']
+
+        # tools가 멀티라인 YAML 리스트인 경우
+        if not info["tools"]:
+            tools_block_match = re.search(r'^tools:\s*\n((?:\s*-\s*.+\n?)+)', frontmatter, re.MULTILINE)
+            if tools_block_match:
+                tools_lines = tools_block_match.group(1).strip().split('\n')
+                info["tools"] = [re.sub(r'^\s*-\s*', '', t).strip().strip('"\'') for t in tools_lines if t.strip()]
+
+    # frontmatter에서 name을 못 찾았으면 제목에서 추출
+    if info["name"] == agent_path.stem.replace("-", " ").title():
+        title_match = re.search(r'^#\s+(.+)$', content, re.MULTILINE)
+        if title_match:
+            info["name"] = title_match.group(1).strip()
+
+    # description이 없으면 본문 첫 단락에서 추출
+    if not info["description"]:
+        body = re.sub(r'^---\n.*?\n---\n?', '', content, flags=re.DOTALL)
+        lines = body.strip().split('\n')
+        for line in lines:
+            line = line.strip()
+            if line and not line.startswith('#') and not line.startswith('-') and not line.startswith('|'):
+                info["description"] = line[:100]
+                break
+
+    # description 길이 제한 및 정리
+    if info["description"] and len(info["description"]) > 100:
+        info["description"] = info["description"][:100] + "..."
 
     return info
 
@@ -412,22 +498,29 @@ def generate_markdown_catalog(skills: dict, agents: list, templates: list = None
 
 
 def generate_html_guide(skills: dict, agents: list, templates: list = None) -> str:
-    """HTML 사용 가이드 생성 - 깔끔한 버전"""
+    """HTML 사용 가이드 생성 - 사이드바 레이아웃 버전"""
 
     total_skills = sum(len(s) for s in skills.values())
 
-    # 카테고리별 스킬 리스트 생성
-    category_sections = ""
+    # 사이드바 네비게이션 아이템 생성
+    nav_items = f'<div class="nav-item active" data-cat="all"><span>전체</span><span class="badge">{total_skills}</span></div>\n'
+    for category, skill_list in skills.items():
+        category_name = CATEGORY_NAMES.get(category, category)
+        nav_items += f'      <div class="nav-item" data-cat="{category}"><span>{category_name}</span><span class="badge">{len(skill_list)}</span></div>\n'
+    nav_items += f'      <div class="nav-item" data-cat="templates"><span>영상 템플릿</span><span class="badge">{len(templates) if templates else 0}</span></div>\n'
+    nav_items += f'      <div class="nav-item" data-cat="agents"><span>에이전트</span><span class="badge">{len(agents)}</span></div>'
+
+    # 카테고리별 스킬 섹션 생성
+    skill_sections = ""
     for category, skill_list in skills.items():
         category_name = CATEGORY_NAMES.get(category, category)
         icon = CATEGORY_ICONS.get(category, "📁")
         color = CATEGORY_COLORS.get(category, "#666")
         examples = CATEGORY_EXAMPLES.get(category, [])
 
-        # 스킬 테이블 행 생성
-        skill_rows = ""
+        # 스킬 카드 생성
+        skill_cards = ""
         for skill in skill_list:
-            # 한국어 번역이 있으면 사용, 없으면 원본 설명 사용
             skill_key = skill['name']
             if skill_key in SKILL_TRANSLATIONS:
                 desc = SKILL_TRANSLATIONS[skill_key]
@@ -435,437 +528,368 @@ def generate_html_guide(skills: dict, agents: list, templates: list = None) -> s
                 desc = skill['description']
             else:
                 desc = "-"
-            skill_rows += f"""
-                    <tr>
-                        <td class="skill-name">{skill['name']}</td>
-                        <td class="skill-desc">{desc}</td>
-                    </tr>"""
 
-        # 예시 태그 생성
-        example_tags = " ".join(f'<span class="example-tag">{ex}</span>' for ex in examples)
+            # 트리거 태그 생성
+            trigger_tags = ""
+            if skill.get('triggers'):
+                trigger_tags = '<div class="skill-tags">' + ''.join(f'<span class="tag">{t}</span>' for t in skill['triggers'][:3]) + '</div>'
 
-        category_sections += f"""
-        <details class="category-section" id="{category}">
-            <summary class="category-header" style="--cat-color: {color}">
-                <span class="category-icon">{icon}</span>
-                <span class="category-name">{category_name}</span>
-                <span class="skill-count">{len(skill_list)}개</span>
-            </summary>
-            <div class="category-content">
-                <div class="example-box">
-                    <span class="example-label">이렇게 말해보세요:</span>
-                    {example_tags}
-                </div>
-                <table class="skill-table">
-                    <thead>
-                        <tr>
-                            <th>스킬</th>
-                            <th>설명</th>
-                        </tr>
-                    </thead>
-                    <tbody>{skill_rows}
-                    </tbody>
-                </table>
-            </div>
-        </details>"""
+            skill_cards += f'''
+        <div class="skill-card" data-name="{skill['name']}" data-cat="{category}">
+          <div class="skill-header"><h3>{skill['name']}</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">{desc}{trigger_tags}</div>
+        </div>'''
 
-    # 에이전트 행 생성
-    agent_rows = ""
+        # 예시 태그
+        example_tags = ''.join(f'<span class="example-tag">{ex}</span>' for ex in examples)
+
+        skill_sections += f'''
+    <section class="section" data-cat="{category}">
+      <h3 class="section-title" style="border-color: {color}">{icon} {category_name} ({len(skill_list)})</h3>
+      <div class="example-box">{example_tags}</div>
+      <div class="skill-list">{skill_cards}
+      </div>
+    </section>'''
+
+    # 영상 템플릿 섹션
+    template_section = ""
+    if templates:
+        template_cards = ""
+        for tpl in templates:
+            template_cards += f'''
+        <div class="skill-card" data-name="{tpl['name']}" data-cat="templates">
+          <div class="skill-header"><h3>{tpl['name']}</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">{tpl['description'] or tpl['title']}<div class="usage"><strong>권장 길이:</strong> {tpl['duration']}</div></div>
+        </div>'''
+
+        template_section = f'''
+    <section class="section" data-cat="templates">
+      <h3 class="section-title" style="border-color: #9C27B0">🎬 영상 템플릿 ({len(templates)})</h3>
+      <div class="skill-list">{template_cards}
+      </div>
+    </section>'''
+
+    # 에이전트 섹션
+    agent_cards = ""
     for agent in agents:
         desc = agent['description'] if agent['description'] else "-"
-        agent_rows += f"""
-                    <tr>
-                        <td class="agent-name">{agent['name']}</td>
-                        <td>{desc}</td>
-                    </tr>"""
+
+        # 트리거 태그 생성
+        trigger_tags = ""
+        if agent.get('triggers'):
+            trigger_tags = '<div class="skill-tags" style="margin-top:8px"><span style="color:var(--muted);font-size:0.7rem;margin-right:6px">호출:</span>' + ''.join(f'<span class="tag">"{t}"</span>' for t in agent['triggers'][:4]) + '</div>'
+
+        # 도구 태그 생성
+        tools_info = ""
+        if agent.get('tools'):
+            tools_str = ', '.join(agent['tools'][:6])
+            tools_info = f'<div class="usage" style="margin-top:10px"><strong>사용 도구:</strong> {tools_str}</div>'
+
+        agent_cards += f'''
+        <div class="skill-card" data-name="{agent['name']}" data-cat="agents">
+          <div class="skill-header"><h3>{agent['name']}</h3><span class="arrow">▼</span></div>
+          <div class="skill-desc">{desc}{trigger_tags}{tools_info}</div>
+        </div>'''
+
+    agent_section = f'''
+    <section class="section" data-cat="agents">
+      <h3 class="section-title" style="border-color: #607D8B">🤖 에이전트 ({len(agents)})</h3>
+      <div class="example-box"><span class="example-tag">"광고 만들어줘"</span><span class="example-tag">"릴스 편집해줘"</span><span class="example-tag">"브랜드 분석해줘"</span><span class="example-tag">"경쟁사 조사해줘"</span></div>
+      <div class="skill-list">{agent_cards}
+      </div>
+    </section>'''
 
     html = f"""<!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>마케팅 스킬팩 가이드</title>
-    <style>
-        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마케팅 스킬팩 가이드</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  :root {{
+    --primary: #A38068;
+    --primary-light: #c4a68a;
+    --bg: #0f0f1a;
+    --card: #1a1a2e;
+    --sidebar: #16213e;
+    --border: rgba(255,255,255,0.1);
+    --text: #eee;
+    --muted: #888;
+  }}
+  body {{
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }}
+  .container {{ display: flex; min-height: 100vh; }}
 
-        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  /* Sidebar */
+  .sidebar {{
+    width: 260px;
+    background: var(--sidebar);
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    z-index: 100;
+  }}
+  .sidebar-header {{
+    padding: 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }}
+  .sidebar-header h1 {{
+    font-size: 1.1rem;
+    color: var(--primary);
+    margin-bottom: 4px;
+  }}
+  .sidebar-header p {{
+    font-size: 0.75rem;
+    color: var(--muted);
+  }}
+  .sidebar input {{
+    width: calc(100% - 32px);
+    margin: 16px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.05);
+    color: var(--text);
+    font-size: 0.85rem;
+  }}
+  .sidebar input::placeholder {{ color: var(--muted); }}
+  .sidebar input:focus {{ outline: none; border-color: var(--primary); }}
+  .nav-item {{
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: var(--muted);
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+  }}
+  .nav-item:hover {{ background: rgba(163,128,104,0.1); color: var(--text); }}
+  .nav-item.active {{ border-left-color: var(--primary); color: var(--primary); background: rgba(163,128,104,0.15); }}
+  .badge {{
+    font-size: 0.7rem;
+    background: rgba(255,255,255,0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }}
+  .stats-box {{
+    margin: 20px 16px;
+    padding: 16px;
+    background: rgba(163,128,104,0.1);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+  }}
+  .stat-num {{ font-size: 1.4rem; font-weight: 700; color: var(--primary); }}
+  .stat-label {{ font-size: 0.7rem; color: var(--muted); }}
 
-        body {{
-            font-family: 'Pretendard', -apple-system, sans-serif;
-            background: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-        }}
+  /* Main */
+  .main {{ margin-left: 260px; padding: 32px; flex: 1; max-width: 900px; }}
+  .header {{ margin-bottom: 32px; }}
+  .header h2 {{ font-size: 1.5rem; margin-bottom: 8px; }}
+  .header p {{ color: var(--muted); font-size: 0.9rem; }}
 
-        .container {{
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }}
+  /* Usage box */
+  .usage-box-main {{
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    padding: 20px 24px;
+    border-radius: 12px;
+    margin-bottom: 32px;
+  }}
+  .usage-box-main h3 {{ font-size: 0.95rem; margin-bottom: 12px; }}
+  .usage-box-main .examples {{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }}
+  .usage-box-main .example {{
+    background: rgba(255,255,255,0.2);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+  }}
 
-        /* 헤더 */
-        header {{
-            text-align: center;
-            margin-bottom: 40px;
-        }}
+  /* Sections */
+  .section {{ margin-bottom: 40px; }}
+  .section-title {{
+    font-size: 1rem;
+    color: var(--text);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid var(--border);
+  }}
+  .example-box {{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }}
+  .example-tag {{
+    background: rgba(163,128,104,0.2);
+    color: var(--primary-light);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+  }}
+  .skill-list {{ display: flex; flex-direction: column; gap: 10px; }}
+  .skill-card {{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.2s;
+  }}
+  .skill-card:hover {{ border-color: var(--primary); }}
+  .skill-header {{
+    padding: 14px 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }}
+  .skill-header h3 {{
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Monaco', 'Consolas', monospace;
+    color: var(--primary-light);
+  }}
+  .skill-header .arrow {{ color: var(--muted); transition: transform 0.2s; font-size: 0.7rem; }}
+  .skill-card.open .arrow {{ transform: rotate(180deg); }}
+  .skill-desc {{
+    padding: 0 18px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s;
+  }}
+  .skill-card.open .skill-desc {{ max-height: 500px; padding: 0 18px 16px; }}
+  .skill-tags {{ display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }}
+  .tag {{
+    background: rgba(163,128,104,0.25);
+    color: var(--primary-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+  }}
+  .usage {{
+    background: rgba(255,255,255,0.05);
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-size: 0.8rem;
+  }}
+  .hidden {{ display: none !important; }}
 
-        h1 {{
-            font-size: 2rem;
-            color: #333;
-            margin-bottom: 8px;
-        }}
+  /* Footer */
+  footer {{
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 0.75rem;
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }}
 
-        .subtitle {{
-            color: #666;
-            font-size: 1rem;
-        }}
-
-        /* 통계 */
-        .stats {{
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 30px 0;
-        }}
-
-        .stat {{
-            text-align: center;
-        }}
-
-        .stat-num {{
-            font-size: 2rem;
-            font-weight: 700;
-            color: #A38068;
-        }}
-
-        .stat-label {{
-            font-size: 0.85rem;
-            color: #888;
-        }}
-
-        /* 사용법 박스 */
-        .usage-box {{
-            background: linear-gradient(135deg, #A38068, #c4a68a);
-            color: white;
-            padding: 24px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-        }}
-
-        .usage-box h2 {{
-            font-size: 1.1rem;
-            margin-bottom: 12px;
-        }}
-
-        .usage-box p {{
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-bottom: 16px;
-        }}
-
-        .usage-examples {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }}
-
-        .usage-example {{
-            background: rgba(255,255,255,0.2);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-        }}
-
-        /* 카테고리 섹션 */
-        .category-section {{
-            background: white;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-        }}
-
-        .category-header {{
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 16px 20px;
-            cursor: pointer;
-            list-style: none;
-            border-left: 4px solid var(--cat-color);
-            border-radius: 12px 12px 0 0;
-        }}
-
-        .category-header::-webkit-details-marker {{
-            display: none;
-        }}
-
-        .category-section[open] .category-header {{
-            border-radius: 12px 12px 0 0;
-            border-bottom: 1px solid #eee;
-        }}
-
-        .category-icon {{
-            font-size: 1.4rem;
-        }}
-
-        .category-name {{
-            flex: 1;
-            font-weight: 600;
-            font-size: 1rem;
-        }}
-
-        .skill-count {{
-            background: #f0f0f0;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            color: #666;
-        }}
-
-        .category-content {{
-            padding: 20px;
-        }}
-
-        /* 예시 박스 */
-        .example-box {{
-            background: #f8f9fa;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 16px;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 8px;
-        }}
-
-        .example-label {{
-            font-size: 0.8rem;
-            color: #888;
-            margin-right: 4px;
-        }}
-
-        .example-tag {{
-            background: #e8f4e8;
-            color: #2d6a2d;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-        }}
-
-        /* 스킬 테이블 */
-        .skill-table {{
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }}
-
-        .skill-table th {{
-            text-align: left;
-            padding: 10px 12px;
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #555;
-            border-bottom: 1px solid #eee;
-        }}
-
-        .skill-table td {{
-            padding: 10px 12px;
-            border-bottom: 1px solid #f0f0f0;
-        }}
-
-        .skill-table tr:last-child td {{
-            border-bottom: none;
-        }}
-
-        .skill-name {{
-            font-family: 'Monaco', 'Consolas', monospace;
-            font-size: 0.85rem;
-            color: #A38068;
-            white-space: nowrap;
-        }}
-
-        .skill-desc {{
-            color: #666;
-        }}
-
-        /* 에이전트 섹션 */
-        .agent-section {{
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 30px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-        }}
-
-        .agent-section h2 {{
-            font-size: 1.1rem;
-            margin-bottom: 16px;
-            color: #333;
-        }}
-
-        .agent-table {{
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }}
-
-        .agent-table th {{
-            text-align: left;
-            padding: 10px 12px;
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #555;
-        }}
-
-        .agent-table td {{
-            padding: 10px 12px;
-            border-bottom: 1px solid #f0f0f0;
-        }}
-
-        .agent-name {{
-            font-weight: 600;
-            color: #333;
-            white-space: nowrap;
-        }}
-
-        /* 템플릿 섹션 */
-        .template-section {{
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 30px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-            border-left: 4px solid #9C27B0;
-        }}
-
-        .template-section h2 {{
-            font-size: 1.1rem;
-            margin-bottom: 16px;
-            color: #333;
-        }}
-
-        .template-table {{
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }}
-
-        .template-table th {{
-            text-align: left;
-            padding: 10px 12px;
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #555;
-        }}
-
-        .template-table td {{
-            padding: 10px 12px;
-            border-bottom: 1px solid #f0f0f0;
-        }}
-
-        .template-name {{
-            font-family: 'Monaco', 'Consolas', monospace;
-            font-size: 0.85rem;
-            color: #9C27B0;
-            white-space: nowrap;
-        }}
-
-        .template-duration {{
-            white-space: nowrap;
-            color: #666;
-        }}
-
-        /* 푸터 */
-        footer {{
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: #999;
-            font-size: 0.8rem;
-        }}
-
-        /* 반응형 */
-        @media (max-width: 600px) {{
-            .stats {{ gap: 20px; }}
-            .stat-num {{ font-size: 1.5rem; }}
-            .usage-examples {{ flex-direction: column; }}
-        }}
-    </style>
+  /* Responsive */
+  @media (max-width: 768px) {{
+    .sidebar {{ width: 100%; height: auto; position: relative; }}
+    .main {{ margin-left: 0; padding: 20px; }}
+    .container {{ flex-direction: column; }}
+  }}
+</style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>마케팅 스킬팩</h1>
-            <p class="subtitle">AI 마케팅 자동화 도구 모음</p>
-            <div class="stats">
-                <div class="stat">
-                    <div class="stat-num">{total_skills}</div>
-                    <div class="stat-label">스킬</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-num">{len(agents)}</div>
-                    <div class="stat-label">에이전트</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-num">{len(skills)}</div>
-                    <div class="stat-label">카테고리</div>
-                </div>
-            </div>
-        </header>
-
-        <div class="usage-box">
-            <h2>💡 사용 방법</h2>
-            <p>슬래시 명령어가 아닙니다. 자연어로 요청하세요!</p>
-            <div class="usage-examples">
-                <span class="usage-example">"상세페이지 만들어줘"</span>
-                <span class="usage-example">"메타 광고 기획해줘"</span>
-                <span class="usage-example">"랜딩페이지 CRO 분석"</span>
-                <span class="usage-example">"이메일 시퀀스 작성"</span>
-            </div>
-        </div>
-
-        <main>
-            {category_sections}
-
-            {"" if not templates else f"""<div class="template-section">
-                <h2>🎬 영상 템플릿 ({len(templates)}개)</h2>
-                <table class="template-table">
-                    <thead>
-                        <tr>
-                            <th>템플릿</th>
-                            <th>설명</th>
-                            <th>권장 길이</th>
-                        </tr>
-                    </thead>
-                    <tbody>{"".join(f'''
-                        <tr>
-                            <td class="template-name">{tpl["name"]}</td>
-                            <td>{tpl["description"] or tpl["title"]}</td>
-                            <td class="template-duration">{tpl["duration"]}</td>
-                        </tr>''' for tpl in templates)}
-                    </tbody>
-                </table>
-            </div>"""}
-
-            <div class="agent-section">
-                <h2>🤖 에이전트 ({len(agents)}개)</h2>
-                <table class="agent-table">
-                    <thead>
-                        <tr>
-                            <th>에이전트</th>
-                            <th>설명</th>
-                        </tr>
-                    </thead>
-                    <tbody>{agent_rows}
-                    </tbody>
-                </table>
-            </div>
-        </main>
-
-        <footer>
-            자동 생성됨 · {datetime.now().strftime('%Y-%m-%d %H:%M')}
-        </footer>
+<div class="container">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>마케팅 스킬팩</h1>
+      <p>AI 마케팅 자동화 도구 모음</p>
     </div>
+    <input type="text" id="search" placeholder="스킬 검색...">
+    <div class="stats-box">
+      <div><div class="stat-num">{total_skills}</div><div class="stat-label">스킬</div></div>
+      <div><div class="stat-num">{len(agents)}</div><div class="stat-label">에이전트</div></div>
+      <div><div class="stat-num">{len(templates) if templates else 0}</div><div class="stat-label">템플릿</div></div>
+    </div>
+    <nav>
+      {nav_items}
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="header">
+      <h2>설치된 스킬 목록</h2>
+      <p>각 스킬을 클릭하면 상세 설명을 볼 수 있습니다</p>
+    </div>
+
+    <div class="usage-box-main">
+      <h3>💡 사용 방법</h3>
+      <div class="examples">
+        <span class="example">"상세페이지 만들어줘"</span>
+        <span class="example">"메타 광고 기획해줘"</span>
+        <span class="example">"랜딩페이지 CRO 분석"</span>
+        <span class="example">"이메일 시퀀스 작성"</span>
+      </div>
+    </div>
+
+{skill_sections}
+{template_section}
+{agent_section}
+
+    <footer>
+      자동 생성됨 · {datetime.now().strftime('%Y-%m-%d %H:%M')}
+    </footer>
+  </main>
+</div>
+
+<script>
+// 카드 토글
+document.querySelectorAll('.skill-header').forEach(header => {{
+  header.addEventListener('click', () => {{
+    header.parentElement.classList.toggle('open');
+  }});
+}});
+
+// 검색
+document.getElementById('search').addEventListener('input', function() {{
+  const q = this.value.toLowerCase();
+  document.querySelectorAll('.skill-card').forEach(card => {{
+    const name = card.dataset.name.toLowerCase();
+    const desc = card.querySelector('.skill-desc')?.textContent.toLowerCase() || '';
+    const match = name.includes(q) || desc.includes(q);
+    card.classList.toggle('hidden', !match);
+  }});
+  document.querySelectorAll('.section').forEach(sec => {{
+    const hasVisible = sec.querySelector('.skill-card:not(.hidden)');
+    sec.classList.toggle('hidden', !hasVisible);
+  }});
+}});
+
+// 카테고리 필터
+document.querySelectorAll('.nav-item').forEach(item => {{
+  item.addEventListener('click', function() {{
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    this.classList.add('active');
+    const cat = this.dataset.cat;
+    document.querySelectorAll('.section').forEach(sec => {{
+      sec.classList.toggle('hidden', cat !== 'all' && sec.dataset.cat !== cat);
+    }});
+    document.querySelectorAll('.skill-card').forEach(card => card.classList.remove('hidden'));
+    document.getElementById('search').value = '';
+  }});
+}});
+</script>
 </body>
 </html>"""
 

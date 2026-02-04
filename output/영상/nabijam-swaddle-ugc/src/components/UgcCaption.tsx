@@ -35,16 +35,18 @@ export const UgcCaption: React.FC<{
     );
   };
 
+  // Meta Safe Zone: 하단 ~340px는 UI에 가려질 수 있음
+  // 자막을 bottom: 400px로 배치하여 CTA 버튼/좋아요 버튼과 겹치지 않도록 함
   return (
     <div
       style={{
         position: "absolute",
-        bottom: 300,
+        bottom: 400,
         left: 0,
         right: 0,
         display: "flex",
         justifyContent: "center",
-        padding: "0 50px",
+        padding: "0 60px",
         opacity,
         transform: `translateY(${translateY}px)`,
       }}

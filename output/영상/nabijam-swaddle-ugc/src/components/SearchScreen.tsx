@@ -49,11 +49,12 @@ export const SearchScreen: React.FC<{
             "linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.6) 100%)",
         }}
       />
+      {/* Meta Safe Zone: 상단 ~250px는 프로필/아이콘에 가려질 수 있음 */}
       {searchQuery && (
         <div
           style={{
             position: "absolute",
-            top: 100,
+            top: 280,
             left: 0,
             right: 0,
             display: "flex",

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+
+  :root {
+    --bg-warm: #f2ede7;
+    --text-dark: #2c2520;
+    --text-mid: #6b5d52;
+    --text-light: #999;
+    --card-bg: rgba(255, 255, 255, 0.92);
+    --accent-pink: #eaccca;
+    --star-color: #f5c518;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1350px;
+    overflow: hidden;
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    background: var(--bg-warm);
+  }
+
+  .ad-container {
+    width: 1080px;
+    height: 1350px;
+    position: relative;
+  }
+
+  .product-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    display: block;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(242, 237, 231, 0.25);
+    z-index: 1;
+  }
+
+  .brand-name {
+    position: absolute;
+    top: 60px;
+    left: 70px;
+    z-index: 3;
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--text-mid);
+    letter-spacing: 1px;
+  }
+
+  .reviews {
+    position: absolute;
+    top: 280px;
+    right: 50px;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 520px;
+  }
+
+  .review-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 24px 30px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+
+  .review-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .stars {
+    color: var(--star-color);
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
+  .reviewer {
+    font-size: 18px;
+    color: var(--text-light);
+  }
+
+  .review-text {
+    font-size: 23px;
+    font-weight: 400;
+    color: var(--text-dark);
+    line-height: 1.5;
+  }
+
+  .review-text strong {
+    font-weight: 700;
+  }
+
+  .bottom-area {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    z-index: 3;
+    padding: 40px 70px 60px;
+    background: linear-gradient(
+      0deg,
+      rgba(242, 237, 231, 0.95) 0%,
+      rgba(242, 237, 231, 0.9) 60%,
+      rgba(242, 237, 231, 0) 100%
+    );
+  }
+
+  .bottom-subhead {
+    font-size: 24px;
+    font-weight: 400;
+    color: var(--text-mid);
+    margin-bottom: 8px;
+  }
+
+  .bottom-headline {
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.35;
+    letter-spacing: -1.5px;
+    margin-bottom: 20px;
+  }
+
+  .bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .cta-text {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-mid);
+    background: rgba(255,255,255,0.7);
+    padding: 10px 28px;
+    border-radius: 8px;
+  }
+
+  .review-count-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--accent-pink);
+    color: var(--text-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .review-count-label {
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: var(--text-mid);
+  }
+
+  .review-count-value {
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--text-dark);
+  }
+</style>
+</head>
+<body>
+  <div class="ad-container">
+    <img class="product-image" src="/Users/inkyo/Projects/team-skills/output/영상/nabijam-swaddle-ugc/out/thumbnails/frame_1s.jpg" alt="product">
+    <div class="overlay"></div>
+
+    <div class="brand-name">SUNDAY HUG</div>
+
+    <div class="reviews">
+      <div class="review-card">
+        <div class="review-top">
+          <span class="stars">★★★★★</span>
+          <span class="reviewer">@hj***</span>
+        </div>
+        <div class="review-text">아기가 <strong>정말 편안하게</strong> 자요!</div>
+      </div>
+      <div class="review-card">
+        <div class="review-top">
+          <span class="stars">★★★★★</span>
+          <span class="reviewer">@bu***</span>
+        </div>
+        <div class="review-text">뒤집어도 <strong>안 벗겨져서</strong> 좋아요 👍</div>
+      </div>
+      <div class="review-card">
+        <div class="review-top">
+          <span class="stars">★★★★★</span>
+          <span class="reviewer">@p_p***</span>
+        </div>
+        <div class="review-text"><strong>실키밤부 소재</strong>라 야들야들해요 🦋</div>
+      </div>
+    </div>
+
+    <div class="bottom-area">
+      <div class="bottom-subhead">실사용 후기</div>
+      <div class="bottom-headline">엄마들이 선택한<br>나비잠 속싸개</div>
+      <div class="bottom-row">
+        <span class="cta-text">SUNDAY HUG 나비잠 속싸개</span>
+        <div class="review-count-circle">
+          <span class="review-count-label">REVIEWS</span>
+          <span class="review-count-value">2,847</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

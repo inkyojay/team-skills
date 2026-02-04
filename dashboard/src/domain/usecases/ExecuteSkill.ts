@@ -8,17 +8,25 @@ export class ExecuteSkill {
     ) { }
 
     async execute(skillId: string, prompt: string, history?: string): Promise<string> {
-        const skills = await this.skillRepository.getAll();
         let context = '';
 
         if (skillId) {
-            const skill = skills.find(s => s.id === skillId);
+            const skill = await this.skillRepository.getById(skillId);
             if (!skill) {
                 throw new Error(`Skill not found: ${skillId}`);
             }
-            context = `Selected Skill: ${skill.name}\nDescription: ${skill.description}\nCategory: ${skill.category}`;
+
+            // Include full skill body in context for better LLM understanding
+            context = `=== SKILL: ${skill.name} ===
+Category: ${skill.category}
+Description: ${skill.description}
+
+=== SKILL INSTRUCTIONS ===
+${skill.body}
+=== END ===`;
         } else {
             // General chat or routing? For now list skills
+            const skills = await this.skillRepository.getAll();
             context = 'Available Skills:\n' + skills.map(s => `- ${s.name} (${s.id})`).join('\n');
         }
 

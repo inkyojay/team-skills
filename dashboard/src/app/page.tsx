@@ -1,11 +1,12 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/presentation/components/Layout';
 import { HistorySidebar } from '@/presentation/components/HistorySidebar';
 import { OutputViewer } from '@/presentation/components/OutputViewer';
 import { SkillSelector } from '@/presentation/components/SkillSelector';
+import { SkillSuggestionBanner } from '@/presentation/components/SkillSuggestionBanner';
 import { ChatInterface } from '@/presentation/components/ChatInterface';
 import { SettingsModal } from '@/presentation/components/SettingsModal';
 import { Settings, Loader2 } from 'lucide-react';
@@ -26,6 +27,11 @@ export default function WorkbenchPage() {
   const [loading, setLoading] = useState(true);
   const [chatLoading, setChatLoading] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  // Skill suggestion state
+  const [suggestedSkills, setSuggestedSkills] = useState<Skill[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(true);
+  const suggestionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initial Load
   useEffect(() => {
@@ -147,6 +153,48 @@ export default function WorkbenchPage() {
 
   const activeSkill = skills.find(s => s.id === activeSkillId);
 
+  // Handle input change for skill suggestions (debounced)
+  const handleInputChange = useCallback((input: string) => {
+    // Clear previous timeout
+    if (suggestionTimeoutRef.current) {
+      clearTimeout(suggestionTimeoutRef.current);
+    }
+
+    // Only suggest if no skill is selected and input is long enough
+    if (activeSkillId || input.length < 3) {
+      setSuggestedSkills([]);
+      return;
+    }
+
+    // Debounce the API call
+    suggestionTimeoutRef.current = setTimeout(async () => {
+      try {
+        const res = await fetch('/api/skills/suggest', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ input })
+        });
+        if (res.ok) {
+          const suggestions = await res.json();
+          setSuggestedSkills(suggestions);
+          setShowSuggestions(true);
+        }
+      } catch (e) {
+        console.error('Failed to fetch suggestions:', e);
+      }
+    }, 300);
+  }, [activeSkillId]);
+
+  const handleSuggestionSelect = (skillId: string) => {
+    setActiveSkillId(skillId);
+    setSuggestedSkills([]);
+  };
+
+  const handleDismissSuggestions = () => {
+    setShowSuggestions(false);
+    setSuggestedSkills([]);
+  };
+
   return (
     <Layout
       sidebar={
@@ -187,13 +235,25 @@ export default function WorkbenchPage() {
       </header>
 
       {/* Main Chat Area */}
-      <div className="flex-1 overflow-hidden p-4 relative">
-        <ChatInterface
-          messages={messages}
-          onSendMessage={handleSendMessage}
-          isLoading={chatLoading}
-          activeSkillName={activeSkill?.name}
-        />
+      <div className="flex-1 overflow-hidden p-4 relative flex flex-col">
+        {/* Skill Suggestion Banner */}
+        {showSuggestions && suggestedSkills.length > 0 && !activeSkillId && (
+          <SkillSuggestionBanner
+            suggestions={suggestedSkills}
+            onSelectSkill={handleSuggestionSelect}
+            onDismiss={handleDismissSuggestions}
+          />
+        )}
+
+        <div className="flex-1 overflow-hidden">
+          <ChatInterface
+            messages={messages}
+            onSendMessage={handleSendMessage}
+            onInputChange={handleInputChange}
+            isLoading={chatLoading}
+            activeSkillName={activeSkill?.name}
+          />
+        </div>
       </div>
 
       <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />

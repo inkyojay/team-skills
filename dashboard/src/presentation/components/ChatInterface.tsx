@@ -5,11 +5,12 @@ import { ChatMessage } from '@/domain/repositories/ISessionRepository';
 interface ChatInterfaceProps {
     messages: ChatMessage[];
     onSendMessage: (message: string) => void;
+    onInputChange?: (input: string) => void;
     isLoading: boolean;
     activeSkillName?: string;
 }
 
-export const ChatInterface: React.FC<ChatInterfaceProps> = ({ messages, onSendMessage, isLoading, activeSkillName }) => {
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({ messages, onSendMessage, onInputChange, isLoading, activeSkillName }) => {
     const [input, setInput] = useState('');
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -93,7 +94,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ messages, onSendMe
                     <input
                         type="text"
                         value={input}
-                        onChange={(e) => setInput(e.target.value)}
+                        onChange={(e) => {
+                            setInput(e.target.value);
+                            onInputChange?.(e.target.value);
+                        }}
                         placeholder="AI에게 무엇이든 물어보세요..."
                         disabled={isLoading}
                         className="w-full pl-5 pr-14 py-4 rounded-xl border border-white/10 bg-white/5 text-gray-100 placeholder:text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500/50 focus:bg-white/10 transition-all disabled:opacity-50"

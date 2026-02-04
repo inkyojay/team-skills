@@ -1,0 +1,22 @@
+{
+  "id": "38dc78b6-aa6d-4918-b085-b20f811ce945",
+  "title": "여",
+  "messages": [
+    {
+      "role": "user",
+      "content": "여",
+      "skillId": null,
+      "id": "e3d32948-39e6-491f-ac52-7eda6b5da9c3",
+      "timestamp": "2026-02-04T04:12:39.878Z"
+    },
+    {
+      "role": "assistant",
+      "content": "스킬을 선택해주세요. (Please select a skill)",
+      "skillId": null,
+      "id": "413c8ca6-4bd3-4199-a323-5918082a90e9",
+      "timestamp": "2026-02-04T04:12:39.879Z"
+    }
+  ],
+  "createdAt": "2026-02-04T04:12:35.988Z",
+  "updatedAt": "2026-02-04T04:12:39.879Z"
+}

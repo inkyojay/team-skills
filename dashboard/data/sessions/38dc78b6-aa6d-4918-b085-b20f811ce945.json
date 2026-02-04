@@ -15,8 +15,16 @@
       "skillId": null,
       "id": "413c8ca6-4bd3-4199-a323-5918082a90e9",
       "timestamp": "2026-02-04T04:12:39.879Z"
+    },
+    {
+      "role": "user",
+      "content": "줘",
+      "skillId": null,
+      "id": "5d148982-892a-405d-aefc-f4f6b0570ccc",
+      "timestamp": "2026-02-04T04:12:47.076Z"
     }
   ],
   "createdAt": "2026-02-04T04:12:35.988Z",
-  "updatedAt": "2026-02-04T04:12:39.879Z"
+  "updatedAt": "2026-02-04T04:12:47.076Z"
+}04T04:12:47.076Z"
 }

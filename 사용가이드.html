@@ -285,6 +285,35 @@
   }
   .chat-send:hover { background: var(--primary-light); }
   .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+  .file-attach {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    cursor: pointer;
+    font-size: 1.1rem;
+  }
+  .file-attach:hover { background: rgba(255,255,255,0.1); }
+  .attached-files {
+    padding: 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .attached-file {
+    background: rgba(163,128,104,0.2);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .attached-file .remove {
+    cursor: pointer;
+    color: #f88;
+    font-weight: bold;
+  }
 
   @media (max-width: 768px) {
     .chat-panel { left: 0; }
@@ -1068,9 +1097,14 @@
     <div class="chat-msg system">터미널 준비 중... (localhost:3000 서버 필요)</div>
   </div>
   <div class="chat-input-area">
-    <input type="text" class="chat-input" id="chatInput" placeholder="메시지 입력... (예: 카톡 배너 만들어줘)" disabled>
-    <button class="chat-send" id="chatSend" disabled>전송</button>
+    <label class="file-attach" id="fileAttachBtn" title="파일 첨부">
+      📎
+      <input type="file" id="fileInput" multiple style="display:none" accept="image/*,.pdf,.csv,.xlsx,.json,.txt,.md">
+    </label>
+    <input type="text" class="chat-input" id="chatInput" placeholder="메시지 입력... (예: 카톡 배너 만들어줘)">
+    <button class="chat-send" id="chatSend">전송</button>
   </div>
+  <div class="attached-files" id="attachedFiles"></div>
 </div>
 
 <script>
@@ -1114,11 +1148,14 @@ document.querySelectorAll('.nav-item').forEach(item => {
 const API_BASE = 'http://localhost:3000';
 let sessionId = null;
 let isConnected = false;
+let attachedFiles = [];
 
 const chatMessages = document.getElementById('chatMessages');
 const chatInput = document.getElementById('chatInput');
 const chatSend = document.getElementById('chatSend');
 const chatStatus = document.getElementById('chatStatus');
+const fileInput = document.getElementById('fileInput');
+const attachedFilesDiv = document.getElementById('attachedFiles');
 
 function addMessage(content, type = 'assistant') {
   const msg = document.createElement('div');
@@ -1128,22 +1165,32 @@ function addMessage(content, type = 'assistant') {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-function setStatus(connected) {
+function setStatus(connected, msg) {
   isConnected = connected;
-  chatStatus.textContent = connected ? '연결됨' : '연결 안됨';
+  chatStatus.textContent = msg || (connected ? '연결됨' : '연결 안됨');
   chatStatus.className = `chat-status ${connected ? 'connected' : ''}`;
-  chatInput.disabled = !connected;
-  chatSend.disabled = !connected;
+}
+
+function updateAttachedFilesUI() {
+  attachedFilesDiv.innerHTML = attachedFiles.map((f, i) =>
+    `<span class="attached-file">${f.name} <span class="remove" data-idx="${i}">×</span></span>`
+  ).join('');
+  attachedFilesDiv.querySelectorAll('.remove').forEach(btn => {
+    btn.onclick = () => {
+      attachedFiles.splice(parseInt(btn.dataset.idx), 1);
+      updateAttachedFilesUI();
+    };
+  });
 }
 
 async function initChat() {
   try {
     // Check server
-    const res = await fetch(`${API_BASE}/api/settings`);
+    const res = await fetch(`${API_BASE}/api/settings`, { mode: 'cors' });
     if (!res.ok) throw new Error('Server not responding');
 
     // Create session
-    const sessionRes = await fetch(`${API_BASE}/api/sessions`, { method: 'POST' });
+    const sessionRes = await fetch(`${API_BASE}/api/sessions`, { method: 'POST', mode: 'cors' });
     const sessionData = await sessionRes.json();
     sessionId = sessionData.id;
 
@@ -1151,42 +1198,85 @@ async function initChat() {
     chatMessages.innerHTML = '';
     addMessage('연결 완료! 스킬을 사용하려면 자연어로 요청하세요.', 'system');
     addMessage('예: "카톡 배너 만들어줘", "상세페이지 작성해줘"', 'system');
+    addMessage('📎 버튼으로 이미지/파일 첨부 가능', 'system');
     chatInput.focus();
   } catch (e) {
-    setStatus(false);
+    console.error('Init error:', e);
+    setStatus(false, '연결 실패');
     addMessage('서버 연결 실패. 터미널에서 다음 명령 실행:', 'error');
     addMessage('cd dashboard && npm run dev', 'system');
+    // 오프라인 모드에서도 입력 가능하게 (테스트용)
+    addMessage('(오프라인 모드 - 입력은 가능하나 응답 불가)', 'system');
   }
 }
 
 async function sendMessage() {
   const content = chatInput.value.trim();
-  if (!content || !isConnected) return;
+  if (!content && attachedFiles.length === 0) return;
 
-  addMessage(content, 'user');
+  // Build message with file info
+  let fullContent = content;
+  if (attachedFiles.length > 0) {
+    const fileInfo = attachedFiles.map(f => `[첨부: ${f.name}]`).join(' ');
+    fullContent = `${content}\n\n${fileInfo}`;
+    addMessage(`${content} ${fileInfo}`, 'user');
+  } else {
+    addMessage(content, 'user');
+  }
+
   chatInput.value = '';
-  chatSend.disabled = true;
+  attachedFiles = [];
+  updateAttachedFilesUI();
+
+  if (!isConnected) {
+    addMessage('서버에 연결되지 않았습니다. dashboard 서버를 실행해주세요.', 'error');
+    return;
+  }
+
+  chatSend.textContent = '...';
 
   try {
     const res = await fetch(`${API_BASE}/api/sessions/${sessionId}/messages`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content, skillId: null })
+      mode: 'cors',
+      body: JSON.stringify({ content: fullContent, skillId: null })
     });
 
     if (res.ok) {
       const data = await res.json();
       addMessage(data.content, 'assistant');
     } else {
-      addMessage('응답 오류가 발생했습니다.', 'error');
+      const err = await res.text();
+      addMessage('응답 오류: ' + err, 'error');
     }
   } catch (e) {
     addMessage('네트워크 오류: ' + e.message, 'error');
   }
 
-  chatSend.disabled = false;
+  chatSend.textContent = '전송';
   chatInput.focus();
 }
+
+// File attachment
+fileInput.addEventListener('change', (e) => {
+  const files = Array.from(e.target.files);
+  files.forEach(file => {
+    // Read file for preview/context (images only for now)
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        attachedFiles.push({ name: file.name, type: file.type, data: reader.result });
+        updateAttachedFilesUI();
+      };
+      reader.readAsDataURL(file);
+    } else {
+      attachedFiles.push({ name: file.name, type: file.type, data: null });
+      updateAttachedFilesUI();
+    }
+  });
+  fileInput.value = ''; // Reset
+});
 
 chatSend.addEventListener('click', sendMessage);
 chatInput.addEventListener('keydown', (e) => {

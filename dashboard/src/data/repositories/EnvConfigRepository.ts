@@ -7,7 +7,7 @@ export class EnvConfigRepository implements IConfigRepository {
     private readonly envPath: string;
     private readonly KEY_NAME = 'ANTHROPIC_API_KEY';
     private readonly MODEL_KEY = 'ANTHROPIC_MODEL';
-    private readonly DEFAULT_MODEL = 'claude-3-5-sonnet-latest';
+    private readonly DEFAULT_MODEL = 'claude-sonnet-4-5';
 
     constructor(rootDir: string) {
         this.envPath = path.join(rootDir, '.env.local');

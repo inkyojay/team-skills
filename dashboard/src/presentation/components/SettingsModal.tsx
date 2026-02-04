@@ -7,9 +7,13 @@ interface SettingsModalProps {
 }
 
 const AVAILABLE_MODELS = [
-    { id: 'claude-3-5-sonnet-latest', name: 'Claude 3.5 Sonnet (Latest)' },
-    { id: 'claude-3-5-haiku-latest', name: 'Claude 3.5 Haiku (Fast)' },
-    { id: 'claude-3-opus-latest', name: 'Claude 3 Opus (Powerful)' },
+    // Claude 4.5 Series (Latest)
+    { id: 'claude-sonnet-4-5', name: 'Claude Sonnet 4.5 (추천)', description: '균형 잡힌 성능' },
+    { id: 'claude-haiku-4-5', name: 'Claude Haiku 4.5 (Fast)', description: '가장 빠름' },
+    { id: 'claude-opus-4-5', name: 'Claude Opus 4.5 (Powerful)', description: '가장 강력' },
+    // Legacy Models
+    { id: 'claude-sonnet-4-0', name: 'Claude Sonnet 4', description: '이전 버전' },
+    { id: 'claude-3-7-sonnet-latest', name: 'Claude 3.7 Sonnet', description: '레거시' },
 ];
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose }) => {

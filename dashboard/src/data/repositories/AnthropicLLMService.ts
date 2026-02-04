@@ -5,7 +5,7 @@ import Anthropic from '@anthropic-ai/sdk';
 export class AnthropicLLMService implements ILLMService {
     private client: Anthropic | null = null;
     // Fallback default if not set in config
-    private readonly DEFAULT_MODEL = 'claude-3-5-sonnet-latest';
+    private readonly DEFAULT_MODEL = 'claude-sonnet-4-5';
 
     constructor(private readonly configRepo: IConfigRepository) { }
 

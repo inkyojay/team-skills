@@ -198,6 +198,96 @@
     font-size: 0.75rem;
     border-top: 1px solid var(--border);
     margin-top: 40px;
+    margin-bottom: 320px; /* Space for chat panel */
+  }
+
+  /* Chat Terminal */
+  .chat-panel {
+    position: fixed;
+    bottom: 0;
+    left: 260px;
+    right: 0;
+    height: 300px;
+    background: #0d0d14;
+    border-top: 1px solid var(--primary);
+    display: flex;
+    flex-direction: column;
+    z-index: 200;
+  }
+  .chat-header {
+    padding: 10px 16px;
+    background: var(--sidebar);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .chat-header h3 {
+    font-size: 0.85rem;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .chat-status {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 10px;
+    background: rgba(255,100,100,0.2);
+    color: #f88;
+  }
+  .chat-status.connected {
+    background: rgba(100,255,100,0.2);
+    color: #8f8;
+  }
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.8rem;
+  }
+  .chat-msg {
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .chat-msg.user { color: #8cf; }
+  .chat-msg.user::before { content: '> '; color: var(--primary); }
+  .chat-msg.assistant { color: #ccc; white-space: pre-wrap; }
+  .chat-msg.system { color: var(--muted); font-style: italic; }
+  .chat-msg.error { color: #f88; }
+  .chat-input-area {
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+  }
+  .chat-input {
+    flex: 1;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.85rem;
+  }
+  .chat-input:focus { outline: none; border-color: var(--primary); }
+  .chat-input::placeholder { color: var(--muted); }
+  .chat-send {
+    background: var(--primary);
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .chat-send:hover { background: var(--primary-light); }
+  .chat-send:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  @media (max-width: 768px) {
+    .chat-panel { left: 0; }
   }
 
   /* Responsive */
@@ -968,6 +1058,21 @@
   </main>
 </div>
 
+<!-- Chat Terminal -->
+<div class="chat-panel">
+  <div class="chat-header">
+    <h3>💬 AI 터미널</h3>
+    <span class="chat-status" id="chatStatus">연결 중...</span>
+  </div>
+  <div class="chat-messages" id="chatMessages">
+    <div class="chat-msg system">터미널 준비 중... (localhost:3000 서버 필요)</div>
+  </div>
+  <div class="chat-input-area">
+    <input type="text" class="chat-input" id="chatInput" placeholder="메시지 입력... (예: 카톡 배너 만들어줘)" disabled>
+    <button class="chat-send" id="chatSend" disabled>전송</button>
+  </div>
+</div>
+
 <script>
 // 카드 토글
 document.querySelectorAll('.skill-header').forEach(header => {
@@ -1004,6 +1109,95 @@ document.querySelectorAll('.nav-item').forEach(item => {
     document.getElementById('search').value = '';
   });
 });
+
+// Chat Terminal
+const API_BASE = 'http://localhost:3000';
+let sessionId = null;
+let isConnected = false;
+
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+const chatSend = document.getElementById('chatSend');
+const chatStatus = document.getElementById('chatStatus');
+
+function addMessage(content, type = 'assistant') {
+  const msg = document.createElement('div');
+  msg.className = `chat-msg ${type}`;
+  msg.textContent = content;
+  chatMessages.appendChild(msg);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function setStatus(connected) {
+  isConnected = connected;
+  chatStatus.textContent = connected ? '연결됨' : '연결 안됨';
+  chatStatus.className = `chat-status ${connected ? 'connected' : ''}`;
+  chatInput.disabled = !connected;
+  chatSend.disabled = !connected;
+}
+
+async function initChat() {
+  try {
+    // Check server
+    const res = await fetch(`${API_BASE}/api/settings`);
+    if (!res.ok) throw new Error('Server not responding');
+
+    // Create session
+    const sessionRes = await fetch(`${API_BASE}/api/sessions`, { method: 'POST' });
+    const sessionData = await sessionRes.json();
+    sessionId = sessionData.id;
+
+    setStatus(true);
+    chatMessages.innerHTML = '';
+    addMessage('연결 완료! 스킬을 사용하려면 자연어로 요청하세요.', 'system');
+    addMessage('예: "카톡 배너 만들어줘", "상세페이지 작성해줘"', 'system');
+    chatInput.focus();
+  } catch (e) {
+    setStatus(false);
+    addMessage('서버 연결 실패. 터미널에서 다음 명령 실행:', 'error');
+    addMessage('cd dashboard && npm run dev', 'system');
+  }
+}
+
+async function sendMessage() {
+  const content = chatInput.value.trim();
+  if (!content || !isConnected) return;
+
+  addMessage(content, 'user');
+  chatInput.value = '';
+  chatSend.disabled = true;
+
+  try {
+    const res = await fetch(`${API_BASE}/api/sessions/${sessionId}/messages`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content, skillId: null })
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      addMessage(data.content, 'assistant');
+    } else {
+      addMessage('응답 오류가 발생했습니다.', 'error');
+    }
+  } catch (e) {
+    addMessage('네트워크 오류: ' + e.message, 'error');
+  }
+
+  chatSend.disabled = false;
+  chatInput.focus();
+}
+
+chatSend.addEventListener('click', sendMessage);
+chatInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+// Init on load
+initChat();
 </script>
 </body>
 </html>

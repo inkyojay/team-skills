@@ -130,7 +130,7 @@ export default function WorkbenchPage() {
 
       if (res.ok) {
         const assistantMsg: ChatMessage = await res.json();
-        // Replace temp message? Actually just append. 
+        // Replace temp message? Actually just append.
         // We should reload session to get exact state or just append returned msg.
         // Appending returned msg is faster.
         // But we need to sync session list as title might have changed.
@@ -147,13 +147,8 @@ export default function WorkbenchPage() {
     }
   };
 
-  if (loading) {
-    return <div className="flex h-screen items-center justify-center bg-gray-950 text-blue-500"><Loader2 className="animate-spin" /></div>;
-  }
-
-  const activeSkill = skills.find(s => s.id === activeSkillId);
-
   // Handle input change for skill suggestions (debounced)
+  // NOTE: Must be defined before any conditional returns to maintain hooks order
   const handleInputChange = useCallback((input: string) => {
     // Clear previous timeout
     if (suggestionTimeoutRef.current) {
@@ -185,15 +180,21 @@ export default function WorkbenchPage() {
     }, 300);
   }, [activeSkillId]);
 
-  const handleSuggestionSelect = (skillId: string) => {
+  const handleSuggestionSelect = useCallback((skillId: string) => {
     setActiveSkillId(skillId);
     setSuggestedSkills([]);
-  };
+  }, []);
 
-  const handleDismissSuggestions = () => {
+  const handleDismissSuggestions = useCallback(() => {
     setShowSuggestions(false);
     setSuggestedSkills([]);
-  };
+  }, []);
+
+  if (loading) {
+    return <div className="flex h-screen items-center justify-center bg-gray-950 text-blue-500"><Loader2 className="animate-spin" /></div>;
+  }
+
+  const activeSkill = skills.find(s => s.id === activeSkillId);
 
   return (
     <Layout

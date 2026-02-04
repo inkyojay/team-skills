@@ -33,24 +33,41 @@ export class EnvConfigRepository implements IConfigRepository {
     }
 
     async getApiKey(): Promise<string | null> {
+        // Priority: 1. Server env var (for deployment) 2. .env.local (for local dev)
+        if (process.env.ANTHROPIC_API_KEY) {
+            return process.env.ANTHROPIC_API_KEY;
+        }
         const config = await this.readConfig();
         return config[this.KEY_NAME] || null;
     }
 
     async saveApiKey(key: string): Promise<void> {
+        // Only save to .env.local (server env vars are read-only)
         const config = await this.readConfig();
         config[this.KEY_NAME] = key;
         await this.writeConfig(config);
     }
 
     async getModel(): Promise<string | null> {
+        // Priority: 1. Server env var 2. .env.local
+        if (process.env.ANTHROPIC_MODEL) {
+            return process.env.ANTHROPIC_MODEL;
+        }
+        const apiKey = await this.getApiKey();
+        if (!apiKey) return null;
+
         const config = await this.readConfig();
-        return config[this.KEY_NAME] ? (config[this.MODEL_KEY] || this.DEFAULT_MODEL) : null;
+        return config[this.MODEL_KEY] || this.DEFAULT_MODEL;
     }
 
     async saveModel(model: string): Promise<void> {
         const config = await this.readConfig();
         config[this.MODEL_KEY] = model;
         await this.writeConfig(config);
+    }
+
+    // Check if using server-side key (users can't modify)
+    isServerManaged(): boolean {
+        return !!process.env.ANTHROPIC_API_KEY;
     }
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Save, Key, Cpu } from 'lucide-react';
+import { X, Save, Key, Cpu, Shield } from 'lucide-react';
 
 interface SettingsModalProps {
     isOpen: boolean;
@@ -16,13 +16,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     const [apiKey, setApiKey] = useState('');
     const [model, setModel] = useState('claude-3-5-sonnet-latest');
     const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+    const [isServerManaged, setIsServerManaged] = useState(false);
+    const [hasKey, setHasKey] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
             fetch('/api/settings').then(res => res.json()).then(data => {
-                if (data.maskedKey) {
-                    // keep masked or empty to not overwrite
-                }
+                setIsServerManaged(data.isServerManaged || false);
+                setHasKey(data.hasKey || false);
                 if (data.model) {
                     setModel(data.model);
                 }
@@ -33,8 +34,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
     const handleSave = async () => {
         setStatus('saving');
         try {
-            const payload: any = { model };
-            if (apiKey) payload.apiKey = apiKey;
+            const payload: any = {};
+            // Only include apiKey if not server-managed and user entered one
+            if (!isServerManaged && apiKey) {
+                payload.apiKey = apiKey;
+            }
+            // Always allow model selection (even for server-managed, just save locally)
+            payload.model = model;
 
             const res = await fetch('/api/settings', {
                 method: 'POST',
@@ -77,16 +83,27 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose })
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Anthropic API Key
                         </label>
-                        <input
-                            type="password"
-                            value={apiKey}
-                            onChange={(e) => setApiKey(e.target.value)}
-                            placeholder="sk-ant-..."
-                            className="w-full px-3 py-2 border rounded-md dark:bg-gray-900 dark:border-gray-600 dark:text-white"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">
-                            Stored locally in .env.local.
-                        </p>
+                        {isServerManaged ? (
+                            <div className="flex items-center gap-2 px-3 py-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+                                <Shield size={16} className="text-green-600 dark:text-green-400" />
+                                <span className="text-sm text-green-700 dark:text-green-300">
+                                    서버에서 API 키 관리 중 (설정 불필요)
+                                </span>
+                            </div>
+                        ) : (
+                            <>
+                                <input
+                                    type="password"
+                                    value={apiKey}
+                                    onChange={(e) => setApiKey(e.target.value)}
+                                    placeholder={hasKey ? '••••••••' : 'sk-ant-...'}
+                                    className="w-full px-3 py-2 border rounded-md dark:bg-gray-900 dark:border-gray-600 dark:text-white"
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    {hasKey ? '새 키를 입력하면 기존 키가 교체됩니다.' : '.env.local에 저장됩니다.'}
+                                </p>
+                            </>
+                        )}
                     </div>
 
                     {/* Model Selection Section */}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/presentation/components/Layout';
 import { HistorySidebar } from '@/presentation/components/HistorySidebar';
@@ -31,7 +31,6 @@ export default function WorkbenchPage() {
   // Skill suggestion state
   const [suggestedSkills, setSuggestedSkills] = useState<Skill[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(true);
-  const suggestionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Initial Load
   useEffect(() => {
@@ -147,38 +146,67 @@ export default function WorkbenchPage() {
     }
   };
 
-  // Handle input change for skill suggestions (debounced)
+  // Handle input change for skill suggestions (client-side, no API call)
   // NOTE: Must be defined before any conditional returns to maintain hooks order
   const handleInputChange = useCallback((input: string) => {
-    // Clear previous timeout
-    if (suggestionTimeoutRef.current) {
-      clearTimeout(suggestionTimeoutRef.current);
-    }
-
     // Only suggest if no skill is selected and input is long enough
     if (activeSkillId || input.length < 3) {
       setSuggestedSkills([]);
       return;
     }
 
-    // Debounce the API call
-    suggestionTimeoutRef.current = setTimeout(async () => {
-      try {
-        const res = await fetch('/api/skills/suggest', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ input })
-        });
-        if (res.ok) {
-          const suggestions = await res.json();
-          setSuggestedSkills(suggestions);
-          setShowSuggestions(true);
+    // Client-side filtering - instant, no API call needed
+    const inputLower = input.toLowerCase();
+    const inputWords = inputLower.split(/\s+/).filter(w => w.length > 1);
+
+    const scored = skills.map(skill => {
+      let score = 0;
+
+      // Check triggers match
+      for (const trigger of (skill.triggers || [])) {
+        const triggerLower = trigger.toLowerCase();
+        if (inputLower.includes(triggerLower)) {
+          score += 10;
+        } else {
+          const triggerWords = triggerLower.split(/\s+/);
+          for (const inputWord of inputWords) {
+            for (const triggerWord of triggerWords) {
+              if (triggerWord.includes(inputWord) || inputWord.includes(triggerWord)) {
+                score += 3;
+              }
+            }
+          }
         }
-      } catch (e) {
-        console.error('Failed to fetch suggestions:', e);
       }
-    }, 300);
-  }, [activeSkillId]);
+
+      // Check name match
+      const nameLower = skill.name.toLowerCase();
+      if (inputLower.includes(nameLower)) {
+        score += 5;
+      } else {
+        for (const word of inputWords) {
+          if (nameLower.includes(word)) score += 2;
+        }
+      }
+
+      // Check description match
+      const descLower = (skill.description || '').toLowerCase();
+      for (const word of inputWords) {
+        if (descLower.includes(word)) score += 1;
+      }
+
+      return { skill, score };
+    });
+
+    const suggestions = scored
+      .filter(s => s.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5)
+      .map(s => s.skill);
+
+    setSuggestedSkills(suggestions);
+    setShowSuggestions(suggestions.length > 0);
+  }, [activeSkillId, skills]);
 
   const handleSuggestionSelect = useCallback((skillId: string) => {
     setActiveSkillId(skillId);

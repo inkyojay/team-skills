@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 # Navigate to script directory

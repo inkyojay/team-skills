@@ -89,6 +89,7 @@ SKILL_TRANSLATIONS = {
     "referral-program": "추천 프로그램 설계",
     "schema-markup": "스키마 마크업 (구조화된 데이터)",
     "seo-audit": "SEO 감사 및 분석",
+    "seo": "검색 엔진 최적화 (SEO) - 기술 SEO, 콘텐츠 전략, 키워드 분석",
     "signup-flow-cro": "회원가입 플로우 최적화",
     "social-content": "소셜 미디어 콘텐츠 제작",
     "canvas-design": "포스터/디자인 시각물 제작",
@@ -96,6 +97,7 @@ SKILL_TRANSLATIONS = {
     "data-report": "마케팅 데이터 분석 리포트",
     "review-management": "리뷰 관리",
     "social-media-designer": "소셜 미디어 디자인",
+    "Social Media Designer": "플랫폼별 최적화된 소셜 미디어 그래픽 제작",
     "video-script": "영상 스크립트 작성",
 
     # Tools
@@ -109,6 +111,11 @@ SKILL_TRANSLATIONS = {
     "html-section-capture": "HTML 섹션별 이미지 변환",
     "html2img": "HTML을 이미지로 변환",
     "inline-css": "CSS 인라인 변환",
+    "brainstorming": "창의적 작업 전 아이디어 브레인스토밍 도구",
+    "crafting-effective-readmes": "효과적인 README 파일 작성 가이드",
+    "release-skills": "스킬 릴리스 워크플로우 - 버전 관리 및 배포",
+    "firecrawl": "웹 크롤링 및 스크래핑 도구",
+    "nano-banana-pro": "Google Gemini 기반 이미지 생성/편집 도구",
 
     # Video
     "remotion-best-practices": "Remotion 영상 제작 가이드",
@@ -120,10 +127,168 @@ SKILL_TRANSLATIONS = {
 
     # Brand
     "brand-dna": "브랜드 DNA 분석",
+    "brand-dna-extractor": "웹사이트에서 브랜드 DNA 추출 및 무드보드 생성",
+    "brand-guidelines": "브랜드 가이드라인 적용 (색상, 타이포그래피)",
+    "brand-logo": "브랜드 로고 검색 및 다운로드",
+    "brand-setup": "새 브랜드 초기 설정 마법사",
+    "brand-updater": "브랜드 정보 업데이트 및 동기화",
     "product-analyzer": "제품 분석 리포트",
 
     # Advertising
     "meta-ads": "메타 광고 기획 및 제작",
+    "meta-ad-image": "메타(인스타/페북) 광고 이미지 제작",
+    "kakao-message": "카카오톡 비즈메시지 배너 제작",
+    "live-banner": "쇼핑라이브 배너 제작 (네이버/카카오)",
+    "smartstore-banner": "스마트스토어 배너 제작",
+}
+
+# 에이전트 한국어 번역
+AGENT_TRANSLATIONS = {
+    "brand-logo-finder": "브랜드 로고 검색 에이전트 - Brandfetch로 로고 검색 및 다운로드",
+    "brand-setup-wizard": "새 브랜드 초기 설정 마법사 - 질문을 통해 브랜드 정보 수집",
+    "brand-updater": "브랜드 정보 업데이트 - 제품, 경쟁사, 캠페인 등 수정",
+    "competitor-analyzer": "경쟁사 실시간 분석 - 제품, 가격, 마케팅, SNS, 리뷰 조사",
+    "content-quality-reviewer": "콘텐츠 품질 검토 - 마케팅 콘텐츠 리뷰 및 개선점 제안",
+    "data-report-analyzer": "데이터 분석 리포트 생성 - CSV, 엑셀, JSON 파일 분석",
+    "market-researcher": "시장 및 트렌드 조사 - 소비자 인사이트, 기회 영역 발굴",
+    "meta-ad-creator": "메타 광고 이미지 자동 제작 - 2~3개 스타일 생성",
+    "meta-ads-agent": "메타 광고 영상 제작 - 템플릿 선택부터 Remotion 프로젝트까지",
+    "reels-editor-agent": "릴스 영상 편집 - 9:16 세로형 변환 및 자막 추가",
+    "sundayhug-marketing-hub": "마케팅 총괄 오케스트레이터 - 스킬/에이전트 추천 및 워크플로우",
+    "skill-orchestrator": "통합 오케스트레이터 - 사용자 의도 파악 및 스킬/에이전트 매칭",
+}
+
+# 스킬별 상세 정보 (사용 방법, 사례, 가능한 작업)
+SKILL_DETAILS = {
+    "page-builder": {
+        "desc": "상세페이지, 랜딩페이지, 제품 소개 페이지를 HTML로 제작합니다.",
+        "usecases": [
+            {"cmd": "상세페이지 만들어줘", "note": "기본 상세페이지 제작"},
+            {"cmd": "이 제품으로 랜딩페이지 만들어줘 [이미지]", "note": "이미지 기반 제작"},
+            {"cmd": "경쟁사 A 스타일로 상세페이지", "note": "레퍼런스 참고 제작"},
+        ],
+        "capabilities": ["HTML 상세페이지 제작", "반응형 디자인", "SEO 최적화", "이미지 배치"],
+        "output": "output/상세페이지/",
+    },
+    "card-news-creator": {
+        "desc": "인스타그램 스타일의 카드뉴스를 제작합니다. 슬라이드형 콘텐츠에 최적화되어 있습니다.",
+        "usecases": [
+            {"cmd": "카드뉴스 만들어줘", "note": "기본 카드뉴스 제작"},
+            {"cmd": "이 주제로 5장짜리 카드뉴스", "note": "장수 지정"},
+            {"cmd": "육아 정보 카드뉴스 만들어줘", "note": "주제 지정"},
+        ],
+        "capabilities": ["인스타그램 최적화", "슬라이드 구성", "텍스트/이미지 배치", "브랜드 컬러 적용"],
+        "output": "output/카드뉴스/",
+    },
+    "meta-ad-image": {
+        "desc": "메타(인스타/페이스북) 광고용 이미지를 제작합니다. 다양한 템플릿을 활용합니다.",
+        "usecases": [
+            {"cmd": "메타 광고 이미지 만들어줘", "note": "기본 광고 이미지"},
+            {"cmd": "이 제품 이미지로 인스타 광고 소재", "note": "이미지 기반"},
+            {"cmd": "페북 광고 배너 3종 만들어줘", "note": "여러 버전 제작"},
+        ],
+        "capabilities": ["1080x1080 피드 광고", "1080x1920 스토리 광고", "다양한 레이아웃", "CTA 버튼 포함"],
+        "output": "output/광고카피/",
+    },
+    "kakao-message": {
+        "desc": "카카오톡 비즈메시지용 배너를 제작합니다. 이미지형, 캐러셀형, 리스트형을 지원합니다.",
+        "usecases": [
+            {"cmd": "카카오 메시지 배너 만들어줘", "note": "기본 배너"},
+            {"cmd": "카톡 이미지형 배너", "note": "이미지형 제작"},
+            {"cmd": "알림톡 캐러셀 배너 3장", "note": "캐러셀형 제작"},
+        ],
+        "capabilities": ["이미지형 배너", "캐러셀형 배너", "리스트형 배너", "규격 자동 적용"],
+        "output": "output/광고카피/",
+    },
+    "reels-editor": {
+        "desc": "영상을 인스타그램 릴스 포맷(9:16, 1080x1920)으로 편집합니다.",
+        "usecases": [
+            {"cmd": "릴스 영상 편집해줘 [영상파일]", "note": "세로형 변환"},
+            {"cmd": "이 영상 릴스로 만들어줘", "note": "크롭 및 리사이즈"},
+            {"cmd": "자막 넣어서 릴스 만들어줘", "note": "자막 추가"},
+        ],
+        "capabilities": ["9:16 세로 변환", "자막 추가", "인트로/아웃트로", "배경음악 추가"],
+        "output": "output/영상/",
+    },
+    "brand-dna-extractor": {
+        "desc": "웹사이트 URL에서 브랜드 DNA를 추출하고 무드보드 및 리포트를 생성합니다.",
+        "usecases": [
+            {"cmd": "브랜드 분석해줘 [URL]", "note": "웹사이트 분석"},
+            {"cmd": "무드보드 만들어줘", "note": "무드보드 생성"},
+            {"cmd": "브랜드 DNA 리포트", "note": "상세 리포트"},
+        ],
+        "capabilities": ["브랜드 컬러 추출", "무드보드 생성", "톤앤매너 분석", "인터랙티브 리포트"],
+        "output": "output/리포트/",
+    },
+    "competitor-analysis": {
+        "desc": "경쟁사를 분석하고 벤치마킹 리포트를 생성합니다.",
+        "usecases": [
+            {"cmd": "경쟁사 분석해줘", "note": "경쟁사 리서치"},
+            {"cmd": "[브랜드명] 벤치마킹해줘", "note": "특정 브랜드 분석"},
+            {"cmd": "시장 조사해줘", "note": "시장 분석"},
+        ],
+        "capabilities": ["경쟁사 제품 분석", "가격 비교", "마케팅 전략 분석", "SWOT 분석"],
+        "output": "output/리포트/",
+    },
+    "copywriting": {
+        "desc": "마케팅 카피를 작성합니다. 랜딩페이지, 홈페이지, 광고 카피 등을 지원합니다.",
+        "usecases": [
+            {"cmd": "광고 카피 써줘", "note": "광고 카피 작성"},
+            {"cmd": "랜딩페이지 카피라이팅", "note": "랜딩페이지용"},
+            {"cmd": "헤드라인 5개 만들어줘", "note": "헤드라인 다수 생성"},
+        ],
+        "capabilities": ["헤드라인 작성", "바디카피 작성", "CTA 문구", "USP 정리"],
+        "output": "output/광고카피/",
+    },
+}
+
+# 에이전트별 상세 정보
+AGENT_DETAILS = {
+    "meta-ad-creator": {
+        "desc": "제품 이미지를 분석하고 2~3개 스타일의 메타 광고 이미지를 자동 생성합니다.",
+        "usecases": [
+            {"cmd": "광고 만들어줘 [이미지폴더]", "note": "폴더 내 이미지로 광고 생성"},
+            {"cmd": "메타 광고 제작", "note": "기본 광고 제작"},
+            {"cmd": "인스타 광고 소재 3종", "note": "여러 버전 생성"},
+        ],
+        "workflow": ["이미지 분석", "템플릿 선택", "광고 이미지 생성", "PNG 변환"],
+    },
+    "reels-editor-agent": {
+        "desc": "영상을 9:16 세로형으로 변환하고 자막, 인트로/아웃트로를 추가합니다.",
+        "usecases": [
+            {"cmd": "릴스 편집해줘 [영상파일]", "note": "영상 편집"},
+            {"cmd": "릴스 광고 만들어줘", "note": "광고용 릴스"},
+            {"cmd": "세로 영상으로 바꿔줘", "note": "포맷 변환"},
+        ],
+        "workflow": ["영상 분석", "크롭/리사이즈", "자막 생성", "인코딩"],
+    },
+    "competitor-analyzer": {
+        "desc": "웹 검색으로 경쟁 브랜드의 제품, 가격, 마케팅, SNS, 리뷰 데이터를 수집하고 분석합니다.",
+        "usecases": [
+            {"cmd": "경쟁사 분석해줘 [브랜드명]", "note": "특정 브랜드 분석"},
+            {"cmd": "벤치마킹 리포트 만들어줘", "note": "비교 리포트"},
+            {"cmd": "시장 조사해줘", "note": "시장 전체 조사"},
+        ],
+        "workflow": ["웹 검색", "데이터 수집", "분석", "리포트 생성"],
+    },
+    "brand-setup-wizard": {
+        "desc": "새 브랜드의 초기 설정을 도와주는 마법사입니다. 질문을 통해 브랜드 정보를 수집합니다.",
+        "usecases": [
+            {"cmd": "브랜드 설정해줘", "note": "새 브랜드 설정"},
+            {"cmd": "새 브랜드 추가", "note": "브랜드 추가"},
+            {"cmd": "brand setup", "note": "영문 명령도 지원"},
+        ],
+        "workflow": ["질문 수집", "브랜드 정보 정리", "레퍼런스 파일 생성"],
+    },
+    "skill-orchestrator": {
+        "desc": "사용자의 요청을 분석하여 가장 적합한 스킬이나 에이전트를 추천하고 연결합니다.",
+        "usecases": [
+            {"cmd": "도와줘", "note": "무엇을 할 수 있는지 안내"},
+            {"cmd": "뭐 할 수 있어?", "note": "가능한 작업 목록"},
+            {"cmd": "마케팅 관련 작업해줘", "note": "의도 파악 후 매칭"},
+        ],
+        "workflow": ["의도 분석", "스킬/에이전트 매칭", "작업 위임", "결과 전달"],
+    },
 }
 
 # 카테고리별 대표 예시 (사용자가 이해하기 쉬운 형태)
@@ -498,9 +663,14 @@ def generate_markdown_catalog(skills: dict, agents: list, templates: list = None
 
 
 def generate_html_guide(skills: dict, agents: list, templates: list = None) -> str:
-    """HTML 사용 가이드 생성 - 사이드바 레이아웃 버전"""
+    """HTML 사용 가이드 생성 - 3컬럼 레이아웃 (사이드바 + 메인 + 상세패널)"""
 
     total_skills = sum(len(s) for s in skills.values())
+
+    # JSON 데이터 준비
+    skill_details_json = json.dumps(SKILL_DETAILS, ensure_ascii=False)
+    agent_details_json = json.dumps(AGENT_DETAILS, ensure_ascii=False)
+    category_names_json = json.dumps(CATEGORY_NAMES, ensure_ascii=False)
 
     # 사이드바 네비게이션 아이템 생성
     nav_items = f'<div class="nav-item active" data-cat="all"><span>전체</span><span class="badge">{total_skills}</span></div>\n'
@@ -572,7 +742,14 @@ def generate_html_guide(skills: dict, agents: list, templates: list = None) -> s
     # 에이전트 섹션
     agent_cards = ""
     for agent in agents:
-        desc = agent['description'] if agent['description'] else "-"
+        # 한글 번역 적용
+        agent_key = agent.get('filename', '').replace('.md', '')
+        if agent_key in AGENT_TRANSLATIONS:
+            desc = AGENT_TRANSLATIONS[agent_key]
+        elif agent['description']:
+            desc = agent['description']
+        else:
+            desc = "-"
 
         # 트리거 태그 생성
         trigger_tags = ""
@@ -694,10 +871,232 @@ def generate_html_guide(skills: dict, agents: list, templates: list = None) -> s
   .stat-label {{ font-size: 0.7rem; color: var(--muted); }}
 
   /* Main */
-  .main {{ margin-left: 260px; padding: 32px; flex: 1; max-width: 900px; }}
+  .main {{ margin-left: 260px; margin-right: 340px; padding: 32px; flex: 1; }}
   .header {{ margin-bottom: 32px; }}
   .header h2 {{ font-size: 1.5rem; margin-bottom: 8px; }}
   .header p {{ color: var(--muted); font-size: 0.9rem; }}
+
+  /* Right Detail Panel */
+  .detail-panel {{
+    width: 320px;
+    background: var(--sidebar);
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    overflow-y: auto;
+    border-left: 1px solid var(--border);
+    z-index: 100;
+  }}
+  .detail-header {{
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }}
+  .detail-header h2 {{
+    font-size: 1rem;
+    color: var(--primary);
+  }}
+  .help-btn {{
+    background: rgba(163,128,104,0.2);
+    border: none;
+    color: var(--primary-light);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.75rem;
+  }}
+  .help-btn:hover {{ background: rgba(163,128,104,0.4); }}
+  .detail-content {{
+    padding: 20px;
+  }}
+  .detail-empty {{
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }}
+  .detail-empty .icon {{ font-size: 3rem; margin-bottom: 16px; opacity: 0.5; }}
+  .detail-empty p {{ font-size: 0.85rem; }}
+  .detail-title {{
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 8px;
+    font-family: 'Monaco', monospace;
+  }}
+  .detail-category {{
+    font-size: 0.7rem;
+    color: var(--primary);
+    background: rgba(163,128,104,0.2);
+    padding: 3px 10px;
+    border-radius: 10px;
+    display: inline-block;
+    margin-bottom: 16px;
+  }}
+  .detail-desc {{
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }}
+  .detail-section {{
+    margin-bottom: 20px;
+  }}
+  .detail-section h4 {{
+    font-size: 0.8rem;
+    color: var(--text);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }}
+  .detail-list {{
+    list-style: none;
+  }}
+  .detail-list li {{
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }}
+  .detail-list li:hover {{ border-color: var(--primary); }}
+  .detail-list .cmd {{
+    color: var(--primary-light);
+    font-family: 'Monaco', monospace;
+    display: block;
+    margin-bottom: 4px;
+  }}
+  .detail-list .note {{
+    font-size: 0.7rem;
+    color: var(--muted);
+  }}
+  .detail-tools {{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }}
+  .detail-tools span {{
+    background: rgba(255,255,255,0.05);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    color: var(--muted);
+  }}
+  .try-btn {{
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    border: none;
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    margin-top: 20px;
+  }}
+  .try-btn:hover {{ opacity: 0.9; }}
+
+  /* Modal */
+  .modal-overlay {{
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+  }}
+  .modal-overlay.show {{ display: flex; }}
+  .modal {{
+    background: var(--card);
+    border-radius: 16px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 1px solid var(--border);
+  }}
+  .modal-header {{
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }}
+  .modal-header h3 {{
+    font-size: 1.1rem;
+    color: var(--primary);
+  }}
+  .modal-close {{
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+  }}
+  .modal-close:hover {{ color: var(--text); }}
+  .modal-body {{
+    padding: 24px;
+  }}
+  .modal-step {{
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+  }}
+  .modal-step .num {{
+    background: var(--primary);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }}
+  .modal-step .content h4 {{
+    color: var(--text);
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+  }}
+  .modal-step .content p {{
+    color: var(--muted);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }}
+  .modal-step .content code {{
+    background: rgba(163,128,104,0.2);
+    color: var(--primary-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'Monaco', monospace;
+  }}
+  .modal-examples {{
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+  }}
+  .modal-examples h5 {{
+    color: var(--text);
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }}
+  .modal-examples .example {{
+    background: var(--sidebar);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    color: var(--primary-light);
+    font-family: 'Monaco', monospace;
+    font-size: 0.8rem;
+  }}
 
   /* Usage box */
   .usage-box-main {{
@@ -750,6 +1149,7 @@ def generate_html_guide(skills: dict, agents: list, templates: list = None) -> s
     transition: all 0.2s;
   }}
   .skill-card:hover {{ border-color: var(--primary); }}
+  .skill-card.selected {{ border-color: var(--primary); background: rgba(163,128,104,0.1); }}
   .skill-header {{
     padding: 14px 18px;
     cursor: pointer;
@@ -802,9 +1202,13 @@ def generate_html_guide(skills: dict, agents: list, templates: list = None) -> s
   }}
 
   /* Responsive */
+  @media (max-width: 1200px) {{
+    .detail-panel {{ display: none; }}
+    .main {{ margin-right: 0; }}
+  }}
   @media (max-width: 768px) {{
     .sidebar {{ width: 100%; height: auto; position: relative; }}
-    .main {{ margin-left: 0; padding: 20px; }}
+    .main {{ margin-left: 0; margin-right: 0; padding: 20px; }}
     .container {{ flex-direction: column; }}
   }}
 </style>
@@ -851,14 +1255,200 @@ def generate_html_guide(skills: dict, agents: list, templates: list = None) -> s
       자동 생성됨 · {datetime.now().strftime('%Y-%m-%d %H:%M')}
     </footer>
   </main>
+
+  <aside class="detail-panel">
+    <div class="detail-header">
+      <h2>📋 상세 정보</h2>
+      <button class="help-btn" onclick="showGuideModal()">❓ 사용법</button>
+    </div>
+    <div class="detail-content">
+      <div class="detail-empty" id="detail-empty">
+        <div class="icon">👆</div>
+        <p>왼쪽에서 스킬이나 에이전트를<br>클릭하면 상세 정보가 표시됩니다</p>
+      </div>
+      <div id="detail-info" style="display:none;"></div>
+    </div>
+  </aside>
+</div>
+
+<!-- 사용 가이드 모달 -->
+<div class="modal-overlay" id="guide-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>📖 사용 가이드</h3>
+      <button class="modal-close" onclick="closeGuideModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-step">
+        <span class="num">1</span>
+        <div class="content">
+          <h4>터미널 열기</h4>
+          <p>VS Code에서 <code>Ctrl + `</code> 또는 Mac 터미널 앱을 실행하세요.</p>
+        </div>
+      </div>
+      <div class="modal-step">
+        <span class="num">2</span>
+        <div class="content">
+          <h4>Claude 실행</h4>
+          <p>터미널에서 <code>claude</code> 명령어를 입력하세요.</p>
+        </div>
+      </div>
+      <div class="modal-step">
+        <span class="num">3</span>
+        <div class="content">
+          <h4>자연어로 요청</h4>
+          <p>원하는 작업을 자연어로 말하면 됩니다. 스킬 이름을 외울 필요 없어요!</p>
+          <div class="modal-examples">
+            <h5>예시 요청</h5>
+            <div class="example">"상세페이지 만들어줘"</div>
+            <div class="example">"메타 광고 소재 제작해줘"</div>
+            <div class="example">"카카오 배너 만들어줘"</div>
+            <div class="example">"브랜드 분석해줘"</div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-step">
+        <span class="num">4</span>
+        <div class="content">
+          <h4>파일 전달하기</h4>
+          <p>이미지나 파일 경로를 함께 전달하면 해당 파일을 활용해 작업합니다.</p>
+        </div>
+      </div>
+      <div class="modal-step">
+        <span class="num">💡</span>
+        <div class="content">
+          <h4>결과물 위치</h4>
+          <p>모든 결과물은 <code>output/</code> 폴더에 저장됩니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-// 카드 토글
-document.querySelectorAll('.skill-header').forEach(header => {{
-  header.addEventListener('click', () => {{
-    header.parentElement.classList.toggle('open');
+// 스킬/에이전트 상세 정보 데이터
+const skillDetails = {skill_details_json};
+const agentDetails = {agent_details_json};
+const categoryNames = {category_names_json};
+
+// 카드 클릭 시 상세 정보 표시
+document.querySelectorAll('.skill-card').forEach(card => {{
+  card.addEventListener('click', (e) => {{
+    // 모든 카드의 선택 상태 해제
+    document.querySelectorAll('.skill-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    card.classList.toggle('open');
+
+    const name = card.dataset.name;
+    const cat = card.dataset.cat;
+    showDetail(name, cat);
   }});
+}});
+
+function showDetail(name, cat) {{
+  const detailEmpty = document.getElementById('detail-empty');
+  const detailInfo = document.getElementById('detail-info');
+
+  // 스킬 또는 에이전트 정보 가져오기
+  let info = skillDetails[name] || agentDetails[name];
+  let isAgent = cat === 'agents';
+
+  if (!info) {{
+    // 기본 정보 생성
+    info = {{
+      desc: document.querySelector(`[data-name="${{name}}"] .skill-desc`)?.textContent || '설명 없음',
+      usecases: [{{cmd: `"${{name}} 실행해줘"`, note: '기본 실행'}}],
+      capabilities: [],
+      workflow: [],
+    }};
+  }}
+
+  const catName = isAgent ? '에이전트' : (categoryNames[cat] || cat);
+
+  let usecasesHtml = info.usecases?.map(u => `
+    <li>
+      <span class="cmd">${{u.cmd}}</span>
+      <span class="note">${{u.note}}</span>
+    </li>
+  `).join('') || '';
+
+  let capabilitiesHtml = '';
+  if (info.capabilities?.length) {{
+    capabilitiesHtml = `
+      <div class="detail-section">
+        <h4>✨ 가능한 작업</h4>
+        <div class="detail-tools">
+          ${{info.capabilities.map(c => `<span>${{c}}</span>`).join('')}}
+        </div>
+      </div>
+    `;
+  }}
+
+  let workflowHtml = '';
+  if (info.workflow?.length) {{
+    workflowHtml = `
+      <div class="detail-section">
+        <h4>⚙️ 작업 흐름</h4>
+        <div class="detail-tools">
+          ${{info.workflow.map((w, i) => `<span>${{i+1}}. ${{w}}</span>`).join('')}}
+        </div>
+      </div>
+    `;
+  }}
+
+  let outputHtml = '';
+  if (info.output) {{
+    outputHtml = `
+      <div class="detail-section">
+        <h4>📁 결과물 위치</h4>
+        <div class="detail-tools"><span>${{info.output}}</span></div>
+      </div>
+    `;
+  }}
+
+  detailInfo.innerHTML = `
+    <div class="detail-title">${{name}}</div>
+    <span class="detail-category">${{catName}}</span>
+    <div class="detail-desc">${{info.desc}}</div>
+
+    <div class="detail-section">
+      <h4>💬 사용 예시</h4>
+      <ul class="detail-list">${{usecasesHtml}}</ul>
+    </div>
+
+    ${{capabilitiesHtml}}
+    ${{workflowHtml}}
+    ${{outputHtml}}
+
+    <button class="try-btn" onclick="copyCommand('${{name}}')">
+      📋 명령어 복사하기
+    </button>
+  `;
+
+  detailEmpty.style.display = 'none';
+  detailInfo.style.display = 'block';
+}}
+
+function copyCommand(name) {{
+  const info = skillDetails[name] || agentDetails[name];
+  const cmd = info?.usecases?.[0]?.cmd || `"${{name}} 실행해줘"`;
+  navigator.clipboard.writeText(cmd.replace(/"/g, ''));
+  alert('명령어가 복사되었습니다!');
+}}
+
+// 모달 제어
+function showGuideModal() {{
+  document.getElementById('guide-modal').classList.add('show');
+}}
+
+function closeGuideModal() {{
+  document.getElementById('guide-modal').classList.remove('show');
+}}
+
+document.getElementById('guide-modal').addEventListener('click', (e) => {{
+  if (e.target.classList.contains('modal-overlay')) {{
+    closeGuideModal();
+  }}
 }});
 
 // 검색

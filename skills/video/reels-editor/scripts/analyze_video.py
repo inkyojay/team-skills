@@ -13,6 +13,7 @@ import os
 import json
 import base64
 import tempfile
+from fractions import Fraction
 from pathlib import Path
 from typing import List, Optional
 
@@ -50,7 +51,7 @@ def get_video_info(video_path: str) -> dict:
         'width': int(video_stream['width']),
         'height': int(video_stream['height']),
         'duration': float(data['format'].get('duration', 0)),
-        'fps': eval(video_stream.get('r_frame_rate', '30/1')),
+        'fps': float(Fraction(video_stream.get('r_frame_rate', '30/1'))),
         'codec': video_stream.get('codec_name', 'unknown'),
         'file_size': int(data['format'].get('size', 0))
     }

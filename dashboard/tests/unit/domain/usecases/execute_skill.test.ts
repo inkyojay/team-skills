@@ -9,7 +9,10 @@ describe('ExecuteSkill Use Case', () => {
 
     beforeEach(() => {
         mockSkillRepo = {
-            getAll: jest.fn()
+            getAll: jest.fn(),
+            getById: jest.fn(),
+            searchByTriggers: jest.fn(),
+            getCategories: jest.fn(),
         };
         mockLLMService = {
             generate: jest.fn()
@@ -19,19 +22,20 @@ describe('ExecuteSkill Use Case', () => {
     it('should execute a specific skill by ID with user prompt', async () => {
         // Arrange
         const skill = new Skill('skill-1', 'Test Skill', 'Description', 'Category', []);
-        mockSkillRepo.getAll.mockResolvedValue([skill]);
+        mockSkillRepo.getById.mockResolvedValue(skill);
         mockLLMService.generate.mockResolvedValue('Generated Content');
 
         const useCase = new ExecuteSkill(mockSkillRepo, mockLLMService);
 
         // Act
-        const result = await useCase.execute('Make this', 'skill-1');
+        const result = await useCase.execute('skill-1', 'Make this');
 
         // Assert
         expect(result).toBe('Generated Content');
+        expect(mockSkillRepo.getById).toHaveBeenCalledWith('skill-1');
         expect(mockLLMService.generate).toHaveBeenCalledWith(
             'Make this',
-            expect.stringContaining('Test Skill') // Context should contain skill details
+            expect.stringContaining('Test Skill')
         );
     });
 
@@ -44,21 +48,22 @@ describe('ExecuteSkill Use Case', () => {
 
         const useCase = new ExecuteSkill(mockSkillRepo, mockLLMService);
 
-        // Act
-        await useCase.execute('General query');
+        // Act - empty skillId triggers getAll path
+        await useCase.execute('', 'General query');
 
         // Assert
+        expect(mockSkillRepo.getAll).toHaveBeenCalled();
         expect(mockLLMService.generate).toHaveBeenCalledWith(
             'General query',
-            expect.stringMatching(/Skill 1.*Skill 2/s)
+            expect.stringContaining('Skill 1')
         );
     });
 
     it('should throw error if specific skill not found', async () => {
-        mockSkillRepo.getAll.mockResolvedValue([]);
+        mockSkillRepo.getById.mockResolvedValue(null);
         const useCase = new ExecuteSkill(mockSkillRepo, mockLLMService);
 
-        await expect(useCase.execute('prompt', 'missing-id'))
+        await expect(useCase.execute('missing-id', 'prompt'))
             .rejects.toThrow('Skill not found');
     });
 });

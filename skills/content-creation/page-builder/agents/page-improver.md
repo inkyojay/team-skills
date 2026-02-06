@@ -1,11 +1,13 @@
-# Page Improver 에이전트
-
 ---
 name: page-improver
 description: |
   기존 상세페이지를 분석하고 개선하는 에이전트.
   트리거: "상세페이지 개선", "페이지 수정", "디자인 업데이트", "리뉴얼", "기존 페이지 수정"
+tools: Read, Write, Edit, Glob, Grep, Bash
+model: sonnet
 ---
+
+# Page Improver 에이전트
 
 ## 목적
 

@@ -281,11 +281,11 @@ playwright install chromium
 ## 사용 예시
 
 ```bash
-# 혜택 배너 렌더링
-python3 scripts/render_banner.py \
-  --template benefit-banner.html \
-  --output ./output/benefit-1.png \
-  --vars '{"BENEFIT_NUM": "1", "PRODUCT_TITLE": "침대 암막 커버", ...}'
+# 혜택 배너 렌더링 (html-section-capture 스킬 사용)
+python3 skills/tools/html-section-capture/scripts/capture_sections.py \
+  --html-file benefit-banner.html \
+  --output-dir output/광고카피/ \
+  --full-page
 ```
 
 ## 색상 팔레트

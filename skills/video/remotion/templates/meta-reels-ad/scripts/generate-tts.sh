@@ -52,12 +52,19 @@ fi
 echo "🎙️ TTS 생성: \"$TEXT\""
 echo "   음성: $VOICE_ID, 스타일: $STYLE, 속도: $SPEED"
 
+# JSON 페이로드 안전하게 생성
+JSON_PAYLOAD=$(jq -n \
+  --arg text "$TEXT" \
+  --arg style "$STYLE" \
+  --argjson speed "$SPEED" \
+  '{text: $text, language: "ko", style: $style, voice_settings: {speed: $speed}}')
+
 # Supertone API 호출
 HTTP_CODE=$(curl -s -w "%{http_code}" \
   -X POST "https://supertoneapi.com/v1/text-to-speech/${VOICE_ID}?output_format=${FORMAT}" \
   -H "x-sup-api-key: ${SUPERTONE_API_KEY}" \
   -H "Content-Type: application/json" \
-  -d "{\"text\":\"${TEXT}\",\"language\":\"ko\",\"style\":\"${STYLE}\",\"voice_settings\":{\"speed\":${SPEED}}}" \
+  -d "$JSON_PAYLOAD" \
   -o "$OUTPUT")
 
 # 결과 확인

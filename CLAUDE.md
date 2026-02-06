@@ -116,3 +116,64 @@ python3 scripts/generate-catalog.py
 | 브랜드 | `brand/` | 브랜드 분석, 제품 분석 |
 | 마케팅 | `marketing/` | CRO, 카피, 전략 |
 | 도구 | `tools/` | 유틸리티, 스킬 생성 |
+
+## 미디어 대시보드 (MCP 연동)
+
+미디어 에셋을 자연어로 관리할 수 있는 MCP 서버가 연동되어 있습니다.
+
+### 접속 정보
+
+- **대시보드 URL**: https://media-dashboard-production-7846.up.railway.app
+- **MCP 서버**: `media-dashboard` (Claude Code에 글로벌 등록됨)
+
+### 자연어 사용 예시
+
+```
+"products 폴더에 있는 사진 보여줘"
+"manual 폴더 파일 목록"
+"제품샷 검색해줘"
+"이 파일들 AI로 분류해줘"
+"인스타에서 새 게시물 가져와"
+"abc-crib 폴더 사진으로 메타 광고 소재 만들어줘"
+```
+
+### MCP 도구 목록
+
+| 도구 | 설명 | 예시 |
+|------|------|------|
+| `list_folders` | 폴더 목록 조회 | "폴더 보여줘" |
+| `list_files` | 파일 목록 (폴더별 필터링) | "products 폴더 파일" |
+| `get_file` | 파일 상세 정보 | "이 파일 정보 알려줘" |
+| `search_media` | 미디어 검색 | "제품샷 검색" |
+| `create_folder` | 폴더 생성 (하위 포함) | "새 폴더 만들어줘" |
+| `move_files` | 파일 폴더 이동 | "이 파일 products로 옮겨" |
+| `list_tags` | 태그 목록 | "태그 보여줘" |
+| `tag_files` | 파일에 태그 추가 | "이 파일에 제품샷 태그 달아줘" |
+| `classify_files` | AI 자동 분류 | "이 파일들 AI 분류해줘" |
+| `classify_status` | AI 분류 큐 상태 | "분류 상태 확인" |
+| `poll_instagram` | Instagram 미디어 가져오기 | "인스타에서 가져와" |
+| `instagram_status` | Instagram 연결 상태 | "인스타 연결 상태" |
+| `update_file` | 파일 메타데이터 수정 | "이 파일 설명 수정해줘" |
+
+### 광고 소재 제작 워크플로우
+
+1. 미디어 대시보드에서 소재 이미지 가져오기 (MCP)
+2. `meta-ad-image` 스킬로 광고 이미지 제작
+3. 결과물은 `output/광고카피/` 에 저장
+
+```
+"abc-crib 폴더에서 제품 사진 가져와서 메타 광고 만들어줘"
+```
+
+### 팀원 설정 방법
+
+1. `media-dashboard` 레포 clone
+2. MCP 서버 의존성 설치:
+   ```bash
+   cd media-dashboard/mcp-server && npm install
+   ```
+3. Claude Code에 MCP 서버 등록:
+   ```bash
+   claude mcp add --scope user media-dashboard -- npx --prefix /path/to/media-dashboard/mcp-server tsx /path/to/media-dashboard/mcp-server/index.ts
+   ```
+4. Claude Code 재시작 후 사용 가능

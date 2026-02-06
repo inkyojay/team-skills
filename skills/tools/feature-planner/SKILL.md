@@ -1,6 +1,11 @@
 ---
 name: feature-planner
-description: Creates phase-based feature plans with quality gates and incremental delivery structure. Use when planning features, organizing work, breaking down tasks, creating roadmaps, or structuring development strategy. Keywords: plan, planning, phases, breakdown, strategy, roadmap, organize, structure, outline.
+description: 기능 계획 및 단계별 구현 전략 수립
+triggers:
+  - "기능 계획"
+  - "구현 전략"
+  - "feature plan"
+  - "roadmap"
 ---
 
 # Feature Planner

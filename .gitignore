@@ -26,9 +26,13 @@ node_modules/
 __pycache__/
 *.pyc
 
+# Dashboard 세션 데이터
+dashboard/data/sessions/
+
 # 영상/오디오 바이너리 (Remotion public assets)
 *.mp4
 *.mp3
 *.wav
+.env
 .envrc
 .env.local

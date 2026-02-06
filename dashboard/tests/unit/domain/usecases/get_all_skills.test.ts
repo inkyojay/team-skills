@@ -9,6 +9,15 @@ class MockSkillRepository implements ISkillRepository {
             new Skill('test-skill', 'Test Skill', 'Description', 'Category', [])
         ];
     }
+    async getById(): Promise<Skill | null> {
+        return null;
+    }
+    async searchByTriggers(): Promise<Skill[]> {
+        return [];
+    }
+    async getCategories(): Promise<string[]> {
+        return [];
+    }
 }
 
 describe('GetAllSkills Use Case', () => {

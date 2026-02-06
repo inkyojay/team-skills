@@ -13,8 +13,21 @@ export class FileSystemSessionRepository implements ISessionRepository {
         }
     }
 
+    private validateSessionId(sessionId: string): string {
+        const sanitized = path.basename(sessionId).replace(/[^a-zA-Z0-9\-_]/g, '');
+        if (!sanitized || sanitized !== sessionId) {
+            throw new Error(`Invalid session ID: ${sessionId}`);
+        }
+        return sanitized;
+    }
+
     private getFilePath(sessionId: string): string {
-        return path.join(this.sessionsDir, `${sessionId}.json`);
+        const safeId = this.validateSessionId(sessionId);
+        const filePath = path.join(this.sessionsDir, `${safeId}.json`);
+        if (!filePath.startsWith(this.sessionsDir)) {
+            throw new Error('Path traversal detected');
+        }
+        return filePath;
     }
 
     async createSession(title: string = 'New Chat'): Promise<ChatSession> {

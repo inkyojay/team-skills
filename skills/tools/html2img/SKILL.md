@@ -1,6 +1,10 @@
 ---
 name: html2img
-description: HTML 파일 전체를 고해상도 이미지로 변환합니다. "HTML 이미지로", "스크린샷", "고해상도 캡처" 요청 시 사용.
+description: HTML을 이미지로 변환
+triggers:
+  - "HTML 이미지로 변환해줘"
+  - "고해상도 스크린샷"
+  - "페이지 캡처"
 ---
 
 # HTML to Image
@@ -29,6 +33,13 @@ HTML 파일 전체를 고해상도 이미지로 변환합니다.
 - 2x: 웹용 (기본)
 - 3x: 인쇄용
 - 4x: 초고해상도
+
+## 사용법
+```bash
+python3 skills/tools/html-section-capture/scripts/capture_sections.py --html-file input.html --output-dir ./output --full-page
+```
+
+> **참고**: 실제 스크립트는 `html-section-capture` 스킬에 포함되어 있습니다.
 
 ## 사전 요구사항
 ```bash

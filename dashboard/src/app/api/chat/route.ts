@@ -10,7 +10,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
         }
 
-        const response = await container.executeSkill.execute(prompt, skillId);
+        const response = await container.executeSkill.execute(skillId, prompt);
         return NextResponse.json({ message: response });
     } catch (error: any) {
         console.error('Chat execution failed:', error);

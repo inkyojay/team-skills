@@ -1,6 +1,11 @@
 ---
 name: copywriting
-description: When the user wants to write, rewrite, or improve marketing copy for any page — including homepage, landing pages, pricing pages, feature pages, about pages, or product pages. Also use when the user says "write copy for," "improve this copy," "rewrite this page," "marketing copy," "headline help," or "CTA copy." For email copy, see email-sequence. For popup copy, see popup-cro.
+description: 마케팅 카피라이팅 (랜딩페이지, 홈페이지 등)
+triggers:
+  - "카피 써줘"
+  - "카피라이팅"
+  - "마케팅 카피"
+  - "헤드라인 도와줘"
 ---
 
 # Copywriting

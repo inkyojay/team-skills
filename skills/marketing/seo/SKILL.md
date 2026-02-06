@@ -1,6 +1,11 @@
 ---
 name: seo
-description: Search engine optimization for startups. Covers technical SEO, content strategy, and link building. Focus on sustainable approaches that compound over time rather than tricks that get penalized. Use when "seo, search engine optimization, organic traffic, google ranking, keyword research, backlinks, content strategy, search visibility, " mentioned. 
+description: 검색 엔진 최적화 (SEO) - 기술 SEO, 콘텐츠 전략, 키워드 분석
+triggers:
+  - "SEO"
+  - "검색 최적화"
+  - "키워드 분석"
+  - "오가닉 트래픽"
 ---
 
 # Seo

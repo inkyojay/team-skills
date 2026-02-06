@@ -1,3 +1,13 @@
+---
+name: reels-editor
+description: 릴스 영상 편집 (9:16, 1080x1920)
+triggers:
+  - "릴스 편집"
+  - "릴스 만들어줘"
+  - "영상 세로로 변환"
+  - "인스타 릴스"
+---
+
 # Instagram Reels 영상 편집 스킬
 
 사용자가 업로드한 영상을 Instagram Reels 광고 형식(9:16, 1080x1920, 최대 90초)으로 자동 편집합니다.

@@ -1,10 +1,7 @@
 ---
 name: meta-ads-agent
 description: Meta 광고 영상 제작 에이전트 - 템플릿 선택부터 Remotion 프로젝트 생성까지
-tools:
-  - read_file
-  - write_file
-  - bash
+tools: Read, Write, Edit, Bash, Glob
 model: sonnet
 ---
 

@@ -1,6 +1,11 @@
 ---
 name: product-analyzer
-description: 스마트스토어 상세페이지 URL에서 제품 이미지를 분석하여 강점/단점 리포트를 생성하는 스킬. 사용자가 "제품 분석", "상품 리뷰", "상세페이지 분석", "이 제품 어때?", "구매할만해?" 등을 요청할 때 사용. URL 크롤링 → Claude Vision 이미지 분석 → React 웹 리포트 생성.
+description: 제품 분석 리포트
+triggers:
+  - "제품 분석"
+  - "상품 리뷰"
+  - "상세페이지 분석"
+  - "이 제품 어때?"
 ---
 
 # Product Analyzer

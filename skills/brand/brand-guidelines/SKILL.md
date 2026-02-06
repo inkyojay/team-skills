@@ -1,6 +1,10 @@
 ---
 name: brand-guidelines
-description: Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply.
+description: 브랜드 가이드라인 적용 (색상, 타이포그래피)
+triggers:
+  - "브랜드 가이드라인"
+  - "브랜드 색상"
+  - "스타일 가이드"
 license: Complete terms in LICENSE.txt
 ---
 

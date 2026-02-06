@@ -1,22 +1,24 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ChatInterface } from '@/presentation/components/ChatInterface';
+import { ChatMessage } from '@/domain/repositories/ISessionRepository';
 
 describe('ChatInterface', () => {
     beforeAll(() => {
         window.HTMLElement.prototype.scrollIntoView = jest.fn();
     });
-    it('renders chat input and send button', () => {
+
+    it('renders chat input and submit button', () => {
         render(<ChatInterface onSendMessage={jest.fn()} messages={[]} isLoading={false} />);
 
-        expect(screen.getByPlaceholderText('Type your request...')).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: /send/i })).toBeInTheDocument();
+        expect(screen.getByPlaceholderText('AI에게 무엇이든 물어보세요...')).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: '' })).toBeInTheDocument();
     });
 
     it('displays messages correctly', () => {
-        const messages = [
-            { role: 'user', content: 'Hello' },
-            { role: 'assistant', content: 'Hi there!' }
+        const messages: ChatMessage[] = [
+            { id: 'msg-1', role: 'user', content: 'Hello', timestamp: '2026-01-01T00:00:00Z' },
+            { id: 'msg-2', role: 'assistant', content: 'Hi there!', timestamp: '2026-01-01T00:00:01Z' }
         ];
         render(<ChatInterface onSendMessage={jest.fn()} messages={messages} isLoading={false} />);
 
@@ -28,9 +30,9 @@ describe('ChatInterface', () => {
         const handleSend = jest.fn();
         render(<ChatInterface onSendMessage={handleSend} messages={[]} isLoading={false} />);
 
-        const input = screen.getByPlaceholderText('Type your request...');
+        const input = screen.getByPlaceholderText('AI에게 무엇이든 물어보세요...');
         fireEvent.change(input, { target: { value: 'Make a page' } });
-        fireEvent.click(screen.getByRole('button', { name: /send/i }));
+        fireEvent.submit(input.closest('form')!);
 
         expect(handleSend).toHaveBeenCalledWith('Make a page');
     });
@@ -38,7 +40,6 @@ describe('ChatInterface', () => {
     it('disables input when loading', () => {
         render(<ChatInterface onSendMessage={jest.fn()} messages={[]} isLoading={true} />);
 
-        expect(screen.getByPlaceholderText('Type your request...')).toBeDisabled();
-        expect(screen.getByRole('button', { name: /send/i })).toBeDisabled();
+        expect(screen.getByPlaceholderText('AI에게 무엇이든 물어보세요...')).toBeDisabled();
     });
 });

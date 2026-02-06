@@ -5,12 +5,7 @@ description: |
   사용자가 제품 이미지 폴더 경로를 알려주면, 이미지를 분석하고
   2~3개 스타일의 광고 이미지를 자동으로 생성합니다.
   "광고 만들어줘", "메타 광고 제작", "인스타 광고 소재" 요청 시 사용.
-tools:
-  - read_file
-  - write_file
-  - edit_file
-  - bash
-  - glob
+tools: Read, Write, Edit, Bash, Glob
 model: sonnet
 ---
 

@@ -1,6 +1,9 @@
 ---
 name: inline-css
-description: HTML 파일의 CSS 클래스를 인라인 스타일로 변환합니다. "CSS 인라인 변환", "인라인 스타일로 만들어줘" 요청 시 사용.
+description: CSS 인라인 변환
+triggers:
+  - "CSS 인라인 변환"
+  - "인라인 스타일로 만들어줘"
 ---
 
 # CSS 인라인 변환

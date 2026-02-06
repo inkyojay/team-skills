@@ -1,6 +1,10 @@
 ---
 name: brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+description: 창의적 작업 전 아이디어 브레인스토밍 도구
+triggers:
+  - "브레인스토밍"
+  - "아이디어"
+  - "기획"
 ---
 
 # Brainstorming Ideas Into Designs
